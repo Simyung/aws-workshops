@@ -1,2 +1,0 @@
-# Security Groups for Pods
-

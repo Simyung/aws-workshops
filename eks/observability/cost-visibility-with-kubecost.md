@@ -1,2 +1,0 @@
-# Cost visibility with Kubecost
-
