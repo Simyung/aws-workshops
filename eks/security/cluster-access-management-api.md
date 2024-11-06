@@ -1,2 +1,0 @@
-# Cluster Access Management API
-

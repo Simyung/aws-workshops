@@ -136,7 +136,7 @@ EOF
 
 이전 섹션에서처럼 Grafana를 엽니다:
 
-<figure><img src="../../.gitbook/assets/image (3).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (3) (1).png" alt=""><figcaption></figcaption></figure>
 
 대시보드 페이지로 이동하여 'Order Service Metrics' 대시보드를 클릭하여 대시보드 내의 패널을 검토합니다:
 
