@@ -23,7 +23,7 @@ Kubernetes 이벤트는 지속적으로 생성되지만 클러스터 내에서�
 
 다음 다이어그램은 이 섹션의 설정 개요를 제공합니다. `kubernetes-events-exporter`가 `opensearch-exporter` 네임스페이스에 배포되어 이벤트를 OpenSearch 도메인으로 전달합니다. 이벤트는 OpenSearch의 `eks-kubernetes-events` 인덱스에 저장됩니다. 이전에 로드한 OpenSearch 대시보드는 이벤트를 시각화하는 데 사용됩니다.
 
-<figure><img src="../../.gitbook/assets/image (11).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (11) (1).png" alt=""><figcaption></figcaption></figure>
 
 Kubernetes 이벤트 익스포터를 배포하고 OpenSearch 도메인으로 이벤트를 보내도록 구성합니다. 기본 구성은 여기에서 사용할 수 있습니다. 이전에 검색한 OpenSearch 자격 증명을 사용하여 내보내기를 구성합니다. 두 번째 명령은 Kubernetes 이벤트 포드가 실행 중인지 확인합니다.
 
@@ -87,7 +87,7 @@ Password: <password>
 5. \[중간 섹션] 네임스페이스별로 분류된 경고. 이 예에서는 모든 경고가 test 네임스페이스에 있습니다.&#x20;
 6. \[하단 섹션] 가장 최근 이벤트부터 시작하는 상세 이벤트 및 메시지
 
-<figure><img src="../../.gitbook/assets/image (12).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (12) (1).png" alt=""><figcaption></figcaption></figure>
 
 다음 이미지는 이벤트 세부 정보가 포함된 하단 섹션에 초점을 맞춥니다:
 
@@ -96,7 +96,7 @@ Password: <password>
 3. Kubernetes 리소스 이름 (객체 유형 및 네임스페이스와 함께)&#x20;
 4. 사람이 읽을 수 있는 메시지
 
-<figure><img src="../../.gitbook/assets/image (13).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (13) (1).png" alt=""><figcaption></figcaption></figure>
 
 다음 이미지와 같이 전체 이벤트 세부 정보를 자세히 볼 수 있습니다:
 
@@ -105,21 +105,21 @@ Password: <password>
 
 Kubernetes 이벤트 내의 데이터 필드에 대한 설명은 [kubernetes.io](https://kubernetes.io/docs/reference/kubernetes-api/cluster-resources/event-v1)에서 찾거나 `kubectl explain events`를 실행하여 확인할 수 있습니다.
 
-<figure><img src="../../.gitbook/assets/image (14).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (14) (1).png" alt=""><figcaption></figcaption></figure>
 
 Kubernetes 이벤트 대시보드를 사용하여 세 개의 배포(`scenario-a, scenario-b 및 scenario-c`)가 문제를 겪고 있는 이유를 식별할 수 있습니다. 이전에 배포한 모든 포드는 `test` 네임스페이스에 있습니다.
 
 **scenario-a**: 대시보드에서 `scenario-a`의 에러 이유가 `FailedMount`이고 메시지가 `MountVolume.SetUp failed for volume "secret-volume" : secret "misspelt-secret-name" not found`임을 볼 수 있습니다. 포드가 존재하지 않는 시크릿을 마운트하려고 시도하고 있습니다.
 
-<figure><img src="../../.gitbook/assets/image (15).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (15) (1).png" alt=""><figcaption></figcaption></figure>
 
 **scenario-b**: `scenario-b`는 `Failed to pull image "wrong-image": rpc error: code = Unknown desc = failed to pull and unpack image "docker.io/library/wrong-image:latest": failed to resolve reference "docker.io/library/wrong-image:latest": pull access denied, repository does not exist or may require authorization: server message: insufficient_scope: authorization failed` 메시지와 함께 실패했습니다. 존재하지 않는 이미지를 참조하기 때문에 포드가 생성되지 않고 있습니다.
 
-<figure><img src="../../.gitbook/assets/image (16).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (16) (1).png" alt=""><figcaption></figcaption></figure>
 
 scenario-c: 대시보드에는 `FailedScheduling`의 이유와 `0/3 nodes are available: 3 Insufficient cpu. preemption: 0/3 nodes are available: 3 No preemption victims found for incoming pod` 메시지가 표시됩니다. 이 배포는 현재 클러스터 노드가 제공할 수 있는 것보다 많은 CPU를 요청하고 있습니다. (이 EKS 워크샵 모듈에서는 클러스터 자동 확장 기능을 활성화하지 않았습니다.)
 
-<figure><img src="../../.gitbook/assets/image (17).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (17) (1).png" alt=""><figcaption></figcaption></figure>
 
 문제를 해결하고 OpenSearch 대시보드를 다시 방문하여 변경 사항을 확인하세요
 

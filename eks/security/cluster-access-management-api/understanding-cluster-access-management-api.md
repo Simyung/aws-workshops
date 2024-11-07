@@ -59,4 +59,4 @@ Amazon EKS 클러스터를 생성할 때마다 플랫폼에서 리소스를 사�
 
 아래 다이어그램은 AWS IAM 주체가 Amazon EKS 클러스터에 대한 인증 및 권한 부여를 제공하기 위해 클러스터 액세스 관리 API가 따르는 워크플로우를 보여줍니다.
 
-<figure><img src="../../.gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (2) (1).png" alt=""><figcaption></figcaption></figure>
