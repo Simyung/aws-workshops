@@ -3,7 +3,7 @@
 시작하기 전에 이 섹션을 위해 환경을 준비하세요:
 
 ```
-$ prepare-environment introduction/helm
+~$ prepare-environment introduction/helm
 ```
 
 이 워크샵에서는 주로 kustomize를 사용할 것이지만, EKS 클러스터에 특정 패키지를 설치하기 위해 Helm을 사용해야 하는 상황이 있을 것입니다. 이 실습에서는 Helm에 대한 간단한 소개를 하고, 미리 패키지된 애플리케이션을 설치하는 데 어떻게 사용하는지 보여드리겠습니다.
@@ -21,7 +21,7 @@ Helm은 Kubernetes 애플리케이션을 정의, 설치 및 업그레이드하�
 CLI는 이미 우리의 IDE에 설치되어 있습니다:
 
 ```
-~ $ helm version
+~$ helm version
 ```
 
 Helm 저장소 Helm 저장소는 Helm 차트가 저장되고 관리되는 중앙 위치이며, 사용자가 차트를 쉽게 발견, 공유 및 설치할 수 있게 합니다. Kubernetes 클러스터에 배포할 수 있는 다양한 사전 패키지된 애플리케이션과 서비스에 쉽게 접근할 수 있게 해줍니다.
@@ -29,14 +29,14 @@ Helm 저장소 Helm 저장소는 Helm 차트가 저장되고 관리되는 중앙
 Bitnami Helm 저장소는 Kubernetes에 인기 있는 애플리케이션과 도구를 배포하기 위한 Helm 차트 모음입니다. Helm CLI에 bitnami 저장소를 추가해 봅시다:
 
 ```
-~ $ helm repo add bitnami https://charts.bitnami.com/bitnami 
-~ $ helm repo update
+~$ helm repo add bitnami https://charts.bitnami.com/bitnami 
+~$ helm repo update
 ```
 
 이제 저장소에서 차트를 검색할 수 있습니다. 예를 들어 `postgresql` 차트를 검색해 봅시다:
 
 ```
-~ $ helm search repo postgresql 
+~$ helm search repo postgresql 
 NAME               CHART VERSION   APP VERSION  DESCRIPTION 
 bitnami/postgresql X.X.X           X.X.X        PostgreSQL (Postgres) is an open source object-... 
 [...]
@@ -47,8 +47,8 @@ bitnami/postgresql X.X.X           X.X.X        PostgreSQL (Postgres) is an open
 위에서 찾은 Helm 차트를 사용하여 EKS 클러스터에 NGINX 서버를 설치해 봅시다. Helm 패키지 관리자를 사용하여 차트를 설치하면 해당 차트에 대한 새로운 릴리스가 생성됩니다. 각 릴리스는 Helm에 의해 추적되며 다른 릴리스와 독립적으로 업그레이드, 롤백 또는 제거될 수 있습니다.
 
 ```
-~ $ echo $NGINX_CHART_VERSION 
-~ $ helm install nginx bitnami/nginx \
+~$ echo $NGINX_CHART_VERSION 
+~$ helm install nginx bitnami/nginx \
    --version $NGINX_CHART_VERSION \
    --namespace nginx --create-namespace --wait
 ```
@@ -64,7 +64,7 @@ bitnami/postgresql X.X.X           X.X.X        PostgreSQL (Postgres) is an open
 차트가 설치되면 EKS 클러스터의 릴리스를 나열할 수 있습니다:
 
 ```
-~ $ helm list -A 
+~$ helm list -A 
 NAME   NAMESPACE  REVISION    UPDATED                       STATUS    CHART        APP VERSION 
 nginx  nginx 1    2024-06-11  03:58:39.862100855 +0000 UTC  deployed  nginx-X.X.X  X.X.X
 ```
@@ -72,7 +72,7 @@ nginx  nginx 1    2024-06-11  03:58:39.862100855 +0000 UTC  deployed  nginx-X.X.
 우리가 지정한 네임스페이스에서 NGINX가 실행되고 있는 것도 볼 수 있습니다:
 
 ```
-~ $ kubectl get pod -n nginx 
+~$ kubectl get pod -n nginx 
 NAME                    READY  STATUS   RESTARTS  AGE 
 nginx-55fbd7f494-zplwx  1/1    Running  0         119s
 ```
@@ -152,9 +152,10 @@ nginx-55fbd7f494-zplwx   1/1     Running   0          5m
 CLI를 사용하여 릴리스를 제거할 수도 있습니다:
 
 ```
-~ $ helm uninstall nginx --namespace nginx --wait
+~$ helm uninstall nginx --namespace nginx --wait
 ```
 
 이렇게 하면 EKS 클러스터에서 해당 릴리스에 대해 차트가 생성한 모든 리소스가 삭제됩니다.
 
 이제 Helm의 작동 방식을 이해했으니 [기본 모듈](../fundamentals/)로 진행하세요.
+

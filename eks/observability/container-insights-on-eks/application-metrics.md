@@ -328,7 +328,7 @@ CloudWatch 콘솔을 열고 대시보드 섹션으로 이동합니다:
 
 "Orders by Product" 패널의 제목 위에 마우스를 올리고 "Edit" 버튼을 클릭하여 CloudWatch를 쿼리하도록 대시보드가 어떻게 구성되었는지 볼 수 있습니다:
 
-<figure><img src="../../.gitbook/assets/image (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 이 패널을 생성하는 데 사용된 쿼리가 페이지 하단에 표시됩니다:
 
