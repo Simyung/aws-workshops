@@ -4,7 +4,7 @@ catalog Pod가 RDS 인스턴스에 성공적으로 연결하려면 올바른 보
 
 RDS 데이터베이스에 대한 접근을 허용하는 보안 그룹이 이미 설정되어 있으며, 다음과 같이 볼 수 있습니다:
 
-```
+```bash
 ~$ export CATALOG_SG_ID=$(aws ec2 describe-security-groups \
     --filters Name=vpc-id,Values=$VPC_ID Name=group-name,Values=$EKS_CLUSTER_NAME-catalog \
     --query "SecurityGroups[0].GroupId" --output text)
@@ -61,7 +61,7 @@ RDS 데이터베이스에 대한 접근을 허용하는 보안 그룹이 이미 
 * 모든 아웃바운드 트래픽을 허용합니다.
 * 앞서 보았듯이 RDS 데이터베이스에 접근할 수 있습니다.
 
-Pod가 이 보안 그룹을 사용하려면 SecurityGroupPolicy CRD를 사용하여 EKS에 어떤 보안 그룹이 특정 Pod 세트에 매핑되어야 하는지 알려주어야 합니다. 다음과 같이 구성할 것입니다:
+Pod가 이 보안 그룹을 사용하려면 `SecurityGroupPolicy` CRD를 사용하여 EKS에 어떤 보안 그룹이 특정 Pod 세트에 매핑되어야 하는지 알려주어야 합니다. 다음과 같이 구성할 것입니다:
 
 {% code title="~/environment/eks-workshop/modules/networking/securitygroups-for-pods/sg/policy.yaml" %}
 ```

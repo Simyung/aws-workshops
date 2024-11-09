@@ -14,7 +14,7 @@ prometheus.io/scrape: "true"
 vpc.amazonaws.com/pod-eni: '[{"eniId":"eni-0eb4769ea066fa90c","ifAddress":"02:23:a2:af:a2:1f","privateIp":"10.42.10.154","vlanId":2,"subnetCidr":"10.42.10.0/24"}]'
 ```
 
-vpc.amazonaws.com/pod-eni 주석은 이 Pod에 사용된 브랜치 ENI, 프라이빗 IP 주소 등과 관련된 메타데이터를 보여줍니다.
+`vpc.amazonaws.com/pod-eni` 주석은 이 Pod에 사용된 브랜치 ENI, 프라이빗 IP 주소 등과 관련된 메타데이터를 보여줍니다.
 
 Kubernetes 이벤트에서도 우리가 추가한 구성에 대응하여 VPC 리소스 컨트롤러가 조치를 취하는 것을 볼 수 있습니다:
 
