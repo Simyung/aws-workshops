@@ -1,9 +1,13 @@
 # MNG basics
 
 {% hint style="info" %}
-시작하기 전에 이 섹션을 위해 환경을 준비하세요:
+시작하기 전에&#x20;
 
-\~ $ prepare-environment fundamentals/mng/basics
+이 섹션을 위해 환경을 준비하세요:
+
+```
+~$ prepare-environment fundamentals/mng/basics
+```
 {% endhint %}
 
 시작하기 실습에서 우리는 샘플 애플리케이션을 EKS에 배포하고 실행 중인 Pod들을 확인했습니다. 그런데 이 Pod들은 어디서 실행되고 있을까요?

@@ -5,7 +5,9 @@
 
 이 섹션을 위해 환경을 준비하세요:
 
-\~$ prepare-environment fundamentals/mng/graviton
+```
+~$ prepare-environment fundamentals/mng/graviton
+```
 {% endhint %}
 
 

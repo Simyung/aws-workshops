@@ -5,7 +5,7 @@
 {% tabs %}
 {% tab title="Kustomize Patch" %}
 {% code title="~/environment/eks-workshop/modules/fundamentals/mng/spot/deployment/deployment.yaml" %}
-```
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -20,7 +20,7 @@ spec:
 {% endtab %}
 
 {% tab title="Deployment/catalog" %}
-```
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -111,7 +111,7 @@ spec:
 {% endtab %}
 
 {% tab title="Diff" %}
-```
+```diff
              runAsUser: 1000
            volumeMounts:
              - mountPath: /tmp
@@ -128,7 +128,7 @@ spec:
 
 다음 명령으로 Kustomize 패치를 적용하세요.
 
-```
+```bash
 ~$ kubectl apply -k ~/environment/eks-workshop/modules/fundamentals/mng/spot/deployment
  
 namespace/catalog unchanged
@@ -143,13 +143,13 @@ statefulset.apps/catalog-mysql unchanged
 
 다음 명령으로 앱이 성공적으로 배포되었는지 확인하세요.
 
-```
+```bash
 ~$ kubectl rollout status deployment/catalog -n catalog --timeout=5m
 ```
 
 마지막으로, catalog pod가 스팟 인스턴스에서 실행되고 있는지 확인해 보겠습니다. 다음 두 명령을 실행하세요.
 
-```
+```bash
 ~$ kubectl get pods -l app.kubernetes.io/component=service -n catalog -o wide
  
 NAME                       READY   STATUS    RESTARTS   AGE     IP              NODE

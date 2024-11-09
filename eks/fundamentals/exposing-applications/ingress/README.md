@@ -3,11 +3,9 @@
 {% hint style="info" %}
 시작하기 전에 이 섹션을 위한 환경을 준비하겠습니다:
 
-
-
-\~$ prepare-environment exposing/ingress
-
-
+```
+~$ prepare-environment exposing/ingress
+```
 
 이 명령은 다음과 같은 변경 사항을 랩 환경에 적용합니다:
 

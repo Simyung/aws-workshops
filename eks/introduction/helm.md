@@ -1,18 +1,24 @@
 # Helm
 
-시작하기 전에 이 섹션을 위해 환경을 준비하세요:
+{% hint style="info" %}
+시작하기 전에&#x20;
+
+이 섹션을 위해 환경을 준비하세요:
 
 ```
 ~$ prepare-environment introduction/helm
 ```
+{% endhint %}
+
+
 
 이 워크샵에서는 주로 kustomize를 사용할 것이지만, EKS 클러스터에 특정 패키지를 설치하기 위해 Helm을 사용해야 하는 상황이 있을 것입니다. 이 실습에서는 Helm에 대한 간단한 소개를 하고, 미리 패키지된 애플리케이션을 설치하는 데 어떻게 사용하는지 보여드리겠습니다.
 
 {% hint style="info" %}
-정보 이 실습은 자체 워크로드를 위한 Helm 차트 작성은 다루지 않습니다. 이 주제에 대한 자세한 정보는 이 가이드를 참조하세요.
+정보 이 실습은 자체 워크로드를 위한 Helm 차트 작성은 다루지 않습니다. 이 주제에 대한 자세한 정보는 [이 가이드](https://helm.sh/docs/chart\_template\_guide/)를 참조하세요.
 {% endhint %}
 
-Helm은 Kubernetes 애플리케이션을 정의, 설치 및 업그레이드하는 데 도움을 주는 Kubernetes용 패키지 관리자입니다. 차트라고 하는 패키징 형식을 사용하며, 이는 애플리케이션을 실행하는 데 필요한 모든 Kubernetes 리소스 정의를 포함합니다. Helm은 Kubernetes 클러스터에서 애플리케이션의 배포와 관리를 단순화합니다.
+[Helm](https://helm.sh/)은 Kubernetes 애플리케이션을 정의, 설치 및 업그레이드하는 데 도움을 주는 Kubernetes용 패키지 관리자입니다. 차트라고 하는 패키징 형식을 사용하며, 이는 애플리케이션을 실행하는 데 필요한 모든 Kubernetes 리소스 정의를 포함합니다. Helm은 Kubernetes 클러스터에서 애플리케이션의 배포와 관리를 단순화합니다.
 
 ## Helm CLI&#x20;
 
@@ -24,9 +30,11 @@ CLI는 이미 우리의 IDE에 설치되어 있습니다:
 ~$ helm version
 ```
 
-Helm 저장소 Helm 저장소는 Helm 차트가 저장되고 관리되는 중앙 위치이며, 사용자가 차트를 쉽게 발견, 공유 및 설치할 수 있게 합니다. Kubernetes 클러스터에 배포할 수 있는 다양한 사전 패키지된 애플리케이션과 서비스에 쉽게 접근할 수 있게 해줍니다.
+## Helm repositories&#x20;
 
-Bitnami Helm 저장소는 Kubernetes에 인기 있는 애플리케이션과 도구를 배포하기 위한 Helm 차트 모음입니다. Helm CLI에 bitnami 저장소를 추가해 봅시다:
+Helm 저장소는 Helm 차트가 저장되고 관리되는 중앙 위치이며, 사용자가 차트를 쉽게 발견, 공유 및 설치할 수 있게 합니다. Kubernetes 클러스터에 배포할 수 있는 다양한 사전 패키지된 애플리케이션과 서비스에 쉽게 접근할 수 있게 해줍니다.
+
+[Bitnami](https://github.com/bitnami/charts) Helm 저장소는 Kubernetes에 인기 있는 애플리케이션과 도구를 배포하기 위한 Helm 차트 모음입니다. Helm CLI에 `bitnami` 저장소를 추가해 봅시다:
 
 ```
 ~$ helm repo add bitnami https://charts.bitnami.com/bitnami 

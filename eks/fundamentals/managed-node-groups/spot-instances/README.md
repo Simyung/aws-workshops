@@ -5,7 +5,9 @@
 
 이 섹션을 위해 환경을 준비하세요.
 
-\~$ prepare-environment fundamentals/mng/spot
+```
+~$ prepare-environment fundamentals/mng/spot
+```
 {% endhint %}
 
 우리의 모든 기존 컴퓨트 노드는 온디맨드 용량을 사용하고 있습니다. 그러나 EC2 고객이 EKS 워크로드를 실행하기 위해 사용할 수 있는 여러 "구매 옵션"이 있습니다.

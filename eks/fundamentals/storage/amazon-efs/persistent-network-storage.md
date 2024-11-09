@@ -1,8 +1,8 @@
 # Persistent network storage
 
-우리의 전자상거래 애플리케이션에는 EKS에서 웹 서버를 실행하는 assets 마이크로서비스를 위한 배포가 포함되어 있습니다. 웹 서버는 수평적으로 확장할 수 있고 Pod의 새로운 상태를 선언할 수 있기 때문에 배포에 적합한 사용 사례입니다.
+우리의 전자상거래 애플리케이션에는 EKS에서 웹 서버를 실행하는 assets 마이크로서비스를 위한 배포가 포함되어 있습니다. 웹 서버는 **수평적으로 확장**할 수 있고 Pod의 **새로운 상태를 선언**할 수 있기 때문에 배포에 적합한 사용 사례입니다.
 
-assets 컴포넌트는 현재 빌드 시 컨테이너 이미지에 번들로 포함된 정적 제품 이미지를 제공합니다. 이는 팀이 제품 이미지를 업데이트해야 할 때마다 컨테이너 이미지를 재빌드하고 재배포해야 함을 의미합니다. 이 실습에서는 Amazon EFS 파일 시스템과 Kubernetes Persistent Volume을 사용하여 컨테이너 이미지를 재빌드하지 않고도 기존 제품 이미지를 업데이트하고 새 이미지를 추가할 수 있도록 할 것입니다.
+assets 컴포넌트는 현재 빌드 시 컨테이너 이미지에 번들로 포함된 정적 제품 이미지를 제공합니다. 이는 팀이 제품 이미지를 업데이트해야 할 때마다 컨테이너 이미지를 재빌드하고 재배포해야 함을 의미합니다. 이 실습에서는 [Amazon EFS 파일 시스템](https://docs.aws.amazon.com/efs/latest/ug/whatisefs.html)과 Kubernetes [Persistent Volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)을 사용하여 컨테이너 이미지를 재빌드하지 않고도 기존 제품 이미지를 업데이트하고 새 이미지를 추가할 수 있도록 할 것입니다.
 
 먼저 Deployment의 초기 볼륨 구성을 살펴보겠습니다:
 
@@ -35,7 +35,7 @@ Namespace:              assets
 [...]
 ```
 
-볼륨 섹션을 보면 현재 Pod의 수명과 연결된 EmptyDir 볼륨 타입만을 사용하고 있습니다.
+볼륨 섹션을 보면 현재 Pod의 수명과 연결된 [EmptyDir 볼륨 타입](https://kubernetes.io/docs/concepts/storage/volumes/#emptydir)만을 사용하고 있습니다.
 
 <figure><img src="https://eksworkshop.com/assets/images/assets-emptydir-c0f4e3837113df0e1bb6f0141223e691.webp" alt=""><figcaption></figcaption></figure>
 

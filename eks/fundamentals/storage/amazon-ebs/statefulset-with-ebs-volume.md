@@ -1,6 +1,6 @@
 # StatefulSet with EBS Volume
 
-이제 StatefulSets와 동적 볼륨 프로비저닝에 대해 이해했으므로, Catalog 마이크로서비스의 MySQL DB를 변경하여 데이터베이스 파일을 영구적으로 저장할 새로운 EBS 볼륨을 프로비저닝해 보겠습니다.
+이제 [StatefulSets](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/)와 [동적 볼륨 프로비저닝](https://kubernetes.io/docs/concepts/storage/dynamic-provisioning/)에 대해 이해했으므로, Catalog 마이크로서비스의 MySQL DB를 변경하여 데이터베이스 파일을 영구적으로 저장할 새로운 EBS 볼륨을 프로비저닝해 보겠습니다.
 
 <figure><img src="https://eksworkshop.com/assets/images/mysql-ebs-7a01f1d72ac301e3778d0490ce76e182.webp" alt=""><figcaption></figcaption></figure>
 
@@ -16,7 +16,7 @@ Kustomize를 활용하여 두 가지 작업을 수행할 것입니다:
 여기서 새로운 catalog 데이터베이스 StatefulSet을 살펴보겠습니다:
 
 {% code title="~/environment/eks-workshop/modules/fundamentals/storage/ebs/statefulset-mysql.yaml" %}
-```
+```yaml
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -88,7 +88,7 @@ volumeClaimTemplates 필드에 주목해 주세요. 이 필드는 Kubernetes에�
 {% tabs %}
 {% tab title="Kustomize Patch" %}
 {% code title="~/environment/eks-workshop/modules/fundamentals/storage/ebs/deployment.yaml" %}
-```
+```yaml
 - op: add
   path: /spec/template/spec/containers/0/env/-
   value:
@@ -99,7 +99,7 @@ volumeClaimTemplates 필드에 주목해 주세요. 이 필드는 Kubernetes에�
 {% endtab %}
 
 {% tab title="Deployment/catalog" %}
-```
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -190,7 +190,7 @@ spec:
 {% endtab %}
 
 {% tab title="Diff" %}
-```
+```diff
                valueFrom:
                  secretKeyRef:
                    key: password
