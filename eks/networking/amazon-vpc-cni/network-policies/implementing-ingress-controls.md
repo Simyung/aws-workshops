@@ -140,7 +140,7 @@ command terminated with exit code 28
 ...
 ```
 
-하지만 'catalog' pod를 재시작하면 여전히 연결할 수 있습니다:
+그리고 'catalog' pod를 재시작해도 여전히 연결할 수 있습니다:
 
 ```
 ~$ kubectl rollout restart deployment/catalog -n catalog

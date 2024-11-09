@@ -19,7 +19,7 @@ spec:
 ```
 {% endcode %}
 
-참고: 이 네트워크 정책에는 네임스페이스가 지정되어 있지 않습니다. 이는 클러스터의 모든 네임스페이스에 잠재적으로 적용될 수 있는 일반적인 정책이기 때문입니다.
+> 참고: 이 네트워크 정책에는 네임스페이스가 지정되어 있지 않습니다. 이는 클러스터의 모든 네임스페이스에 잠재적으로 적용될 수 있는 일반적인 정책이기 때문입니다.
 
 ```
 ~$ kubectl apply -n ui -f ~/environment/eks-workshop/modules/networking/network-policies/apply-network-policies/default-deny.yaml
@@ -91,7 +91,7 @@ spec:
 OK
 ```
 
-출력에서 볼 수 있듯이, 이제 'catalog' 서비스에 연결할 수 있지만 app.kubernetes.io/component: service 레이블이 없으므로 데이터베이스에는 연결할 수 없습니다:
+출력에서 볼 수 있듯이, 이제 'catalog' 서비스에 연결할 수 있지만 `app.kubernetes.io/component: service` 레이블이 없으므로 데이터베이스에는 연결할 수 없습니다:
 
 ```
 ~$ kubectl exec deployment/ui -n ui -- curl -v telnet://catalog-mysql.catalog:3306 --connect-timeout 5
