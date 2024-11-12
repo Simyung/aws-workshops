@@ -4,7 +4,7 @@
 
 다음과 같은 대시보드가 보일 것입니다:
 
-<figure><img src="../../.gitbook/assets/image (26).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (26) (1).png" alt=""><figcaption></figcaption></figure>
 
 이 화면을 사용하여 클러스터의 비용 할당을 더 자세히 살펴볼 수 있습니다. 다음과 같은 다양한 비용 차원을 볼 수 있습니다:
 

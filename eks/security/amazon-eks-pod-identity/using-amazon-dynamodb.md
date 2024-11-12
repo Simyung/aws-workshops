@@ -28,7 +28,7 @@ k8s-ui-uinlb-647e781087-6717c5049aa96bd9.elb.us-west-2.amazonaws.com
 
 위의 명령어로 생성된 URL을 사용하여 브라우저에서 UI를 열어보세요. 아래와 같이 Retail Store가 표시될 것입니다.
 
-<figure><img src="../../.gitbook/assets/image (12).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (12) (1).png" alt=""><figcaption></figcaption></figure>
 
 다음 kustomization은 DynamoDB 엔드포인트 구성을 제거하여 ConfigMap을 덮어씁니다. 이는 SDK에게 테스트용 Pod 대신 실제 DynamoDB 서비스를 사용하도록 지시합니다. 또한 이미 생성된 DynamoDB 테이블 이름을 구성했습니다. 테이블 이름은 CARTS\_DYNAMODB\_TABLENAME 환경 변수에서 가져옵니다.
 

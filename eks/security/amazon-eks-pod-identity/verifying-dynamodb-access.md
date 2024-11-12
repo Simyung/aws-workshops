@@ -12,7 +12,7 @@ http://k8s-ui-uinlb-647e781087-6717c5049aa96bd9.elb.us-west-2.amazonaws.com
 
 carts Pod가 DynamoDB 서비스에 접근할 수 있게 되었고, 이제 쇼핑 카트를 사용할 수 있습니다!
 
-<figure><img src="../../.gitbook/assets/image (13).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (13) (1).png" alt=""><figcaption></figcaption></figure>
 
 AWS IAM 역할이 서비스 계정과 연결된 후, 해당 서비스 계정을 사용하는 새로 생성된 모든 Pod는 [EKS Pod Identity webhook](https://github.com/aws/amazon-eks-pod-identity-webhook)에 의해 가로채집니다. 이 웹훅은 Amazon EKS 클러스터의 컨트롤 플레인에서 실행되며, AWS에 의해 완전히 관리됩니다. 새로운 carts Pod를 자세히 살펴보면 새로운 환경 변수들을 확인할 수 있습니다.
 

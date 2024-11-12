@@ -12,7 +12,7 @@ http://k8s-ui-uinlb-647e781087-6717c5049aa96bd9.elb.us-west-2.amazonaws.com
 
 carts Pod가 이제 DynamoDB 서비스에 접근할 수 있으며 쇼핑 카트를 사용할 수 있게 되었습니다!
 
-<figure><img src="../../.gitbook/assets/image (10).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (10) (1).png" alt=""><figcaption></figcaption></figure>
 
 새로운 carts Pod가 어떻게 작동하는지 자세히 살펴보겠습니다.
 

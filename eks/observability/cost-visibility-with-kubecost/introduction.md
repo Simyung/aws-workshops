@@ -66,4 +66,4 @@ Accept-Ranges: bytes
 
 브라우저에서 URL을 열어 Kubecost에 접근하세요:
 
-<figure><img src="../../.gitbook/assets/image (25).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (25) (1).png" alt=""><figcaption></figcaption></figure>

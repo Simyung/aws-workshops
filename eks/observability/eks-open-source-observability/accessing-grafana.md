@@ -20,5 +20,5 @@ k8s-grafana-grafana-123497e39be-2107151316.us-west-2.elb.amazonaws.com
 
 Grafana 콘솔에 로그인한 후, 데이터 소스 섹션을 살펴보겠습니다. Amazon Managed Service for Prometheus 작업 공간이 이미 데이터 소스로 구성되어 있는 것을 볼 수 있어야 합니다.
 
-<figure><img src="../../.gitbook/assets/image (3) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (3) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 

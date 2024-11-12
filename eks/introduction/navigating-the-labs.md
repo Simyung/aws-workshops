@@ -21,7 +21,7 @@
 
 브라우저에 따라 VSCode 터미널에 처음으로 복사/붙여넣기를 할 때 다음과 같은 프롬프트가 표시될 수 있습니다:
 
-<figure><img src="../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (26).png" alt=""><figcaption></figcaption></figure>
 
 ## EKS 클러스터 재설정&#x20;
 

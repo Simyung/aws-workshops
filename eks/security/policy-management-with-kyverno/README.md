@@ -20,7 +20,7 @@ Kyverno는 쿠버네티스 클러스터에서 동적 어드미션 컨트롤러�
 
 아래 다이어그램은 Kyverno의 상위 수준 논리 아키텍처를 보여줍니다:
 
-<figure><img src="../.gitbook/assets/image (16).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (16) (1).png" alt=""><figcaption></figcaption></figure>
 
 주요 구성 요소는 웹훅 서버와 웹훅 컨트롤러입니다. 웹훅 서버는 쿠버네티스 API 서버로부터 들어오는 AdmissionReview 요청을 처리하여 엔진으로 전달합니다. 웹훅 서버는 설치된 정책을 모니터링하고 해당 정책과 일치하는 리소스만 요청하도록 웹훅을 수정하는 웹훅 컨트롤러에 의해 동적으로 구성됩니다.
 

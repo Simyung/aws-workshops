@@ -110,7 +110,7 @@ metadata:
 
 아래 흐름에서, 변경 및 검증 동적 admission controller(admission webhook이라고도 함)는 webhook을 통해 쿠버네티스 API 서버 요청 흐름에 통합됩니다. 이러한 webhook은 특정 유형의 API 서버 요청에 응답하도록 구성된 서비스를 호출합니다. 예를 들어, webhook을 사용하여 동적 admission controller를 구성하면 Pod 내 컨테이너가 non-root 사용자로 실행되는지 검증하거나, 컨테이너가 신뢰할 수 있는 레지스트리에서 가져온 것인지 확인할 수 있습니다.
 
-<figure><img src="../.gitbook/assets/image (15).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (15) (1).png" alt=""><figcaption></figcaption></figure>
 
 ## PSA와 PSS 사용&#x20;
 
@@ -120,5 +120,5 @@ PSA는 PSS에 명시된 정책을 시행하며, PSS 정책은 Pod 보안 프로�
 
 
 
-<figure><img src="../.gitbook/assets/image (14).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (14) (1).png" alt=""><figcaption></figcaption></figure>
 

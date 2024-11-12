@@ -20,7 +20,7 @@ Kubernetes 자체는 로그를 수집하고 저장하는 네이티브 솔루션�
 
 다음 다이어그램은 이 섹션의 설정 개요를 제공합니다. Fluent Bit는 `opensearch-exporter` 네임스페이스에 배포되며 OpenSearch 도메인으로 포드 로그를 전달하도록 구성됩니다. 포드 로그는 OpenSearch의 `eks-pod-logs` 인덱스에 저장됩니다. 이전에 로드한 OpenSearch 대시보드는 포드 로그를 검사하는 데 사용됩니다.
 
-<figure><img src="../../.gitbook/assets/image (22).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (22) (1).png" alt=""><figcaption></figcaption></figure>
 
 Fluent Bit를 [Daemon Set](https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/)으로 배포하고 OpenSearch 도메인으로 포드 로그를 보내도록 구성합니다. 기본 구성은 [여기](https://github.com/aws-samples/eks-workshop-v2/tree/stable/manifests/modules/observability/opensearch/config/fluentbit-values.yaml)에서 사용할 수 있습니다. 이전에 검색한 OpenSearch 자격 증명을 사용하여 Fluent Bit를 구성합니다. 마지막 명령은 Fluent Bit가 세 개의 클러스터 노드 각각에 하나의 포드로 실행되고 있는지 확인합니다.
 
@@ -101,7 +101,7 @@ Password: <password>
 4. \[하단 섹션] 가장 최근 메시지가 먼저 표시되는 데이터 테이블. 스트림 이름(`stdout` 및 `stderr`)이 포드 이름과 같은 세부 정보와 함께 표시됩니다. 시연을 위해 이 섹션은 `ui` 네임스페이스의 로그만 표시하도록 필터링되었습니다.
 5. \[하단 섹션] 개별 포드에서 수집된 로그 메시지. 이 예에서 표시된 가장 최근의 로그 메시지는 이전 단계에서 `kubectl logs -n ui deployment/ui`를 실행한 출력의 마지막 줄과 일치합니다.
 
-<figure><img src="../../.gitbook/assets/image (23).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (23) (1).png" alt=""><figcaption></figcaption></figure>
 
 로그 항목을 자세히 살펴보면 전체 JSON 페이로드를 볼 수 있습니다:
 
@@ -110,5 +110,5 @@ Password: <password>
 3. log 속성에는 포드에서 생성된 로그 메시지가 포함되어 있습니다.
 4. 포드 이름, 네임스페이스 및 포드 레이블을 포함한 로그 메시지에 대한 메타데이터가 포함되어 있습니다.
 
-<figure><img src="../../.gitbook/assets/image (24).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (24) (1).png" alt=""><figcaption></figcaption></figure>
 

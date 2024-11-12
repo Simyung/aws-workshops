@@ -19,7 +19,7 @@
 3. Lambda 함수는 컨트롤 플레인 로그를 OpenSearch 인덱스에 기록합니다.&#x20;
 4. `eks-control-plane-logs`라는 단일 OpenSearch 인덱스가 모든 컨트롤 플레인 로그를 저장합니다. 실습 후반부에서 OpenSearch 대시보드 내에서 다른 로그 유형을 어떻게 필터링할 수 있는지 볼 것입니다.
 
-<figure><img src="../../.gitbook/assets/image (18).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (18) (1).png" alt=""><figcaption></figcaption></figure>
 
 EKS 컨트롤 플레인 로그는 EKS API를 통해 클러스터별로 활성화됩니다. 이는 종종 Terraform이나 CloudFormation을 사용하여 구성되지만, 이 실습에서는 AWS CLI를 사용하여 기능을 활성화할 것입니다. 보시다시피 각 클러스터 로그 유형을 개별적으로 활성화할 수 있으며, 이 실습에서는 모든 것을 활성화하고 있습니다.
 
@@ -154,15 +154,15 @@ Password: <password>
 EKS 클러스터 활동 수준에 따라 선택한 시간 범위 내에 해당 유형의 로그 활동이 없는 경우 일부 컨트롤 플레인 로그 패널에 `No result found`이 표시될 수 있습니다. 이 상황이 발생하면 지침을 계속 진행하고 `Observability with OpenSearch` 섹션을 떠나기 전에 컨트롤 플레인 로그 대시보드로 돌아오세요.
 {% endhint %}
 
-<figure><img src="../../.gitbook/assets/image (19).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (19) (1).png" alt=""><figcaption></figcaption></figure>
 
 페이지 끝에 스케줄러 로그가 표시됩니다.  `scenario-c` 경우 스케줄러 로그 메시지가 `Unable to schedule pod; no fit; waiting` 를 나타내는 것을 주목하세요. 이 컨트롤 플레인 로그의 스케줄 로그 메시지는 이전 페이지에서 `scenario-c`에 대해 본 Kubernetes 이벤트와 유사합니다.
 
-<figure><img src="../../.gitbook/assets/image (20).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (20) (1).png" alt=""><figcaption></figcaption></figure>
 
 행을 확장하면 테이블 또는 JSON 형식으로 세부 정보를 자세히 볼 수 있습니다.
 
-<figure><img src="../../.gitbook/assets/image (21).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (21) (1).png" alt=""><figcaption></figcaption></figure>
 
 
 
