@@ -32,7 +32,7 @@ kubernetes-dashboard        LoadBalancer   172.20.218.132   ad0fbc5914a2c4d1baa8
 
 [GuardDuty Findings 콘솔](https://console.aws.amazon.com/guardduty/home#/findings)로 돌아가면, `Policy:Kubernetes/ExposedDashboard` 발견 사항을 볼 수 있습니다. 다시 한번 Finding 세부 사항, Action, 그리고 Detective Investigation을 분석하는데 시간을 할애하십시오.
 
-<figure><img src="../../../.gitbook/assets/image (5).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (5) (1).png" alt=""><figcaption></figcaption></figure>
 
 다음 명령어를 실행하여 쿠버네티스 대시보드 컴포넌트를 제거하십시오:
 

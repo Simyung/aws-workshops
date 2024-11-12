@@ -31,4 +31,4 @@ aws-guardduty-agent-k7x2b   1/1     Running   0          58s
 
 아직 사용 가능한 조사 결과가 없음을 확인할 수 있습니다.
 
-<figure><img src="../../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (12).png" alt=""><figcaption></figcaption></figure>

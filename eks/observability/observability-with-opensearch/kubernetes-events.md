@@ -23,7 +23,7 @@ Kubernetes 이벤트는 지속적으로 생성되지만 클러스터 내에서�
 
 다음 다이어그램은 이 섹션의 설정 개요를 제공합니다. `kubernetes-events-exporter`가 `opensearch-exporter` 네임스페이스에 배포되어 이벤트를 OpenSearch 도메인으로 전달합니다. 이벤트는 OpenSearch의 `eks-kubernetes-events` 인덱스에 저장됩니다. 이전에 로드한 OpenSearch 대시보드는 이벤트를 시각화하는 데 사용됩니다.
 
-<figure><img src="../../.gitbook/assets/image (11) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (11) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 Kubernetes 이벤트 익스포터를 배포하고 OpenSearch 도메인으로 이벤트를 보내도록 구성합니다. 기본 구성은 여기에서 사용할 수 있습니다. 이전에 검색한 OpenSearch 자격 증명을 사용하여 내보내기를 구성합니다. 두 번째 명령은 Kubernetes 이벤트 포드가 실행 중인지 확인합니다.
 
@@ -87,7 +87,7 @@ Password: <password>
 5. \[중간 섹션] 네임스페이스별로 분류된 경고. 이 예에서는 모든 경고가 test 네임스페이스에 있습니다.&#x20;
 6. \[하단 섹션] 가장 최근 이벤트부터 시작하는 상세 이벤트 및 메시지
 
-<figure><img src="../../.gitbook/assets/image (12) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (12) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 다음 이미지는 이벤트 세부 정보가 포함된 하단 섹션에 초점을 맞춥니다:
 

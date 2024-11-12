@@ -125,7 +125,7 @@ AWS 콘솔에서 `CodePipeline`으로 이동하여 `eks-workshop-retail-store-sa
 
 다음과 같이 보일 것입니다:
 
-<figure><img src="../../../.gitbook/assets/image (10).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (10) (1).png" alt=""><figcaption></figcaption></figure>
 
 CodePipeline과 CodeBuild 실행 결과로 ECR에 새로운 이미지가 생성됩니다.
 
@@ -135,7 +135,7 @@ CodePipeline과 CodeBuild 실행 결과로 ECR에 새로운 이미지가 생성�
 
 `retail-store-sample-ui-z7llv2` 이름의 `z7llv2` 접미사는 무작위이며 귀하의 경우 다를 것입니다.
 
-<figure><img src="../../../.gitbook/assets/image (11).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (11) (1).png" alt=""><figcaption></figcaption></figure>
 
 파이프라인이 새 이미지를 생성하는 동안(5-10분), Flux 초기 부트스트랩 과정에서 설치한 Flux Image Automation Controller를 사용하여 [Git에 대한 이미지 업데이트를 자동화](https://fluxcd.io/flux/guides/image-update/)해 보겠습니다.
 
@@ -251,7 +251,7 @@ spec:
 
 다음과 같은 아키텍처가 생성되었습니다:
 
-<figure><img src="../../../.gitbook/assets/image (12).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (12) (1).png" alt=""><figcaption></figcaption></figure>
 
 이제 변경사항을 조정(reconcile)해보겠습니다.
 

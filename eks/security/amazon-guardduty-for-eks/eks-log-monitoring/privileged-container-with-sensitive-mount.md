@@ -46,9 +46,9 @@ spec:
 
 몇 분 내에 [GuardDuty Findings 콘솔](https://console.aws.amazon.com/guardduty/home#/findings)에서 `PrivilegeEscalation:Kubernetes/PrivilegedContainer`와 `Persistence:Kubernetes/ContainerWithSensitiveMount` 두 가지 발견사항을 볼 수 있을 것입니다.
 
-<figure><img src="../../../.gitbook/assets/image (6).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (6) (1).png" alt=""><figcaption></figcaption></figure>
 
-<figure><img src="../../../.gitbook/assets/image (7).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (7) (1).png" alt=""><figcaption></figcaption></figure>
 
 다시 한 번 발견사항 세부정보, 조치 및 탐지 조사를 분석하는 시간을 가지십시오.
 

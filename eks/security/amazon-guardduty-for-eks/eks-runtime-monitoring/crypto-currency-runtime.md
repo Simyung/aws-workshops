@@ -27,11 +27,11 @@ Pod를 시작하기 위해 아래 명령어를 실행하세요:
 
 첫 번째는 `Execution:Runtime/NewBinaryExecuted`로, APT 도구를 통해 설치된 `curl` 패키지와 관련이 있습니다.
 
-<figure><img src="../../../.gitbook/assets/image (8).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (8) (1).png" alt=""><figcaption></figcaption></figure>
 
 이 발견의 세부 사항을 자세히 살펴보면, GuardDuty 런타임 모니터링과 관련되어 있기 때문에 런타임, 컨텍스트 및 프로세스에 대한 특정 정보를 보여줍니다.
 
 두 번째와 세 번째는 `CryptoCurrency:Runtime/BitcoinTool.B!DNS` 발견과 관련이 있습니다. 이번에는 발견 세부 사항에 다른 정보가 포함되어 있으며, `DNS_REQUEST` 작업과 위협 인텔리전스 증거(**Threat intelligence Evidences)**를 보여주고 있습니다.
 
-<figure><img src="../../../.gitbook/assets/image (9).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (9) (1).png" alt=""><figcaption></figcaption></figure>
 
