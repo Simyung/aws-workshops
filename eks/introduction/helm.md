@@ -26,7 +26,7 @@
 
 CLI는 이미 우리의 IDE에 설치되어 있습니다:
 
-```
+```bash
 ~$ helm version
 ```
 
@@ -36,14 +36,14 @@ Helm 저장소는 Helm 차트가 저장되고 관리되는 중앙 위치이며, 
 
 [Bitnami](https://github.com/bitnami/charts) Helm 저장소는 Kubernetes에 인기 있는 애플리케이션과 도구를 배포하기 위한 Helm 차트 모음입니다. Helm CLI에 `bitnami` 저장소를 추가해 봅시다:
 
-```
+```bash
 ~$ helm repo add bitnami https://charts.bitnami.com/bitnami 
 ~$ helm repo update
 ```
 
 이제 저장소에서 차트를 검색할 수 있습니다. 예를 들어 `postgresql` 차트를 검색해 봅시다:
 
-```
+```bash
 ~$ helm search repo postgresql 
 NAME               CHART VERSION   APP VERSION  DESCRIPTION 
 bitnami/postgresql X.X.X           X.X.X        PostgreSQL (Postgres) is an open source object-... 
@@ -54,7 +54,7 @@ bitnami/postgresql X.X.X           X.X.X        PostgreSQL (Postgres) is an open
 
 위에서 찾은 Helm 차트를 사용하여 EKS 클러스터에 NGINX 서버를 설치해 봅시다. Helm 패키지 관리자를 사용하여 차트를 설치하면 해당 차트에 대한 새로운 릴리스가 생성됩니다. 각 릴리스는 Helm에 의해 추적되며 다른 릴리스와 독립적으로 업그레이드, 롤백 또는 제거될 수 있습니다.
 
-```
+```bash
 ~$ echo $NGINX_CHART_VERSION 
 ~$ helm install nginx bitnami/nginx \
    --version $NGINX_CHART_VERSION \
@@ -71,7 +71,7 @@ bitnami/postgresql X.X.X           X.X.X        PostgreSQL (Postgres) is an open
 
 차트가 설치되면 EKS 클러스터의 릴리스를 나열할 수 있습니다:
 
-```
+```bash
 ~$ helm list -A 
 NAME   NAMESPACE  REVISION    UPDATED                       STATUS    CHART        APP VERSION 
 nginx  nginx 1    2024-06-11  03:58:39.862100855 +0000 UTC  deployed  nginx-X.X.X  X.X.X
@@ -79,7 +79,7 @@ nginx  nginx 1    2024-06-11  03:58:39.862100855 +0000 UTC  deployed  nginx-X.X.
 
 우리가 지정한 네임스페이스에서 NGINX가 실행되고 있는 것도 볼 수 있습니다:
 
-```
+```bash
 ~$ kubectl get pod -n nginx 
 NAME                    READY  STATUS   RESTARTS  AGE 
 nginx-55fbd7f494-zplwx  1/1    Running  0         119s
@@ -97,7 +97,7 @@ nginx-55fbd7f494-zplwx  1/1    Running  0         119s
 이 방법들을 결합하여 NGINX 릴리스를 업데이트해 봅시다. 다음 values.yaml 파일을 사용할 것입니다:
 
 {% code title="~/environment/eks-workshop/modules/introduction/helm/values.yaml" %}
-```
+```yaml
 podLabels:
   team: team1
   costCenter: org1
@@ -114,8 +114,8 @@ resources:
 
 또한 `--set` 플래그를 사용하여 추가 복제본을 추가할 것입니다:
 
-```
-helm upgrade --install nginx bitnami/nginx \
+```bash
+~$ helm upgrade --install nginx bitnami/nginx \
   --version $NGINX_CHART_VERSION \
   --namespace nginx --create-namespace --wait \
   --set replicaCount=3 \
@@ -124,7 +124,7 @@ helm upgrade --install nginx bitnami/nginx \
 
 릴리스를 나열합니다:
 
-```
+```bash
 ~$ helm list -A
 NAME   NAMESPACE  REVISION  UPDATED                                  STATUS    CHART         APP VERSION
 nginx  nginx      2         2024-06-11 04:13:53.862100855 +0000 UTC  deployed  nginx-X.X.X   X.X.X
@@ -136,7 +136,7 @@ nginx  nginx      2         2024-06-11 04:13:53.862100855 +0000 UTC  deployed  n
 
 다음과 같이 주어진 릴리스의 리비전 기록을 볼 수 있습니다:
 
-```
+```bash
 ~$ helm history nginx -n nginx
 REVISION  UPDATED                   STATUS      CHART        APP VERSION  DESCRIPTION
 1         Tue Jun 11 03:58:39 2024  superseded  nginx-X.X.X  X.X.X       Install complete
@@ -145,7 +145,7 @@ REVISION  UPDATED                   STATUS      CHART        APP VERSION  DESCRI
 
 변경 사항이 적용되었는지 확인하기 위해 nginx 네임스페이스의 파드를 나열해 봅시다:
 
-```
+```bash
 ~$ kubectl get pods -n nginx
 NAME                     READY   STATUS    RESTARTS   AGE
 nginx-55fbd7f494-4hz9b   1/1     Running   0          30s
@@ -159,7 +159,7 @@ nginx-55fbd7f494-zplwx   1/1     Running   0          5m
 
 CLI를 사용하여 릴리스를 제거할 수도 있습니다:
 
-```
+```bash
 ~$ helm uninstall nginx --namespace nginx --wait
 ```
 

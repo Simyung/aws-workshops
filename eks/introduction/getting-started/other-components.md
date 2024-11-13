@@ -3,7 +3,7 @@
 이번 실습에서는 Kustomize의 기능을 활용하여 나머지 샘플 애플리케이션을 효율적으로 배포할 것입니다. 다음의 kustomization 파일은 다른 kustomization들을 참조하고 여러 컴포넌트를 함께 배포하는 방법을 보여줍니다:
 
 {% code title="~/environment/eks-workshop/base-application/kustomization.yaml" %}
-```
+```yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
@@ -26,20 +26,20 @@ Kubernetes는 선언적 메커니즘을 사용하기 때문에 카탈로그 API�
 
 나머지 컴포넌트를 배포하기 위해 이 kustomization을 클러스터에 적용하세요:
 
-```
+```bash
 ~$ kubectl apply -k ~/environment/eks-workshop/base-application
 ```
 
 이것이 완료된 후, `kubectl wait`를 사용하여 계속 진행하기 전에 모든 컴포넌트가 시작되었는지 확인할 수 있습니다:
 
-```
+```bash
 ~$ kubectl wait --for=condition=Ready --timeout=180s pods \
   -l app.kubernetes.io/created-by=eks-workshop -A
 ```
 
 이제 각 애플리케이션 컴포넌트에 대한 네임스페이스가 생성됩니다:
 
-```
+```bash
 ~$ kubectl get namespaces -l app.kubernetes.io/created-by=eks-workshop
 NAME       STATUS   AGE
 assets     Active   62s
@@ -54,7 +54,7 @@ ui         Active   62s
 
 또한 컴포넌트들을 위해 생성된 모든 Deployment를 확인할 수 있습니다:
 
-```
+```bash
 ~$ kubectl get deployment -l app.kubernetes.io/created-by=eks-workshop -A
 NAMESPACE   NAME             READY   UP-TO-DATE   AVAILABLE   AGE
 assets      assets           1/1     1            1           90s

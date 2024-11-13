@@ -214,7 +214,7 @@ catalog-mysql-0            1/1     Running   0             46s
 
 카탈로그 API용 Pod와 MySQL 데이터베이스용 Pod가 있는 것을 확인할 수 있습니다. `catalog` Pod가 `CrashLoopBackOff` 상태를 보이는 경우, 시작하기 전에 `catalog-mysql` Pod에 연결할 수 있어야 합니다. Kubernetes는 이것이 가능할 때까지 계속해서 재시작할 것입니다. 이 경우 [kubectl wait](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#wait)를 사용하여 특정 Pod가 Ready 상태가 될 때까지 모니터링할 수 있습니다.
 
-```
+```bash
 ~$ kubectl wait --for=condition=Ready pods --all -n catalog --timeout=180s
 ```
 
@@ -224,13 +224,13 @@ Pod가 실행되면 [로그를 확인](https://kubernetes.io/docs/reference/gene
 kubectl logs 출력을 '-f' 옵션을 사용하여 "팔로우"할 수 있습니다. (CTRL-C를 사용하여 팔로우 중단)
 {% endhint %}
 
-```
+```bash
 ~$ kubectl logs -n catalog deployment/catalog
 ```
 
 Kubernetes를 사용하면 카탈로그 Pod를 수평적으로 쉽게 확장할 수 있습니다.
 
-```
+```bash
 ~$ kubectl scale -n catalog --replicas 3 deployment/catalog
 deployment.apps/catalog scaled
 ~$ kubectl wait --for=condition=Ready pods --all -n catalog --timeout=180s
@@ -238,7 +238,7 @@ deployment.apps/catalog scaled
 
 우리가 적용한 매니페스트는 또한 클러스터의 다른 구성 요소가 연결하는 데 사용할 수 있는 애플리케이션과 MySQL Pod 각각에 대한 Service를 생성합니다.
 
-```
+```bash
 ~$ kubectl get svc -n catalog
 NAME            TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
 catalog         ClusterIP   172.20.83.84     <none>        80/TCP     2m48s
@@ -247,7 +247,7 @@ catalog-mysql   ClusterIP   172.20.181.252   <none>        3306/TCP   2m48s
 
 이러한 Service는 클러스터 내부용이므로 인터넷이나 VPC에서 접근할 수 없습니다. 하지만 exec를 사용하여 EKS 클러스터의 기존 Pod에 접근하여 카탈로그 API가 작동하는지 확인할 수 있습니다.
 
-```
+```bash
 ~$ kubectl -n catalog exec -it \
   deployment/catalog -- curl catalog.catalog.svc/catalogue | jq .
 ```

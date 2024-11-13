@@ -197,13 +197,13 @@ spec:
 
 `kubectl kustomize` 명령어를 사용하여 이 kustomization을 적용한 최종 Kubernetes YAML을 생성할 수 있습니다. 이 명령어는 kubectl CLI에 번들로 포함된 kustomize를 호출합니다:
 
-```
+```bash
 ~$ kubectl kustomize ~/environment/eks-workshop/modules/introduction/kustomize
 ```
 
 이는 많은 YAML 파일들을 생성할 것이며, 이는 Kubernetes에 직접 적용할 수 있는 최종 매니페스트를 나타냅니다. kustomize의 출력을 kubectl apply로 직접 파이프하여 이를 시연해보겠습니다:
 
-```
+```bash
 ~$ kubectl kustomize ~/environment/eks-workshop/modules/introduction/kustomize | kubectl apply -f -
 namespace/checkout unchanged
 serviceaccount/checkout unchanged
@@ -217,7 +217,7 @@ deployment.apps/checkout-redis unchanged
 `checkout` 관련 리소스들 중 다수가 "unchanged"로 표시되고, `deployment.apps/checkout`만 "configured"로 표시된 것을 볼 수 있습니다. 이는 의도된 것입니다 — 우리는 `checkout` 배포에만 변경사항을 적용하고자 합니다. 이전 명령어를 실행하면 실제로 두 개의 파일이 적용됩니다: 위에서 본 Kustomize `deployment.yaml`과 `~/environment/eks-workshop/base-application/checkout` 폴더의 모든 파일과 매칭되는 다음의 kustomization.yaml 파일입니다. `patches` 필드는 패치될 특정 파일을 지정합니다:
 
 {% code title="~/environment/eks-workshop/modules/introduction/kustomize/kustomization.yaml" %}
-```
+```yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
@@ -229,7 +229,7 @@ patches:
 
 레플리카 수가 업데이트되었는지 확인하기 위해 다음 명령어를 실행하세요:
 
-```
+```bash
 ~$ kubectl get pod -n checkout -l app.kubernetes.io/component=service
 NAME                        READY   STATUS    RESTARTS   AGE
 checkout-585c9b45c7-c456l   1/1     Running   0          2m12s
@@ -241,19 +241,19 @@ checkout-585c9b45c7-xmx2t   1/1     Running   0          40m
 
 한번 시도해보겠습니다:
 
-```
+```bash
 ~$ kubectl apply -k ~/environment/eks-workshop/modules/introduction/kustomize
 ```
 
 애플리케이션 매니페스트를 초기 상태로 되돌리려면 원본 매니페스트 세트를 간단히 적용하면 됩니다:
 
-```
+```bash
 ~$ kubectl apply -k ~/environment/eks-workshop/base-application
 ```
 
 일부 실습 연습에서 볼 수 있는 또 다른 패턴은 다음과 같습니다:
 
-```
+```bash
 ~$ kubectl kustomize ~/environment/eks-workshop/base-application \
   | envsubst | kubectl apply -f-
 ```
@@ -261,8 +261,6 @@ checkout-585c9b45c7-xmx2t   1/1     Running   0          40m
 이는 `envsubst`를 사용하여 Kubernetes 매니페스트 파일의 환경 변수 플레이스홀더를 사용자의 특정 환경에 기반한 실제 값으로 대체합니다. 예를 들어, 일부 매니페스트에서는 `$EKS_CLUSTER_NAME`으로 EKS 클러스터 이름을 참조하거나 `$AWS_REGION`으로 AWS 리전을 참조해야 합니다.
 
 Kustomize에 대해 더 자세히 알아보려면 [공식 Kubernetes 문서](https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/)를 참조하시기 바랍니다.
-
-
 
 
 

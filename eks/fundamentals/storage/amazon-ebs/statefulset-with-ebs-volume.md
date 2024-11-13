@@ -272,7 +272,7 @@ AWS CLI를 사용하여 자동으로 생성된 Amazon EBS 볼륨을 확인할 �
 
 <figure><img src="https://eksworkshop.com/assets/images/ebsVolumeScrenshot-3f12fe3dfb6f9b0bfbf5990108a6058c.webp" alt=""><figcaption></figcaption></figure>
 
-If you'd like to inspect the container shell and check out the newly EBS volume attached to the Linux OS, run this instructions to run a shell command into the catalog-mysql-ebs container. It'll inspect the file-systems that you have mounted:
+Linux OS에 새롭게 연결된 EBS 볼륨을 확인하고 컨테이너 쉘을 검사하고 싶다면, `catalog-mysql-ebs` 컨테이너에서 쉘 명령어를 실행하기 위해 다음 지침을 실행하세요. 이를 통해 마운트된 파일 시스템을 검사할 수 있습니다.
 
 ```bash
 ~$ kubectl exec --stdin catalog-mysql-ebs-0  -n catalog -- bash -c "df -h"
