@@ -9,7 +9,7 @@ AWS Distro for OpenTelemetry를 사용하여 애플리케이션 메트릭을 수
 
 이 워크샵의 각 컴포넌트는 특정 프로그래밍 언어나 프레임워크와 관련된 라이브러리를 사용하여 Prometheus 메트릭을 제공하도록 계측되었습니다. orders 서비스의 이러한 메트릭 예시를 다음과 같이 볼 수 있습니다:
 
-```
+```bash
 ~$ kubectl -n orders exec deployment/orders -- curl http://localhost:8080/actuator/prometheus
 [...]
 # HELP jdbc_connections_idle Number of established but idle connections.
@@ -32,7 +32,7 @@ watch_orders_total{productId="6d62d909-f957-430e-8689-b5129c0bb75e",} 1.0
 
 checkout 서비스와 같은 다른 컴포넌트에 대해서도 유사한 요청을 실행할 수 있습니다:
 
-```
+```bash
 ~$ kubectl -n checkout exec deployment/checkout -- curl http://localhost:8080/metrics
 [...]
 # HELP nodejs_heap_size_total_bytes Process heap size from Node.js in bytes.
@@ -43,7 +43,7 @@ nodejs_heap_size_total_bytes 48668672
 
 이 실습에서는 ADOT를 활용하여 모든 컴포넌트의 메트릭을 수집하고 주문 수를 보여주는 대시보드를 탐색할 것입니다. 애플리케이션 포드에서 메트릭을 스크랩하는 데 사용된 OpenTelemetry 구성을 살펴보겠습니다:
 
-```
+```bash
 ~$ kubectl -n other get opentelemetrycollector adot -o jsonpath='{.spec.config}' \
   | yq '.receivers.prometheus.config.scrape_configs[2]'
 job_name: 'kubernetes-pods'
@@ -81,13 +81,11 @@ relabel_configs:
     action: drop
 ```
 
-
-
 이 구성은 Prometheus [Kubernetes 서비스 디스커버리 메커니즘](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#kubernetes\_sd\_config)을 활용하여 특정 어노테이션이 있는 모든 포드를 자동으로 검색합니다. 이 특정 구성은 `prometheus.io/scrape` 어노테이션이 있는 모든 포드를 검색하고, 스크랩하는 메트릭을 네임스페이스와 포드 이름과 같은 Kubernetes 메타데이터로 보강합니다.
 
 order 컴포넌트 포드의 어노테이션을 확인할 수 있습니다:
 
-```
+```bash
 ~$ kubectl get -o yaml -n orders deployment/orders | yq '.spec.template.metadata.annotations'
 prometheus.io/path: /actuator/prometheus
 prometheus.io/port: "8080"
@@ -98,7 +96,7 @@ prometheus.io/scrape: "true"
 
 다음으로 아래 스크립트를 사용하여 로드 생성기를 실행하여 스토어를 통해 주문을 하고 애플리케이션 메트릭을 생성합니다:
 
-```
+```yaml
 ~$ cat <<EOF | kubectl apply -f -
 apiVersion: v1
 kind: Pod
@@ -136,13 +134,13 @@ EOF
 
 이전 섹션에서처럼 Grafana를 엽니다:
 
-<figure><img src="../../.gitbook/assets/image (3) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (3) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 대시보드 페이지로 이동하여 'Order Service Metrics' 대시보드를 클릭하여 대시보드 내의 패널을 검토합니다:
 
 
 
-<figure><img src="../../.gitbook/assets/image (4) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (4) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 "Orders by Product" 패널의 제목 위에 마우스를 올리고 "Edit" 버튼을 클릭하여 대시보드가 AMP를 쿼리하도록 어떻게 구성되었는지 볼 수 있습니다:
 
@@ -168,7 +166,7 @@ sum by(productId) (watch_orders_total{productId!="*"})
 
 메트릭 관찰에 만족하셨다면, 아래 명령을 사용하여 로드 생성기를 중지할 수 있습니다.
 
-```
+```bash
 ~$ kubectl delete pod load-generator -n other
 ```
 

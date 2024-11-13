@@ -6,7 +6,7 @@
 
 다음 명령은 현재 노드가 온디맨드 인스턴스임을 보여줍니다.
 
-```
+```bash
 ~$ kubectl get nodes -L eks.amazonaws.com/capacityType
 NAME                                          STATUS   ROLES    AGE    VERSION                CAPACITYTYPE
 ip-10-42-103-103.us-east-2.compute.internal   Ready    <none>   133m   v1.30-eks-036c24b      ON_DEMAND
@@ -17,7 +17,7 @@ ip-10-42-161-44.us-east-2.compute.internal    Ready    <none>   133m   v1.30-eks
 {% hint style="info" %}
 온디맨드 인스턴스와 같은 특정 용량 유형에 기반한 노드를 검색하려면 "레이블 선택기"를 활용할 수 있습니다. 이 특정 시나리오에서는 레이블 선택기를 capacityType=ON\_DEMAND로 설정하여 이를 달성할 수 있습니다.
 
-```
+```bash
 ~$ kubectl get nodes -l eks.amazonaws.com/capacityType=ON_DEMAND
  
 NAME                                         STATUS   ROLES    AGE     VERSION
@@ -34,7 +34,7 @@ ip-10-42-12-235.us-east-2.compute.internal   Ready    <none>   4h34m   v1.30-eks
 
 이제 스팟 인스턴스로 노드 그룹을 생성해 보겠습니다. 다음 명령은 managed-spot이라는 새 노드 그룹을 생성합니다.
 
-```
+```bash
 ~$ aws eks create-nodegroup \
   --cluster-name $EKS_CLUSTER_NAME \
   --nodegroup-name managed-spot \
@@ -51,7 +51,7 @@ ip-10-42-12-235.us-east-2.compute.internal   Ready    <none>   4h34m   v1.30-eks
 {% hint style="info" %}
 aws eks wait nodegroup-active 명령을 사용하여 특정 EKS 노드 그룹이 활성화되고 사용 준비가 될 때까지 기다릴 수 있습니다. 이 명령은 AWS CLI의 일부이며 지정된 노드 그룹이 성공적으로 생성되고 모든 관련 인스턴스가 실행되고 준비되었는지 확인하는 데 사용할 수 있습니다.
 
-```
+```bash
 ~$ aws eks wait nodegroup-active \
   --cluster-name $EKS_CLUSTER_NAME \
   --nodegroup-name managed-spot
@@ -60,7 +60,7 @@ aws eks wait nodegroup-active 명령을 사용하여 특정 EKS 노드 그룹이
 
 새로운 관리형 노드 그룹이 활성화되면 다음 명령을 실행하세요.
 
-```
+```bash
 ~$ kubectl get nodes -L eks.amazonaws.com/capacityType,eks.amazonaws.com/nodegroup
  
 NAME                                          STATUS   ROLES    AGE     VERSION                CAPACITYTYPE   NODEGROUP
@@ -72,3 +72,4 @@ ip-10-42-97-19.us-east-2.compute.internal     Ready    <none>   104s    v1.30-ek
 ```
 
 출력은 managed-spot 노드 그룹 아래에 용량 유형이 SPOT인 두 개의 추가 노드가 프로비저닝되었음을 보여줍니다.
+

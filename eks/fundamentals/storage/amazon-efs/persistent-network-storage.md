@@ -6,7 +6,7 @@ assets 컴포넌트는 현재 빌드 시 컨테이너 이미지에 번들로 포
 
 먼저 Deployment의 초기 볼륨 구성을 살펴보겠습니다:
 
-```
+```bash
 ~$ kubectl describe deployment -n assets
 Name:                   assets
 Namespace:              assets
@@ -43,7 +43,7 @@ emptyDir 볼륨은 Pod가 노드에 할당될 때 생성되며 해당 Pod가 그
 
 컨테이너에는 빌드 과정 중에 `/usr/share/nginx/html/assets`로 복사된 일부 초기 제품 이미지가 포함되어 있습니다. 이는 다음과 같이 확인할 수 있습니다:
 
-```
+```bash
 ~$ kubectl exec --stdin deployment/assets \
   -n assets -- bash -c "ls /usr/share/nginx/html/assets/"
 chrono_classic.jpg
@@ -56,14 +56,14 @@ wood_watch.jpg
 
 assets Deployment를 여러 개의 복제본으로 확장해 보겠습니다:
 
-```
+```bash
 ~$ kubectl scale -n assets --replicas=2 deployment/assets
 ~$ kubectl rollout status -n assets deployment/assets --timeout=60s
 ```
 
 이제 첫 번째 Pod의 /usr/share/nginx/html/assets 디렉토리에 newproduct.png라는 새로운 제품 이미지 파일을 생성해 보겠습니다:
 
-```
+```bash
 ~$ POD_NAME=$(kubectl -n assets get pods -o jsonpath='{.items[0].metadata.name}')
 ~$ kubectl exec --stdin $POD_NAME \
   -n assets -- bash -c 'touch /usr/share/nginx/html/assets/newproduct.png'
@@ -72,12 +72,8 @@ assets Deployment를 여러 개의 복제본으로 확장해 보겠습니다:
 두 번째 Pod의 파일 시스템에 새로운 제품 이미지 `newproduct.png`가 존재하는지 확인해 보겠습니다:
 
 ```
-~
-$
-POD_NAME=$(kubectl -n assets get pods -o jsonpath='{.items[1].metadata.name}')
-~
-$
-kubectl exec --stdin $POD_NAME \
+~$ POD_NAME=$(kubectl -n assets get pods -o jsonpath='{.items[1].metadata.name}')
+~$ kubectl exec --stdin $POD_NAME \
   -n assets -- bash -c 'ls /usr/share/nginx/html/assets'
 ```
 

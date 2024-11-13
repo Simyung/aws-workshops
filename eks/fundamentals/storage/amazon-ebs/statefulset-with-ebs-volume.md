@@ -93,7 +93,7 @@ volumeClaimTemplates 필드에 주목해 주세요. 이 필드는 Kubernetes에�
   path: /spec/template/spec/containers/0/env/-
   value:
     name: DB_ENDPOINT
-    value: catalog-mysql-ebs:3306
+    value: catalog-mysql-ebs:3306bash
 ```
 {% endcode %}
 {% endtab %}
@@ -207,14 +207,14 @@ spec:
 
 변경 사항을 적용하고 새로운 Pod가 배포될 때까지 기다립니다:
 
-```
+```bash
 ~$ kubectl apply -k ~/environment/eks-workshop/modules/fundamentals/storage/ebs/
 ~$ kubectl rollout status --timeout=100s statefulset/catalog-mysql-ebs -n catalog
 ```
 
 이제 새로 배포된 StatefulSet이 실행 중인지 확인해 보겠습니다:
 
-```
+```bash
 ~$ kubectl get statefulset -n catalog catalog-mysql-ebs
 NAME                READY   AGE
 catalog-mysql-ebs   1/1     79s
@@ -222,7 +222,7 @@ catalog-mysql-ebs   1/1     79s
 
 `catalog-mysql-ebs` StatefulSet을 살펴보면, 이제 30GiB 용량의 PersistentVolumeClaim이 연결되어 있고 `storageClassName`이 ebs-csi-driver인 것을 확인할 수 있습니다.
 
-```
+```bash
 ~$ kubectl get statefulset -n catalog catalog-mysql-ebs \
   -o jsonpath='{.spec.volumeClaimTemplates}' | jq .
 [
@@ -254,14 +254,14 @@ catalog-mysql-ebs   1/1     79s
 
 동적 볼륨 프로비저닝이 어떻게 자동으로 PersistentVolume(PV)을 생성했는지 분석해 보겠습니다:
 
-```
+```bash
 ~$ kubectl get pv | grep -i catalog
 pvc-1df77afa-10c8-4296-aa3e-cf2aabd93365   30Gi       RWO            Delete           Bound         catalog/data-catalog-mysql-ebs-0          gp2                            10m
 ```
 
 AWS CLI를 사용하여 자동으로 생성된 Amazon EBS 볼륨을 확인할 수 있습니다:
 
-```
+```bash
 ~$ aws ec2 describe-volumes \
     --filters Name=tag:kubernetes.io/created-for/pvc/name,Values=data-catalog-mysql-ebs-0 \
     --query "Volumes[*].{ID:VolumeId,Tag:Tags}" \
@@ -274,7 +274,7 @@ AWS CLI를 사용하여 자동으로 생성된 Amazon EBS 볼륨을 확인할 �
 
 If you'd like to inspect the container shell and check out the newly EBS volume attached to the Linux OS, run this instructions to run a shell command into the catalog-mysql-ebs container. It'll inspect the file-systems that you have mounted:
 
-```
+```bash
 ~$ kubectl exec --stdin catalog-mysql-ebs-0  -n catalog -- bash -c "df -h"
 Filesystem      Size  Used Avail Use% Mounted on
 overlay         100G  7.6G   93G   8% /
@@ -292,27 +292,27 @@ tmpfs           3.8G     0  3.8G   0% /sys/firmware
 
 이제 우리의 데이터가 실제로 영구적인지 테스트해 보겠습니다. 이 모듈의 첫 번째 섹션에서 했던 것과 정확히 같은 방식으로 test.txt 파일을 생성해 보겠습니다:
 
-```
+```bash
 ~$ kubectl exec catalog-mysql-ebs-0 -n catalog -- bash -c  "echo 123 > /var/lib/mysql/test.txt"
 ```
 
 이제 /var/lib/mysql 디렉토리에 test.txt 파일이 생성되었는지 확인해 보겠습니다:
 
-```
+```bash
 ~$ kubectl exec catalog-mysql-ebs-0 -n catalog -- ls -larth /var/lib/mysql/ | grep -i test
 -rw-r--r-- 1 root  root     4 Oct 18 13:57 test.txt
 ```
 
 이제 현재의 catalog-mysql-ebs Pod를 제거해보겠습니다. 이렇게 하면 StatefulSet 컨트롤러가 자동으로 이를 다시 생성하도록 강제할 것입니다:
 
-```
+```bash
 ~$ kubectl delete pods -n catalog catalog-mysql-ebs-0
 pod "catalog-mysql-ebs-0" deleted
 ```
 
 몇 초 기다린 후, 아래 명령을 실행하여 catalog-mysql-ebs Pod가 다시 생성되었는지 확인해보세요:
 
-```
+```bash
 ~$ kubectl wait --for=condition=Ready pod -n catalog \
   -l app.kubernetes.io/component=mysql-ebs --timeout=60s
 pod/catalog-mysql-ebs-0 condition met
@@ -323,7 +323,7 @@ catalog-mysql-ebs-0   1/1     Running   0          29s
 
 마지막으로, MySQL 컨테이너 쉘로 다시 들어가서 /var/lib/mysql 경로에서 ls 명령을 실행하여 우리가 만든 test.txt 파일을 찾아보고, 파일이 지속되었는지 확인해봅시다:
 
-```
+```bash
 ~$ kubectl exec catalog-mysql-ebs-0 -n catalog -- ls -larth /var/lib/mysql/ | grep -i test
 -rw-r--r-- 1 mysql root     4 Oct 18 13:57 test.txt
 ~$ kubectl exec catalog-mysql-ebs-0 -n catalog -- cat /var/lib/mysql/test.txt
@@ -331,10 +331,6 @@ catalog-mysql-ebs-0   1/1     Running   0          29s
 ```
 
 보시다시피 Pod를 삭제하고 재시작한 후에도 `test.txt` 파일이 여전히 사용 가능하며, 그 안에 올바른 텍스트 `123`이 들어있습니다. 이것이 영구 볼륨(PV)의 주요 기능입니다. Amazon EBS가 데이터를 저장하고 AWS 가용 영역 내에서 우리의 데이터를 안전하고 사용 가능하게 유지하고 있습니다.
-
-
-
-
 
 
 

@@ -13,7 +13,7 @@ Karpenter를 실제로 활용해보면서, 특정 시점에 스케줄링할 수 
 
 일부 Pod를 생성하고 Karpenter가 어떻게 적응하는지 살펴보겠습니다. 현재 Karpenter가 관리하는 노드는 없습니다:
 
-```
+```bash
 ~$ kubectl get node -l type=karpenter
 No resources found
 ```
@@ -21,7 +21,7 @@ No resources found
 Karpenter가 스케일 아웃하도록 트리거하기 위해 다음 Deployment를 사용하겠습니다:
 
 {% code title="~/environment/eks-workshop/modules/autoscaling/compute/karpenter/scale/deployment.yaml" lineNumbers="true" %}
-```
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -66,7 +66,7 @@ pause 컨테이너란 무엇인가요?&#x20;
 
 이 deployment를 적용합니다:
 
-```
+```bash
 ~$ kubectl apply -k ~/environment/eks-workshop/modules/autoscaling/compute/karpenter/scale
 deployment.apps/inflate created
 ```
@@ -77,25 +77,25 @@ deployment.apps/inflate created
 
 deployment를 확장합니다:
 
-```
+```bash
 ~$ kubectl scale -n other deployment/inflate --replicas 5
 ```
 
 이 작업은 하나 이상의 새 EC2 인스턴스를 생성하므로 시간이 걸립니다. 다음 명령을 사용하여 kubectl로 완료될 때까지 기다릴 수 있습니다:
 
-```
+```bash
 ~$ kubectl rollout status -n other deployment/inflate --timeout=180s
 ```
 
 모든 Pod가 실행되면 어떤 인스턴스 유형을 선택했는지 확인해 보겠습니다:
 
-```
+```bash
 ~$ kubectl logs -l app.kubernetes.io/instance=karpenter -n karpenter | grep 'launched nodeclaim' | jq '.'
 ```
 
 인스턴스 유형과 구매 옵션을 나타내는 출력이 표시되어야 합니다:
 
-<pre><code>{
+<pre class="language-json"><code class="lang-json">{
   "level": "INFO",
   "time": "2023-11-16T22:32:00.413Z",
   "logger": "controller.nodeclaim.lifecycle",
@@ -131,7 +131,7 @@ Karpenter가 노드에 추가한 메타데이터도 확인할 수 있습니다:
 
 이 출력은 인스턴스 유형, 구매 옵션, 가용 영역 등과 같은 다양한 레이블이 설정된 것을 보여줍니다:
 
-```
+```json
 {
   "beta.kubernetes.io/arch": "amd64",
   "beta.kubernetes.io/instance-type": "m5.large",
@@ -163,3 +163,4 @@ Karpenter가 노드에 추가한 메타데이터도 확인할 수 있습니다:
 ```
 
 이 간단한 예는 Karpenter가 컴퓨팅 용량을 필요로 하는 워크로드의 리소스 요구사항에 따라 동적으로 적절한 인스턴스 유형을 선택할 수 있음을 보여줍니다. 이는 단일 노드 그룹 내의 인스턴스 유형이 일관된 CPU 및 메모리 특성을 가져야 하는 Cluster Autoscaler와 같은 노드 풀 중심 모델과 근본적으로 다릅니다.
+

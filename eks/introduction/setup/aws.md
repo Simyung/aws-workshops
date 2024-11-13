@@ -6,17 +6,17 @@
 
 로그인 창이 나타나면 Email One-Time Password(OTP) 옵션을 선택하세요.
 
-<figure><img src="../../.gitbook/assets/image (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 이메일 주소를 입력하고 Send passcode를 누르면 일회용 패스코드가 이메일로 전송됩니다. 이메일을 받으면 패스코드를 입력하고 로그인하세요.
 
 실습 시작 전 강사가 이벤트 액세스 코드를 제공했을 것입니다. 제공받은 해시 코드를 텍스트 박스에 입력하고 Next를 클릭하세요.
 
-<figure><img src="../../.gitbook/assets/image (3) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (3) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 이용 약관을 읽고 동의한 후 Join event를 클릭하여 계속하세요.
 
-<figure><img src="../../.gitbook/assets/image (4) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (4) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 개인 대시보드가 표시됩니다. Open AWS Console 버튼을 선택하면 AWS 계정 콘솔로 이동합니다:
 

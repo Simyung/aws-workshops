@@ -4,7 +4,7 @@
 
 생성된 Ingress 객체를 살펴봅시다:
 
-```
+```bash
 ~$ kubectl get ingress ui -n ui
 NAME   CLASS   HOSTS   ADDRESS                                                      PORTS   AGE
 ui     alb     *       k8s-ui-ui-5ddc3ba496-107943159.us-west-2.elb.amazonaws.com   80      3m51s
@@ -12,7 +12,7 @@ ui     alb     *       k8s-ui-ui-5ddc3ba496-107943159.us-west-2.elb.amazonaws.co
 
 로드 밸런서의 프로비저닝이 완료될 때까지 기다리려면 다음 명령을 실행할 수 있습니다:
 
-```
+```bash
 ~$ wait-for-lb $(kubectl get ingress -n ui ui -o jsonpath="{.status.loadBalancer.ingress[*].hostname}{'\n'}")
 Waiting for k8s-ui-ui-5ddc3ba496-107943159.us-west-2.elb.amazonaws.com...
 You can now access http://k8s-ui-ui-5ddc3ba496-107943159.us-west-2.elb.amazonaws.com

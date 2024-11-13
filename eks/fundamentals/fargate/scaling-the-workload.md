@@ -7,7 +7,7 @@ Fargate의 또 다른 이점은 간소화된 수평 스케일링 모델을 제�
 {% tabs %}
 {% tab title="Kustomize Patch" %}
 {% code title="~/environment/eks-workshop/modules/fundamentals/fargate/scaling/deployment.yaml" %}
-```
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -16,12 +16,10 @@ spec:
   replicas: 3
 ```
 {% endcode %}
-
-
 {% endtab %}
 
 {% tab title="Deployment/checkout" %}
-```
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -92,7 +90,7 @@ spec:
 {% endtab %}
 
 {% tab title="Diff" %}
-```
+```diff
      app.kubernetes.io/type: app
    name: checkout
    namespace: checkout
@@ -109,7 +107,7 @@ spec:
 
 kustomization을 적용하고 롤아웃이 완료될 때까지 기다립니다:
 
-```
+```bash
 ~$ kubectl apply -k ~/environment/eks-workshop/modules/fundamentals/fargate/scaling
 [...]
 ~$ kubectl rollout status -n checkout deployment/checkout --timeout=200s
@@ -117,7 +115,7 @@ kustomization을 적용하고 롤아웃이 완료될 때까지 기다립니다:
 
 롤아웃이 완료되면 Pod의 수를 확인할 수 있습니다:
 
-```
+```bash
 ~$ kubectl get pod -n checkout -l app.kubernetes.io/component=service
 NAME                        READY   STATUS    RESTARTS   AGE
 checkout-585c9b45c7-2c75m   1/1     Running   0          2m12s
@@ -126,3 +124,4 @@ checkout-585c9b45c7-xmx2t   1/1     Running   0          40m
 ```
 
 이 각 Pod는 별도의 Fargate 인스턴스에 스케줄링됩니다. 이전과 유사한 단계를 따라 주어진 Pod의 노드를 식별하여 이를 확인할 수 있습니다.
+

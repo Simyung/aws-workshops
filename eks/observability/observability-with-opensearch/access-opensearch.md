@@ -4,7 +4,7 @@
 
 OpenSearch 도메인의 자격 증명은 프로비저닝 과정 중에 AWS Systems Manager Parameter Store에 저장되었습니다. 이 정보를 검색하고 필요한 환경 변수를 설정합니다.
 
-```
+```bash
 ~$ export OPENSEARCH_HOST=$(aws ssm get-parameter \
       --name /eksworkshop/$EKS_CLUSTER_NAME/opensearch/host \
       --region $AWS_REGION | jq .Parameter.Value | tr -d '"')
@@ -19,7 +19,7 @@ OpenSearch 도메인의 자격 증명은 프로비저닝 과정 중에 AWS Syste
 
 Kubernetes 이벤트와 포드 로그를 표시하기 위해 미리 생성된 OpenSearch 대시보드를 로드합니다. 대시보드는 Kubernetes 이벤트와 포드 로그에 대한 OpenSearch 인덱스 패턴, 시각화 및 대시보드를 포함하는 [파일](https://github.com/aws-samples/eks-workshop-v2/tree/stable/manifests/modules/observability/opensearch/opensearch-dashboards.ndjson)에서 사용할 수 있습니다.
 
-```
+```bash
 ~$ curl -s https://$OPENSEARCH_HOST/_dashboards/auth/login \
       -H 'content-type: application/json' -H 'osd-xsrf: osd-fetch' \
       --data-raw '{"username":"'"$OPENSEARCH_USER"'","password":"'"$OPENSEARCH_PASSWORD"'"}' \
@@ -59,7 +59,7 @@ Kubernetes 이벤트와 포드 로그를 표시하기 위해 미리 생성된 Op
 
 이전에 검색한 OpenSearch 서버 좌표와 자격 증명을 확인하고 OpenSearch 대시보드에 접근할 수 있는지 확인합니다.
 
-```
+```bash
 ~$ printf "\nOpenSearch dashboard: https://%s/_dashboards/app/dashboards \nUserName: %q \nPassword: %q \n\n" \
       "$OPENSEARCH_HOST" "$OPENSEARCH_USER" "$OPENSEARCH_PASSWORD"
  
@@ -81,3 +81,4 @@ Password: <password>
 
 
 <figure><img src="../../.gitbook/assets/image (10) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+

@@ -10,7 +10,7 @@ AWS는 CloudWatch Logs와 Kinesis Data Firehose 모두를 위한 플러그인이
 
 먼저, 다음 명령을 입력하여 Fluent Bit에 대해 생성된 리소스를 확인할 수 있습니다. 각 노드에는 하나의 포드가 있어야 합니다:
 
-```
+```bash
 ~$ kubectl get all -n aws-for-fluent-bit
 NAME                           READY   STATUS    RESTARTS   AGE
 pod/aws-for-fluent-bit-vfsbe   1/1     Running   0          99m
@@ -23,7 +23,7 @@ daemonset.apps/aws-for-fluent-bit   2         2         2       2            2  
 
 aws-for-fluent-bit의 ConfigMap은 각 노드의 `/var/log/containers/*.log` 디렉토리에 있는 파일의 내용을 CloudWatch 로그 그룹 `/eks-workshop/worker-fluentbit-logs`로 스트리밍하도록 구성되어 있습니다:
 
-```
+```bash
 ~$ kubectl describe configmaps -n aws-for-fluent-bit
 Name:         aws-for-fluent-bit
 Namespace:    aws-for-fluent-bit

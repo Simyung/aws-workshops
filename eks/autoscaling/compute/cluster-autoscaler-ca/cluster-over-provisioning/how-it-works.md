@@ -4,7 +4,7 @@ Kubernetes는 다른 Pod들과 상대적으로 Pod에 우선순위를 할당할 
 
 다음은 Pod에 다른 Pod보다 상대적으로 높은 우선순위를 부여하는 우선순위 클래스의 예입니다:
 
-```
+```yaml
 apiVersion: scheduling.k8s.io/v1
 kind: PriorityClass
 metadata:
@@ -16,7 +16,7 @@ description: "Priority class used for high priority Pods only."
 
 그리고 위의 우선순위 클래스를 사용하는 Pod 사양의 예입니다:
 
-```
+```yaml
 apiVersion: v1
 kind: Pod
 metadata:
@@ -46,3 +46,4 @@ EKS 클러스터에서 컴퓨팅을 과잉 프로비저닝하기 위해 이 개�
 2. EKS 노드 그룹의 최대 노드 수(maxsize)&#x20;
 
 이 전략을 구현함으로써 클러스터가 항상 새로운 워크로드를 수용할 수 있는 여유 용량을 가지고 있어, 새로운 Pod가 스케줄 가능해지는 데 걸리는 시간을 줄일 수 있습니다.
+

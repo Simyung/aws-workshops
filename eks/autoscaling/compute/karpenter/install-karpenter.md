@@ -11,7 +11,7 @@ Karpenter의 전체 설치 문서는 여기에서 찾을 수 있습니다.
 
 우리가 해야 할 일은 Karpenter를 헬름 차트로 설치하는 것뿐입니다:
 
-```
+```bash
 ~$ helm upgrade --install karpenter oci://public.ecr.aws/karpenter/karpenter \
   --version "${KARPENTER_VERSION}" \
   --namespace "karpenter" --create-namespace \
@@ -33,12 +33,11 @@ TEST SUITE: None
 
 Karpenter는 karpenter 네임스페이스에서 배포로 실행될 것입니다:
 
-
-
-```
+```bash
 ~$ kubectl get deployment -n karpenter
 NAME        READY   UP-TO-DATE   AVAILABLE   AGE
 karpenter   1/1     1            1           105s
 ```
 
 이제 우리의 Pod를 위한 인프라를 프로비저닝하도록 Karpenter를 구성하는 단계로 넘어갈 수 있습니다.
+

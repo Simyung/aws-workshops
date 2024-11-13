@@ -5,7 +5,7 @@
 먼저, 이전에 생성한 `efs-sc` 스토리지 클래스에서 5GB의 스토리지를 요청하는 PersistentVolumeClaim을 정의하는 `efspvclaim.yaml` 파일을 살펴보겠습니다:
 
 {% code title="~/environment/eks-workshop/modules/fundamentals/storage/efs/deployment/efspvclaim.yaml" %}
-```
+```yaml
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -31,7 +31,7 @@ assets 서비스를 다음과 같이 업데이트하겠습니다:
 {% tabs %}
 {% tab title="Kustomize Patch" %}
 {% code title="~/environment/eks-workshop/modules/fundamentals/storage/efs/deployment/deployment.yaml" %}
-```
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -62,7 +62,7 @@ spec:
 {% endtab %}
 
 {% tab title="Deployment/assets" %}
-```
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -145,7 +145,7 @@ spec:
 {% endtab %}
 
 {% tab title="Diff" %}
-```
+```diff
      app.kubernetes.io/type: app
    name: assets
    namespace: assets
@@ -190,7 +190,7 @@ spec:
 
 다음 명령으로 이러한 변경 사항을 적용합니다:
 
-```
+```bash
 ~$ kubectl apply -k ~/environment/eks-workshop/modules/fundamentals/storage/efs/deployment
 namespace/assets unchanged
 serviceaccount/assets unchanged
@@ -204,7 +204,7 @@ deployment.apps/assets configured
 
 배포의 volumeMounts를 살펴보겠습니다. efsvolume이라는 새 볼륨이 /usr/share/nginx/html/assets에 마운트되어 있음을 확인할 수 있습니다:
 
-```
+```bash
 ~$ kubectl get deployment -n assets \
   -o yaml | yq '.items[].spec.template.spec.containers[].volumeMounts'
 - mountPath: /usr/share/nginx/html/assets
@@ -215,7 +215,7 @@ deployment.apps/assets configured
 
 우리의 PersistentVolumeClaim (PVC)을 충족하기 위해 PersistentVolume (PV)이 자동으로 생성되었습니다:
 
-```
+```bash
 ~$ kubectl get pv
 NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                                 STORAGECLASS   REASON   AGE
 pvc-342a674d-b426-4214-b8b6-7847975ae121   5Gi        RWX            Delete           Bound    assets/efs-claim                      efs-sc                  2m33s
@@ -223,7 +223,7 @@ pvc-342a674d-b426-4214-b8b6-7847975ae121   5Gi        RWX            Delete     
 
 PersistentVolumeClaim (PVC)의 세부 정보를 살펴보겠습니다:
 
-```
+```bash
 ~$ kubectl describe pvc -n assets
 Name:          efs-claim
 Namespace:     assets
@@ -250,7 +250,7 @@ Events:
 
 공유 스토리지 기능을 보여주기 위해, 첫 번째 Pod의 assets 디렉토리에 newproduct.png라는 새 파일을 생성해 보겠습니다:
 
-```
+```bash
 ~$ POD_NAME=$(kubectl -n assets get pods -o jsonpath='{.items[0].metadata.name}')
 ~$ kubectl exec --stdin $POD_NAME \
   -n assets -c assets -- bash -c 'touch /usr/share/nginx/html/assets/newproduct.png'
@@ -258,7 +258,7 @@ Events:
 
 이제 두 번째 Pod에서 이 파일이 존재하는지 확인해 보겠습니다:
 
-```
+```bash
 ~$ POD_NAME=$(kubectl -n assets get pods -o jsonpath='{.items[1].metadata.name}')
 ~$ kubectl exec --stdin $POD_NAME \
   -n assets -c assets -- bash -c 'ls /usr/share/nginx/html/assets'

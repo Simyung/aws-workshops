@@ -39,8 +39,6 @@ spec:
 ```
 {% endcode %}
 
-
-
 * Ln 8\~9:  NodePool에 모든 새 노드를 Kubernetes 레이블 type: karpenter로 시작하도록 요청하고 있습니다. 이를 통해 시연 목적으로 Karpenter 노드를 Pod로 특별히 대상으로 지정할 수 있습니다.
 * Ln 11\~17: NodePool CRD는 인스턴스 유형 및 영역과 같은 노드 속성을 정의할 수 있습니다. 이 예에서는 karpenter.sh/capacity-type을 초기에 Karpenter가 온디맨드 인스턴스만 프로비저닝하도록 제한하고, node.kubernetes.io/instance-type을 특정 인스턴스 유형의 하위 집합으로 제한하고 있습니다. 사용 가능한 다른 속성은 여기에서 확인할 수 있습니다. 워크샵 동안 몇 가지 더 다룰 예정입니다.
 * Ln 23\~25: NodePool은 관리하는 CPU 및 메모리 양에 대한 제한을 정의할 수 있습니다. 이 제한에 도달하면 Karpenter는 해당 특정 NodePool과 관련된 추가 용량을 프로비저닝하지 않아, 총 컴퓨팅에 대한 상한선을 제공합니다.
@@ -48,7 +46,7 @@ spec:
 그리고 AWS에 적용되는 특정 구성을 제공하는 EC2NodeClass도 필요합니다:
 
 {% code title="~/environment/eks-workshop/modules/autoscaling/compute/karpenter/nodepool/nodeclass.yaml" lineNumbers="true" %}
-```
+```yaml
 apiVersion: karpenter.k8s.aws/v1
 kind: EC2NodeClass
 metadata:
@@ -77,14 +75,14 @@ spec:
 
 다음 명령으로 NodePool과 EC2NodeClass를 적용합니다:
 
-```
+```bash
 ~$ kubectl kustomize ~/environment/eks-workshop/modules/autoscaling/compute/karpenter/nodepool \
   | envsubst | kubectl apply -f-
 ```
 
 워크샵 전반에 걸쳐 다음 명령으로 Karpenter 로그를 검사하여 그 동작을 이해할 수 있습니다:
 
-```
+```bash
 ~$ kubectl logs -l app.kubernetes.io/instance=karpenter -n karpenter | jq '.'
 ```
 

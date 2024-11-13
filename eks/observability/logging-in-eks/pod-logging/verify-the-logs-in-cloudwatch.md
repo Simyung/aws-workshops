@@ -4,7 +4,7 @@
 
 먼저 Fluent Bit를 활성화한 이후 새로운 로그가 작성되도록 `ui` 구성 요소의 Pod를 재시작해 보겠습니다:
 
-```
+```bash
 ~$ kubectl delete pod -n ui --all
 ~$ kubectl rollout status deployment/ui \
   -n ui --timeout 30s
@@ -13,7 +13,7 @@ deployment "ui" successfully rolled out
 
 이제 `kubectl logs`를 직접 사용하여 `ui` 구성 요소가 로그를 생성하고 있는지 확인할 수 있습니다:
 
-```
+```bash
 ~$ kubectl logs -n ui deployment/ui
 Picked up JAVA_TOOL_OPTIONS: -javaagent:/opt/aws-opentelemetry-agent.jar
 OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended

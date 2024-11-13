@@ -39,7 +39,7 @@ CPA의 주요 사용 사례는 다음과 같습니다:
 
 #### ConfigMap for Linear <a href="#configmap-for-linear" id="configmap-for-linear"></a>
 
-```
+```yaml
 data:
   linear: |-
     {
@@ -74,7 +74,7 @@ replicas = max(replicas, min)
 
 ### ConfigMap for Ladder <a href="#configmap-for-ladder" id="configmap-for-ladder"></a>
 
-```
+```yaml
 data:
   ladder: |-
     {
@@ -99,4 +99,5 @@ data:
 
 Horizontal Pod Autoscaler는 최상위 Kubernetes API 리소스입니다. HPA는 Pod의 CPU/메모리 사용률을 모니터링하고 복제본 수를 자동으로 조정하는 폐쇄 피드백 루프 오토스케일러입니다. HPA는 Metrics API에 의존하고 Metrics Server를 필요로 하는 반면, Cluster Proportional Autoscaler는 Metrics Server나 Metrics API를 사용하지 않습니다. Cluster Proportional Autoscaler는 Kubernetes 리소스로 스케일링되지 않고 대신 플래그를 사용하여 대상 워크로드를 식별하고 ConfigMap을 사용하여 스케일링 구성을 합니다. CPA는 클러스터 크기를 감시하고 대상 컨트롤러를 스케일링하는 간단한 제어 루프를 제공합니다. CPA의 입력은 클러스터의 스케줄 가능한 코어와 노드의 수입니다.
 
-이 실습에서는 클러스터의 컴퓨팅 양에 비례하여
+이 실습에서는 클러스터의 컴퓨팅 용량에 비례하여 EKS 클러스터의 CoreDNS 시스템 컴포넌트를 스케일링하는 방법을 시연할 것입니다.
+

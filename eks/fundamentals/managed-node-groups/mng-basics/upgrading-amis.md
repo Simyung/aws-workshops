@@ -42,7 +42,7 @@ Amazon EKS 관리형 작업자 노드 업그레이드는 4단계로 이루어집
 
 여러분을 위해 프로비저닝된 EKS 클러스터는 의도적으로 최신 AMI를 실행하지 않는 관리형 노드 그룹을 가지고 있습니다. SSM을 조회하여 최신 AMI 버전을 확인할 수 있습니다:
 
-```
+```bash
 ~$ EKS_VERSION=$(aws eks describe-cluster --name $EKS_CLUSTER_NAME --query "cluster.version" --output text) 
 ~$ aws ssm get-parameter --name /aws/service/eks/optimized-ami/$EKS_VERSION/amazon-linux-2/recommended/image_id --region $AWS_REGION --query "Parameter.Value" --output text 
 ami-0fcd72f3118e0dd88
@@ -52,19 +52,19 @@ ami-0fcd72f3118e0dd88
 
 다음과 같이 샘플 애플리케이션을 호스팅하는 데 사용되는 관리형 노드 그룹의 업데이트를 시작할 수 있습니다:
 
-```
+```bash
 ~$ aws eks update-nodegroup-version --cluster-name $EKS_CLUSTER_NAME --nodegroup-name $EKS_DEFAULT_MNG_NAME
 ```
 
 kubectl을 사용하여 노드의 활동을 관찰할 수 있습니다:
 
-```
+```bash
 ~$ kubectl get nodes --watch
 ```
 
 MNG가 업데이트될 때까지 기다리려면 다음 명령을 실행할 수 있습니다:
 
-```
+```bash
 ~$ aws eks wait nodegroup-active --cluster-name $EKS_CLUSTER_NAME --nodegroup-name $EKS_DEFAULT_MNG_NAME
 ```
 

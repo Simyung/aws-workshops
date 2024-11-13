@@ -34,7 +34,7 @@ Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists fo
 {% tabs %}
 {% tab title="Kustomize Patch" %}
 {% code title="~/environment/eks-workshop/modules/fundamentals/mng/graviton/nodeselector-wo-toleration/deployment.yaml" %}
-```
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -49,7 +49,7 @@ spec:
 {% endtab %}
 
 {% tab title="Deployment/ui" %}
-```
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -128,7 +128,7 @@ spec:
 {% endtab %}
 
 {% tab title="Diff" %}
-```yaml
+```diff
              runAsUser: 1000
            volumeMounts:
              - mountPath: /tmp
@@ -145,7 +145,7 @@ spec:
 
 Kustomize 변경 사항을 적용하려면 다음 명령을 실행하세요:
 
-```
+```bash
 ~$ kubectl apply -k ~/environment/eks-workshop/modules/fundamentals/mng/graviton/nodeselector-wo-toleration/
 namespace/ui unchanged
 serviceaccount/ui unchanged
@@ -156,14 +156,14 @@ deployment.apps/ui configured
 
 최근에 변경한 내용을 적용했으니 UI 배포의 롤아웃 상태를 확인해 보겠습니다:
 
-```
+```bash
 ~$ kubectl --namespace ui rollout status --watch=false deployment/ui
 Waiting for deployment "ui" rollout to finish: 1 old replicas are pending termination...
 ```
 
 ui 배포의 기본 RollingUpdate 전략으로 인해, K8s 배포는 이전 pod를 종료하기 전에 새로 생성된 pod가 Ready 상태가 될 때까지 기다립니다. 배포 롤아웃이 멈춘 것 같으니 더 자세히 조사해 보겠습니다:
 
-```
+```bash
 ~$ kubectl get pod --namespace ui -l app.kubernetes.io/name=ui
 NAME                  READY   STATUS    RESTARTS   AGE
 ui-659df48c56-z496x   0/1     Pending   0          16s
@@ -172,7 +172,7 @@ ui-795bd46545-mrglh   1/1     Running   0          8m
 
 ui 네임스페이스 아래의 개별 pod를 조사해보면 하나의 pod가 Pending 상태임을 관찰할 수 있습니다. Pending Pod의 세부 정보를 더 깊이 살펴보면 발생한 문제에 대한 몇 가지 정보를 얻을 수 있습니다.
 
-```
+```bash
 ~$ podname=$(kubectl get pod --namespace ui --field-selector=status.phase=Pending -o json | \
                 jq -r '.items[0].metadata.name') && \
                 kubectl describe pod $podname -n ui
@@ -199,7 +199,7 @@ Events:
 {% tabs %}
 {% tab title="Kustomize Patch" %}
 {% code title="~/environment/eks-workshop/modules/fundamentals/mng/graviton/nodeselector-w-toleration/deployment.yaml" %}
-```
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -218,7 +218,7 @@ spec:
 {% endtab %}
 
 {% tab title="Deployment/ui" %}
-```
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -301,7 +301,7 @@ spec:
 {% endtab %}
 
 {% tab title="Diff" %}
-```
+```diff
              runAsUser: 1000
            volumeMounts:
              - mountPath: /tmp
@@ -323,7 +323,7 @@ spec:
 {% endtab %}
 {% endtabs %}
 
-```
+```bash
 ~$ kubectl apply -k ~/environment/eks-workshop/modules/fundamentals/mng/graviton/nodeselector-w-toleration/
 namespace/ui unchanged
 serviceaccount/ui unchanged
@@ -335,13 +335,13 @@ deployment.apps/ui configured
 
 UI pod를 확인해보면, 지정된 톨러레이션(frontend=true:NoExecute)이 구성에 포함되어 있고 해당 테인트가 있는 노드에 성공적으로 스케줄링된 것을 볼 수 있습니다. 다음 명령을 사용하여 검증할 수 있습니다:
 
-```
+```bash
 ~$ kubectl get pod --namespace ui -l app.kubernetes.io/name=ui
 NAME                  READY   STATUS    RESTARTS   AGE
 ui-6c5c9f6b5f-7jxp8   1/1     Running   0          29s
 ```
 
-```
+```bash
 ~$ kubectl describe pod --namespace ui -l app.kubernetes.io/name=ui
 Name:         ui-6c5c9f6b5f-7jxp8
 Namespace:    ui
@@ -379,7 +379,7 @@ Tolerations:                 frontend:NoExecute op=Exists
 [...]
 ```
 
-```
+```bash
 ~$ kubectl describe node --selector kubernetes.io/arch=arm64
 Name:               ip-10-42-10-138.us-west-2.compute.internal
 Roles:              <none>

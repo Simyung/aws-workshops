@@ -27,5 +27,5 @@ ACK를 사용하면 클러스터 외부에서 리소스를 수동으로 정의�
 
 프로비저닝 과정에서 클러스터에 AWS 서비스 컨트롤러를 신속하게 배포할 수 있게 해주는 새로운 ACK Terraform 모듈을 사용하고 있다는 점을 주목할 만합니다. 자세한 내용은 [ACK Terraform 모듈 문서](https://registry.terraform.io/modules/aws-ia/eks-ack-addons/aws/latest#module\_dynamodb)를 참조하세요.
 
-<figure><img src="../../../.gitbook/assets/image (3).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (3) (1).png" alt=""><figcaption></figcaption></figure>
 

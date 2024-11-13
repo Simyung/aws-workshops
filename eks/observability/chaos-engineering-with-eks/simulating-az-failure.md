@@ -8,7 +8,7 @@
 
 EKS 클러스터와 연관된 Auto Scaling Group(ASG) 이름을 검색하고 AZ 장애를 시뮬레이션하기 위한 FIS 실험 템플릿을 생성합니다:
 
-```
+```bash
 ~$ export ZONE_EXP_ID=$(aws fis create-experiment-template --cli-input-json '{"description":"publicdocument-azfailure","targets":{},"actions":{"azfailure":{"actionId":"aws:ssm:start-automation-execution","parameters":{"documentArn":"arn:aws:ssm:us-west-2::document/AWSResilienceHub-SimulateAzOutageInAsgTest_2020-07-23","documentParameters":"{\"AutoScalingGroupName\":\"'$ASG_NAME'\",\"CanaryAlarmName\":\"eks-workshop-canary-alarm\",\"AutomationAssumeRole\":\"'$FIS_ROLE_ARN'\",\"IsRollback\":\"false\",\"TestDurationInMinutes\":\"2\"}","maxDuration":"PT6M"}}},"stopConditions":[{"source":"none"}],"roleArn":"'$FIS_ROLE_ARN'","tags":{"ExperimentSuffix":"'$RANDOM_SUFFIX'"}}' --output json | jq -r '.experimentTemplate.id')
 ```
 
@@ -16,7 +16,7 @@ EKS 클러스터와 연관된 Auto Scaling Group(ASG) 이름을 검색하고 AZ 
 
 FIS 실험을 실행하여 AZ 장애를 시뮬레이션합니다:
 
-```
+```bash
 ~$ aws fis start-experiment --experiment-template-id $ZONE_EXP_ID --output json && timeout --preserve-status 480s ~/$SCRIPT_DIR/get-pods-by-az.sh
  
 ------us-west-2a------
@@ -57,7 +57,7 @@ FIS 실험을 실행하여 AZ 장애를 시뮬레이션합니다:
 {% hint style="info" %}
 노드와 포드의 재분배를 확인하려면 다음을 실행할 수 있습니다:
 
-```
+```bash
 ~$ EXPECTED_NODES=6 && while true; do ready_nodes=$(kubectl get nodes --no-headers | grep " Ready" | wc -l); if [ "$ready_nodes" -eq "$EXPECTED_NODES" ]; then echo "All $EXPECTED_NODES expected nodes are ready."; echo "Listing the ready nodes:"; kubectl get nodes | grep " Ready"; break; else echo "Waiting for all $EXPECTED_NODES nodes to be ready... (Currently $ready_nodes are ready)"; sleep 10; fi; done
 ~$ kubectl delete pod --grace-period=0 --force -n catalog -l app.kubernetes.io/component=mysql
 ~$ kubectl delete pod --grace-period=0 --force -n carts -l app.kubernetes.io/component=service
@@ -79,7 +79,7 @@ FIS 실험을 실행하여 AZ 장애를 시뮬레이션합니다:
 
 실험 후, 시뮬레이션된 AZ 장애에도 불구하고 애플리케이션이 계속 작동하는지 확인하세요:
 
-```
+```bash
 ~$ wait-for-lb $(kubectl get ingress -n ui -o jsonpath='{.items[0].status.loadBalancer.ingress[0].hostname}')
  
 Waiting for k8s-ui-ui-5ddc3ba496-721427594.us-west-2.elb.amazonaws.com...

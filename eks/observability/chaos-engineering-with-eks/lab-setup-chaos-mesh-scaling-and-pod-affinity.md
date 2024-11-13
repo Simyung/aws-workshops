@@ -8,7 +8,7 @@
 
 Helm을 사용하여 클러스터에 Chaos Mesh를 설치해 보겠습니다:
 
-```
+```bash
 ~$ helm repo add chaos-mesh https://charts.chaos-mesh.org
 ~$ helm upgrade --install chaos-mesh chaos-mesh/chaos-mesh \
   --namespace chaos-mesh \
@@ -38,7 +38,7 @@ Kustomize 패치를 사용하여 UI 배포를 수정하고, 5개의 복제본으
 {% tabs %}
 {% tab title="Kustomize Patch" %}
 {% code title="~/environment/eks-workshop/modules/observability/resiliency/high-availability/config/scale_and_affinity_patch.yaml" %}
-```
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -72,7 +72,7 @@ spec:
 {% endtab %}
 
 {% tab title="Deployment/ui" %}
-```
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -164,7 +164,7 @@ spec:
 {% endtab %}
 
 {% tab title="Diff" %}
-```
+```diff
      app.kubernetes.io/type: app
    name: ui
    namespace: ui
@@ -218,7 +218,7 @@ spec:
 
 Kustomize 패치와 Kustomization 파일을 사용하여 변경 사항을 적용합니다:
 
-```
+```bash
 ~$ kubectl delete deployment ui -n ui
 ~$ kubectl apply -k ~/environment/eks-workshop/modules/observability/resiliency/high-availability/config/
 ```
@@ -227,7 +227,7 @@ Kustomize 패치와 Kustomization 파일을 사용하여 변경 사항을 적용
 
 이러한 변경 사항을 적용한 후, retail store에 접근 가능한지 확인하는 것이 중요합니다:
 
-```
+```bash
 ~$ wait-for-lb $(kubectl get ingress -n ui -o jsonpath='{.items[0].status.loadBalancer.ingress[0].hostname}')
  
 Waiting for k8s-ui-ui-5ddc3ba496-721427594.us-west-2.elb.amazonaws.com...
@@ -242,7 +242,7 @@ Retail URL이 작동하기까지 5-10분 정도 걸릴 수 있습니다.
 
 
 
-## 헬퍼 스크립트: AZ별 Pod 조회&#x20;
+## Helper 스크립트: AZ별 Pod 조회&#x20;
 
 `get-pods-by-az.sh` 스크립트는 터미널에서 다양한 가용 영역에 걸친 Kubernetes Pod의 분포를 시각화하는 데 도움을 줍니다. [여기](https://github.com/aws-samples/eks-workshop-v2/tree/stable/manifests/modules/observability/resiliency/scripts/get-pods-by-az.sh)에서 스크립트 파일을 볼 수 있습니다.
 
@@ -250,7 +250,7 @@ Retail URL이 작동하기까지 5-10분 정도 걸릴 수 있습니다.
 
 스크립트를 실행하고 가용 영역 전체의 Pod 분포를 보려면 다음을 실행하세요:
 
-```
+```bash
 ~$ timeout 10s ~/$SCRIPT_DIR/get-pods-by-az.sh | head -n 30
  
 ------us-west-2a------

@@ -14,7 +14,7 @@ EKS 클러스터에 Fargate 프로필을 추가하는 것부터 시작해 보겠
 
 다음 명령은 프로필을 생성하며, 이는 몇 분 정도 소요됩니다:
 
-```
+```bash
 ~$ aws eks create-fargate-profile \
     --cluster-name ${EKS_CLUSTER_NAME} \
     --pod-execution-role-arn $FARGATE_IAM_PROFILE_ARN \

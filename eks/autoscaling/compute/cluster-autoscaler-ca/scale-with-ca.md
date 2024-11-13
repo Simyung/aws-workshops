@@ -3,7 +3,7 @@
 이 섹션에서는 모든 애플리케이션 구성 요소를 업데이트하여 복제본 수를 4로 증가시킬 것입니다. 이로 인해 클러스터에서 사용 가능한 것보다 더 많은 리소스가 소비되어 더 많은 컴퓨팅 리소스가 프로비저닝되도록 트리거될 것입니다.
 
 {% code title="~/environment/eks-workshop/modules/autoscaling/compute/cluster-autoscaler/deployment.yaml" %}
-```
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -15,26 +15,26 @@ spec:
 
 이것을 우리 클러스터에 적용해 봅시다:
 
-```
+```bash
 ~$ kubectl apply -k ~/environment/eks-workshop/modules/autoscaling/compute/cluster-autoscaler
 ```
 
 일부 Pod는 Pending 상태가 되어 cluster-autoscaler가 EC2 플릿을 확장하도록 트리거합니다.
 
-```
+```bash
 ~$ kubectl get pods -A -o wide --watch
 ```
 
 cluster-autoscaler 로그를 확인해 봅시다:
 
-```
-kubectl -n kube-system logs \
+```bash
+~$ kubectl -n kube-system logs \
   -f deployment/cluster-autoscaler-aws-cluster-autoscaler
 ```
 
 다음과 같은 새 노드를 추가하는 스케일 아웃 이벤트를 나타내는 cluster-autoscaler에 의해 생성된 로그를 볼 수 있습니다:
 
-```
+```bash
 ...
 ...
 I0411 21:26:52.108599       1 klogx.go:87] Pod ui/ui-68495c748c-dbh22 is unschedulable
@@ -54,7 +54,7 @@ EC2 AWS Management Console을 확인하여 Auto Scaling 그룹이 수요를 충�
 
 또는 kubectl을 사용할 수 있습니다:
 
-```
+```bash
 ~$ kubectl get nodes -l workshop-default=yes
 NAME                                         STATUS   ROLES    AGE     VERSION
 ip-10-42-10-159.us-west-2.compute.internal   Ready    <none>   3d      v1.30-eks-036c24b

@@ -16,11 +16,9 @@ Manage 버튼을 클릭하여 로깅 구성을 변경할 수 있습니다:
 
 <figure><img src="https://eksworkshop.com/assets/images/logging-cluster-enable-control-plane-logging-e98d06a24c0d5589c7c99237a8182772.webp" alt=""><figcaption></figcaption></figure>
 
-
-
 EKS API를 통해 클러스터별로 EKS 컨트롤 플레인 로그를 활성화할 수도 있습니다. 이는 주로 Terraform이나 CloudFormation을 사용하여 구성되지만, 이 실습에서는 AWS CLI를 사용하여 기능을 활성화할 수 있습니다:
 
-```
+```bash
 ~$ aws eks update-cluster-config \
     --region $AWS_REGION \
     --name $EKS_CLUSTER_NAME \

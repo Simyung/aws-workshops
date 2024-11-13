@@ -4,7 +4,7 @@
 
 먼저 클러스터에서 사용 가능한 노드의 현재 상태를 확인해 봅시다:
 
-```
+```bash
 ~$ kubectl get nodes -L kubernetes.io/arch
 NAME                                           STATUS   ROLES    AGE     VERSION                ARCH
 ip-192-168-102-2.us-west-2.compute.internal    Ready    <none>   6h56m   v1.30-eks-036c24b      amd64
@@ -42,7 +42,7 @@ aws eks wait nodegroup-active 명령을 사용하여 특정 EKS 노드 그룹이
 
 새로운 관리형 노드 그룹이 활성화(Active)되면 다음 명령을 실행하세요:
 
-```
+```bash
 ~$ kubectl get nodes \
     --label-columns eks.amazonaws.com/nodegroup,kubernetes.io/arch
  
@@ -57,7 +57,7 @@ ip-10-42-172-231.us-west-2.compute.internal   Ready    <none>   2m5s   v1.30-eks
 
 현재 노드 구성을 살펴보겠습니다. 다음 명령은 우리의 관리형 노드 그룹에 속한 모든 노드의 세부 정보를 나열합니다.
 
-```
+```bash
 ~$ kubectl describe nodes \
     --selector eks.amazonaws.com/nodegroup=graviton
 Name:               ip-10-42-12-233.us-west-2.compute.internal
@@ -88,7 +88,7 @@ Taints:             <none>
 
 다음 aws cli 명령을 사용하여 관리형 노드 그룹에 테인트를 추가해 보겠습니다:
 
-```
+```bash
 ~$ aws eks update-nodegroup-config \
     --cluster-name $EKS_CLUSTER_NAME --nodegroup-name graviton \
     --taints "addOrUpdateTaints=[{key=frontend, value=true, effect=NO_EXECUTE}]"
@@ -111,7 +111,7 @@ Taints:             <none>
 
 노드 그룹이 활성화될 때까지 기다리려면 다음 명령을 실행하세요.
 
-```
+```bash
 ~$ aws eks wait nodegroup-active --cluster-name $EKS_CLUSTER_NAME \
   --nodegroup-name graviton
 ```
@@ -132,7 +132,7 @@ eksctl CLI를 사용하여 관리형 노드 그룹에 테인트를 구성할 수
 
 다음 명령을 사용하여 관리형 노드 그룹에 대해 테인트가 올바르게 구성되었는지 확인할 수 있습니다:
 
-```
+```bash
 ~$ aws eks describe-nodegroup --cluster-name $EKS_CLUSTER_NAME \
   --nodegroup-name graviton \
   | jq .nodegroup.taints
@@ -151,7 +151,7 @@ eksctl CLI를 사용하여 관리형 노드 그룹에 테인트를 구성할 수
 
 kubectl cli 명령으로 확인하면, 테인트가 관련 노드에 올바르게 전파되었음을 확인할 수 있습니다:
 
-```
+```bash
 ~$ kubectl describe nodes \
     --selector eks.amazonaws.com/nodegroup=graviton | grep Taints
 Taints:             frontend=true:NoExecute

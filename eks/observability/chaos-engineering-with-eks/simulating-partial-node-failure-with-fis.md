@@ -44,7 +44,7 @@ AWS FIS에 대한 자세한 정보는 다음을 확인하세요:
 
 부분적인 노드 실패를 시뮬레이션하기 위해 새로운 AWS FIS 실험 템플릿을 생성합니다:
 
-```
+```bash
 ~$ export NODE_EXP_ID=$(aws fis create-experiment-template --cli-input-json '{"description":"NodeDeletion","targets":{"Nodegroups-Target-1":{"resourceType":"aws:eks:nodegroup","resourceTags":{"eksctl.cluster.k8s.io/v1alpha1/cluster-name":"eks-workshop"},"selectionMode":"COUNT(2)"}},"actions":{"nodedeletion":{"actionId":"aws:eks:terminate-nodegroup-instances","parameters":{"instanceTerminationPercentage":"66"},"targets":{"Nodegroups":"Nodegroups-Target-1"}}},"stopConditions":[{"source":"none"}],"roleArn":"'$FIS_ROLE_ARN'","tags":{"ExperimentSuffix": "'$RANDOM_SUFFIX'"}}' --output json | jq -r '.experimentTemplate.id')
 ```
 
@@ -52,7 +52,7 @@ AWS FIS에 대한 자세한 정보는 다음을 확인하세요:
 
 FIS 실험을 실행하여 노드 실패를 시뮬레이션하고 반응을 모니터링합니다:
 
-```
+```bash
 ~$ aws fis start-experiment --experiment-template-id $NODE_EXP_ID --output json && timeout --preserve-status 240s ~/$SCRIPT_DIR/get-pods-by-az.sh
  
 ------us-west-2a------
@@ -85,7 +85,7 @@ FIS를 사용하지 않은 노드 실패와 달리 소매점 URL은 계속 작�
 {% hint style="info" %}
 노드를 확인하고 Pod를 재조정하려면 다음을 실행할 수 있습니다:
 
-```
+```bash
 ~$ EXPECTED_NODES=3 && while true; do ready_nodes=$(kubectl get nodes --no-headers | grep " Ready" | wc -l); if [ "$ready_nodes" -eq "$EXPECTED_NODES" ]; then echo "All $EXPECTED_NODES expected nodes are ready."; echo "Listing the ready nodes:"; kubectl get nodes | grep " Ready"; break; else echo "Waiting for all $EXPECTED_NODES nodes to be ready... (Currently $ready_nodes are ready)"; sleep 10; fi; done
 ~$ kubectl delete pod --grace-period=0 --force -n catalog -l app.kubernetes.io/component=mysql
 ~$ kubectl delete pod --grace-period=0 --force -n carts -l app.kubernetes.io/component=service
@@ -107,7 +107,7 @@ FIS를 사용하지 않은 노드 실패와 달리 소매점 URL은 계속 작�
 
 부분적인 노드 실패 전반에 걸쳐 소매점 애플리케이션이 계속 운영되는지 확인합니다. 다음 명령을 사용하여 가용성을 확인하세요:
 
-```
+```bash
 ~$ wait-for-lb $(kubectl get ingress -n ui -o jsonpath='{.items[0].status.loadBalancer.ingress[0].hostname}')
  
 Waiting for k8s-ui-ui-5ddc3ba496-721427594.us-west-2.elb.amazonaws.com...
@@ -146,3 +146,4 @@ AWS FIS를 이용한 이러한 실험의 장점:
 4. 제어된 카오스: FIS는 프로덕션 시스템에 의도하지 않은 손상을 주지 않고 카오스 엔지니어링 실험을 수행할 수 있는 안전하고 관리된 환경을 제공합니다.
 
 이러한 실험을 정기적으로 실행하면 시스템의 복원력에 대한 신뢰를 구축하고 아키텍처 및 운영 절차를 지속적으로 개선하기 위한 귀중한 인사이트를 얻을 수 있습니다.
+

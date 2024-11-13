@@ -8,7 +8,7 @@
 * 각각 초당 5개의 쿼리 전송&#x20;
 * 최대 60분 동안 실행&#x20;
 
-```
+```bash
 ~$ kubectl run load-generator \
   --image=williamyeh/hey:latest \
   --restart=Never -- -c 10 -q 5 -z 60m http://ui.ui.svc/home
@@ -18,7 +18,7 @@
 
 이제 애플리케이션에 요청이 도달하고 있으므로 HPA 리소스를 관찰하여 진행 상황을 따라갈 수 있습니다:
 
-```
+```bash
 ~$ kubectl get hpa ui -n ui --watch
 NAME   REFERENCE       TARGETS   MINPODS   MAXPODS   REPLICAS   AGE
 ui     Deployment/ui   69%/80%   1         4         1          117m
@@ -31,8 +31,9 @@ ui     Deployment/ui   84%/80%   1         4         3          118m
 
 오토스케일링 동작에 만족하면 Ctrl+C를 사용하여 관찰을 종료하고 다음과 같이 부하 생성기를 중지할 수 있습니다:
 
-```
+```bash
 ~$ kubectl delete pod load-generator
 ```
 
 부하 생성기가 종료되면 HPA가 구성에 따라 복제본 수를 천천히 최소 수로 줄이는 것을 확인할 수 있습니다.
+

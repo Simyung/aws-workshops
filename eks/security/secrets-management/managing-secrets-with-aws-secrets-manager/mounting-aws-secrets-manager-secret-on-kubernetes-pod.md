@@ -7,7 +7,7 @@
 * `DB_USER`&#x20;
 * `DB_PASSWORD`
 
-```
+```bash
 ~$ kubectl -n catalog get deployment catalog -o yaml | yq '.spec.template.spec.containers[] | .env'
  
 - name: DB_USER
@@ -24,7 +24,7 @@
 
 `catalog` Deployment는 현재 `/tmp`에 마운트된 `emptyDir` 외에는 추가 `volume`이나 `volumeMounts`가 없습니다.
 
-```
+```bash
 ~$ kubectl -n catalog get deployment catalog -o yaml | yq '.spec.template.spec.volumes'
 - emptyDir:
     medium: Memory
@@ -39,7 +39,7 @@ AWS Secrets Manager에 저장된 시크릿을 자격 증명의 소스로 사용�
 {% tabs %}
 {% tab title="Kustomize Patch" %}
 {% code title="~/environment/eks-workshop/modules/security/secrets-manager/mounting-secrets/kustomization.yaml" %}
-```
+```yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
@@ -196,7 +196,7 @@ spec:
 
 이전에 검증한 SecretProviderClass를 사용하여 AWS Secrets Manager 시크릿을 CSI 드라이버로 Pod 내부의 `/etc/catalog-secret` 마운트 경로에 마운트할 것입니다. 이렇게 하면 AWS Secrets Manager가 저장된 시크릿 내용을 Amazon EKS와 동기화하고, Pod에서 환경 변수로 사용할 수 있는 Kubernetes Secret을 생성하게 됩니다.
 
-```
+```bash
 ~$ kubectl kustomize ~/environment/eks-workshop/modules/security/secrets-manager/mounting-secrets/ \
   | envsubst | kubectl apply -f-
 ~$ kubectl rollout status -n catalog deployment/catalog --timeout=120s
@@ -206,7 +206,7 @@ spec:
 
 이제 Deployment에는 CSI Secret Store Driver를 사용하는 새로운 `volume`과 해당 `volumeMount`가 있으며, 이는 `/etc/catalog-secrets`에 마운트됩니다.
 
-```
+```bash
 ~$ kubectl -n catalog get deployment catalog -o yaml | yq '.spec.template.spec.volumes'
 - csi:
     driver: secrets-store.csi.k8s.io
@@ -229,7 +229,7 @@ spec:
 
 Pod 내부에 마운트된 Secret의 내용을 살펴보겠습니다:
 
-```
+```bash
 ~$ kubectl -n catalog exec deployment/catalog -- ls /etc/catalog-secret/
 eks-workshop-catalog-secret  password  username
 
@@ -251,7 +251,7 @@ default_password
 
 이제 환경 변수는 SecretProviderClass를 통해 CSI Secret Store 드라이버가 자동으로 생성한 새로운 `catalog-secret`에서 가져옵니다.
 
-```
+```bash
 ~$ kubectl -n catalog get deployment catalog -o yaml | yq '.spec.template.spec.containers[] | .env'
 - name: DB_USER
   valueFrom:

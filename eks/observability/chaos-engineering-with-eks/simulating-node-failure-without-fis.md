@@ -7,7 +7,7 @@
 `node-failure.sh` 스크립트는 노드 실패를 시뮬레이션하기 위해 EC2 인스턴스를 수동으로 중지합니다. 다음은 우리가 사용할 스크립트입니다:
 
 {% code title="~/environment/eks-workshop/modules/observability/resiliency/scripts/node-failure.sh" %}
-```
+```bash
 #!/bin/bash
 # node-failure.sh - Simulates node failure by stopping an EC2 instance with running pods
 
@@ -43,7 +43,7 @@ echo "Instance $instance_id is being stopped. Monitoring pod distribution..."
 
 노드 실패를 시뮬레이션하고 그 영향을 모니터링하려면 다음 명령을 실행하세요:
 
-```
+```bash
 ~$ ~/$SCRIPT_DIR/node-failure.sh && timeout --preserve-status 180s  ~/$SCRIPT_DIR/get-pods-by-az.sh
  
 ------us-west-2a------
@@ -86,7 +86,7 @@ echo "Instance $instance_id is being stopped. Monitoring pod distribution..."
 
 모든 노드가 준비되면 Pod를 재배포하여 노드 간에 균형이 잡히도록 합니다:
 
-```
+```bash
 ~$ kubectl delete pod --grace-period=0 --force -n catalog -l app.kubernetes.io/component=mysql
 ~$ kubectl delete pod --grace-period=0 --force -n carts -l app.kubernetes.io/component=service
 ~$ kubectl delete pod --grace-period=0 --force -n carts -l app.kubernetes.io/component=dynamodb
@@ -114,7 +114,7 @@ echo "Instance $instance_id is being stopped. Monitoring pod distribution..."
 
 노드 실패를 시뮬레이션한 후, 소매점 애플리케이션이 여전히 접근 가능한지 확인할 수 있습니다. 다음 명령을 사용하여 가용성을 확인하세요:
 
-```
+```bash
 ~$ wait-for-lb $(kubectl get ingress -n ui -o jsonpath='{.items[0].status.loadBalancer.ingress[0].hostname}')
  
 Waiting for k8s-ui-ui-5ddc3ba496-721427594.us-west-2.elb.amazonaws.com...
@@ -126,13 +126,13 @@ You can now access http://k8s-ui-ui-5ddc3ba496-721427594.us-west-2.elb.amazonaws
 {% hint style="danger" %}
 Retail URL이 작동하기까지 10분 정도 걸릴 수 있습니다. `ctrl` + `z`를 눌러 작업을 백그라운드로 이동시켜 선택적으로 실습을 계속할 수 있습니다. 다시 접근하려면 다음을 입력하세요:
 
-```
+```bash
 ~$ fg %1 
 ```
 
 `wait-for-lb`가 시간 초과될 때까지 URL이 작동하지 않을 수 있습니다. 이 경우 명령을 다시 실행하면 작동해야 합니다:
 
-```
+```bash
 ~$ wait-for-lb $(kubectl get ingress -n ui -o jsonpath='{.items[0].status.loadBalancer.ingress[0].hostname}')
 ```
 {% endhint %}

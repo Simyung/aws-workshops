@@ -11,14 +11,14 @@ Amazon EKS 클러스터를 생성할 때마다 플랫폼에서 리소스를 사�
 * 액세스 엔트리(인증): Amazon EKS 클러스터에 인증할 수 있는 AWS IAM 주체(사용자 또는 역할)와 직접 연결된 클러스터 자격 증명입니다. 액세스 엔트리는 클러스터에 바인딩되므로 클러스터가 생성되고 클러스터 액세스 관리 API를 인증 방법으로 사용하도록 설정되지 않은 경우 해당 클러스터에 대한 액세스 엔트리가 존재하지 않습니다.
 * 액세스 정책(권한 부여): Amazon EKS 클러스터에서 작업을 수행할 수 있는 액세스 엔트리의 권한을 제공하는 Amazon EKS 특정 정책입니다. 액세스 정책은 계정 기반 리소스이므로 클러스터가 배포되지 않은 경우에도 AWS 계정에 존재합니다. 현재 Amazon EKS는 몇 가지 사전 정의된 AWS 관리형 정책만 지원합니다. 액세스 정책은 IAM 엔터티가 아니며 기본 Kubernetes 클러스터 역할을 기반으로 Amazon EKS에 의해 정의되고 관리되며, 다음과 같이 매핑됩니다.
 
-| Access Policy               | RBAC            | Description                                                                                                           |
-| --------------------------- | --------------- | --------------------------------------------------------------------------------------------------------------------- |
-| AmazonEKSClusterAdminPolicy | `cluster-admin` | Grants administrator access to a cluster                                                                              |
-| AmazonEKSAdminPolicy        | `admin`         | Grants most permissions to resources, usually scoped to a Namespace                                                   |
-| AmazonEKSAdminViewPolicy    | `view`          | Grants access to list/view all resources in a cluster, including Secrets. Basically a view policy cluster-wide scoped |
-| AmazonEKSEditPolicy         | `edit`          | Grants access to edit most Kubernetes resources, usually scoped to a Namespace                                        |
-| AmazonEKSViewPolicy         | `view`          | Grants access to list/view view most Kubernetes resources, usually scoped to a Namespace                              |
-| AmazonEMRJobPolicy          | N/A             | Custom access to run Amazon EMR Jobs on Amazon EKS Clusters                                                           |
+| Access Policy               | RBAC            | Description                                                                      |
+| --------------------------- | --------------- | -------------------------------------------------------------------------------- |
+| AmazonEKSClusterAdminPolicy | `cluster-admin` | 클러스터에 대한 관리자 접근 권한을 부여합니다.                                                       |
+| AmazonEKSAdminPolicy        | `admin`         | 일반적으로 네임스페이스 범위 내에서 리소스에 대한 대부분의 권한을 부여합니다                                       |
+| AmazonEKSAdminViewPolicy    | `view`          | 시크릿을 포함하여 클러스터의 모든 리소스를 조회/보기할 수 있는 권한을 부여합니다. 기본적으로 클러스터 전체 범위에서 적용되는 보기 정책입니다. |
+| AmazonEKSEditPolicy         | `edit`          | 대부분의 Kubernetes 리소스를 편집할 수 있는 권한을 부여하며, 일반적으로 네임스페이스 범위로 한정됩니다.                  |
+| AmazonEKSViewPolicy         | `view`          | 대부분의 Kubernetes 리소스를 조회/확인할 수 있는 권한을 부여하며, 일반적으로 특정 네임스페이스로 범위가 지정됩니다.           |
+| AmazonEMRJobPolicy          | N/A             | Amazon EKS 클러스터에서 Amazon EMR 작업을 실행하기 위한 사용자 지정 액세스                              |
 
 계정에서 사용 가능한 액세스 정책 목록을 확인하려면 다음 명령을 실행하세요:
 
@@ -59,4 +59,5 @@ Amazon EKS 클러스터를 생성할 때마다 플랫폼에서 리소스를 사�
 
 아래 다이어그램은 AWS IAM 주체가 Amazon EKS 클러스터에 대한 인증 및 권한 부여를 제공하기 위해 클러스터 액세스 관리 API가 따르는 워크플로우를 보여줍니다.
 
-<figure><img src="../../.gitbook/assets/image (2) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (2) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+

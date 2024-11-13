@@ -131,7 +131,7 @@ ArgoCD UI에서 `Refresh`과 `Sync`를 클릭하거나, `argocd` CLI를 사용�
 ~$ argocd app sync ui
 ```
 
-<figure><img src="../../../../.gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../../.gitbook/assets/image (2) (1).png" alt=""><figcaption></figcaption></figure>
 
 확인을 위해 다음 명령을 실행하세요:
 

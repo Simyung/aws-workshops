@@ -6,8 +6,8 @@
 
 리소스에 대해 `kubectl describe`를 실행한 적이 있다면 이미 Kubernetes 이벤트를 사용해 본 적이 있습니다. 아래와 같이 `kubectl describe`의 출력 마지막 섹션에 리소스와 관련된 Kubernetes 이벤트가 표시됩니다.
 
-```
-kubectl describe pod nginx
+```bash
+~$ kubectl describe pod nginx
 ...
 Events:
   Type    Reason     Age   From               Message
@@ -27,7 +27,7 @@ Kubernetes 이벤트는 지속적으로 생성되지만 클러스터 내에서�
 
 Kubernetes 이벤트 익스포터를 배포하고 OpenSearch 도메인으로 이벤트를 보내도록 구성합니다. 기본 구성은 여기에서 사용할 수 있습니다. 이전에 검색한 OpenSearch 자격 증명을 사용하여 내보내기를 구성합니다. 두 번째 명령은 Kubernetes 이벤트 포드가 실행 중인지 확인합니다.
 
-```
+```bash
 ~$ helm install events-to-opensearch \
     oci://registry-1.docker.io/bitnamicharts/kubernetes-event-exporter \
     --namespace opensearch-exporter --create-namespace \
@@ -51,7 +51,7 @@ events-to-opensearch-kubernetes-event-exporter-67fc698978-2f9wc   1/1     Runnin
 
 이제 세 개의 배포(`scenario-a, scenario-b 및 scenario-c`)를 `test` 네임스페이스 내에 시작하여 `Normal` 및 `Warning` 이벤트를 보여주기 위해 추가 Kubernetes 이벤트를 생성할 것입니다. 각 배포에는 의도적으로 오류가 포함되어 있습니다.
 
-```
+```bash
 ~$ kubectl apply -k ~/environment/eks-workshop/modules/observability/opensearch/scenarios/events/base
 namespace/test created
 secret/some-secret created
@@ -68,7 +68,7 @@ deployment.apps/scenario-c created
 
 이전 페이지에서 사용한 OpenSearch 대시보드로 돌아가 OpenSearch Kubernetes 이벤트 대시보드를 탐색합니다. 이전에 본 대시보드 랜딩 페이지에서 Kubernetes 이벤트 대시보드에 접근하거나 아래 명령을 사용하여 좌표를 얻을 수 있습니다:
 
-```
+```bash
 ~$ printf "\nKubernetes Events dashboard: https://%s/_dashboards/app/dashboards#/view/06cca640-6a05-11ee-bdf2-9d2ccb0785e7 \
         \nUserName: %q \nPassword: %q \n\n" \
         "$OPENSEARCH_HOST" "$OPENSEARCH_USER" "$OPENSEARCH_PASSWORD"
@@ -123,7 +123,7 @@ scenario-c: 대시보드에는 `FailedScheduling`의 이유와 `0/3 nodes are av
 
 문제를 해결하고 OpenSearch 대시보드를 다시 방문하여 변경 사항을 확인하세요
 
-```
+```bash
 ~$ kubectl apply -k ~/environment/eks-workshop/modules/observability/opensearch/scenarios/events/fix
 namespace/test unchanged
 secret/some-secret unchanged
@@ -142,7 +142,7 @@ OpenSearch 대시보드로 돌아가서 이전 문제가 해결되었음을 확�
 
 클러스터에서 가장 최근의 5개 이벤트를 검색합니다.
 
-```
+```bash
 ~$ kubectl get events --sort-by='.lastTimestamp' -A | head -5
 NAMESPACE             LAST SEEN   TYPE      REASON              OBJECT                                                                 MESSAGE
 catalog               44m         Normal    SuccessfulCreate    replicaset/catalog-857f89d57d                                          Created pod: catalog-857f89d57d-xl4xc
@@ -154,7 +154,7 @@ ui                    44m         Normal    Scheduled           pod/ui-5dfb7d65f
 
 경고 또는 실패 상태의 이벤트를 확인합니다.
 
-```
+```bash
 ~$ kubectl get events --sort-by='.lastTimestamp' --field-selector type!=Normal -A | head -5
 NAMESPACE   LAST SEEN   TYPE      REASON             OBJECT                            MESSAGE
 orders      44m         Warning   Unhealthy          pod/orders-5696b978f5-gk2d7       Readiness probe failed: Get "http://10.42.127.4:8080/actuator/health/liveness": dial tcp 10.42.127.4:8080: connect: connection refused
@@ -166,7 +166,7 @@ test        6m28s       Warning   Failed             pod/scenario-b-cff56c84-xn9
 
 가장 최근의 이벤트(모든 네임스페이스에 걸쳐)를 JSON 형식으로 확인합니다. 출력이 OpenSearch 인덱스 내의 세부 정보와 매우 유사함을 주목하세요. (OpenSearch 문서에는 OpenSearch 내 인덱싱을 용이하게 하는 추가 필드가 있습니다.)
 
-<pre><code><strong>~$ kubectl get events --sort-by='.lastTimestamp' -o json -A | jq '.items[-1]'
+<pre class="language-bash"><code class="lang-bash"><strong>~$ kubectl get events --sort-by='.lastTimestamp' -o json -A | jq '.items[-1]'
 </strong>{
   "apiVersion": "v1",
   "count": 1,
@@ -199,14 +199,4 @@ test        6m28s       Warning   Failed             pod/scenario-b-cff56c84-xn9
   "type": "Normal"
 }
 </code></pre>
-
-
-
-
-
-
-
-
-
-
 

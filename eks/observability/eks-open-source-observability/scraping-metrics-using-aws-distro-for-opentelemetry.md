@@ -14,7 +14,7 @@ Amazon EKS 클러스터에서 메트릭을 수집하기 위해 `OpenTelemetryCol
 이제 ADOT 수집기에 필요한 권한을 허용하는 리소스를 생성해 보겠습니다. 먼저 수집기에 Kubernetes API에 접근할 수 있는 권한을 부여하는 ClusterRole부터 시작하겠습니다:
 
 {% code title="~/environment/eks-workshop/modules/observability/oss-metrics/adot/clusterrole.yaml" %}
-```
+```yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -50,7 +50,7 @@ rules:
 
 `AmazonPrometheusRemoteWriteAccess` 관리형 IAM 정책을 사용하여 서비스 계정용 IAM 역할을 통해 수집기에 필요한 IAM 권한을 제공할 것입니다:
 
-```
+```bash
 ~$ aws iam list-attached-role-policies \
   --role-name $EKS_CLUSTER_NAME-adot-collector | jq .
 {
@@ -66,7 +66,7 @@ rules:
 이 IAM 역할은 수집기의 ServiceAccount에 추가될 것입니다:
 
 {% code title="~/environment/eks-workshop/modules/observability/oss-metrics/adot/serviceaccount.yaml" %}
-```
+```yaml
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -78,7 +78,7 @@ metadata:
 
 리소스를 생성합니다:
 
-```
+```bash
 ~$ kubectl kustomize ~/environment/eks-workshop/modules/observability/oss-metrics/adot \
   | envsubst | kubectl apply -f-
 ~$ kubectl rollout status -n other deployment/adot-collector --timeout=120s
@@ -86,13 +86,13 @@ metadata:
 
 수집기 사양은 여기에 모두 표시하기에는 너무 길지만, 다음과 같이 볼 수 있습니다:
 
-```
+```bash
 ~$ kubectl -n other get opentelemetrycollector adot -o yaml
 ```
 
 이를 섹션별로 나누어 배포된 내용을 더 잘 이해해 보겠습니다. 이것은 OpenTelemetry 수집기 구성입니다:
 
-```
+```bash
 ~$ kubectl -n other get opentelemetrycollector adot -o jsonpath='{.spec.config}' | yq
 ```
 
@@ -107,13 +107,13 @@ metadata:
 
 이 수집기는 또한 하나의 수집기 에이전트가 실행되는 Deployment로 실행되도록 구성되어 있습니다:
 
-```
+```bash
 ~$ kubectl -n other get opentelemetrycollector adot -o jsonpath='{.spec.mode}{"\n"}'
 ```
 
 실행 중인 ADOT 수집기 Pod를 검사하여 이를 확인할 수 있습니다:
 
-```
+```bash
 ~$ kubectl get pods -n other
 NAME                              READY   STATUS    RESTARTS   AGE
 adot-collector-6f6b8867f6-lpjb7   1/1     Running   2          11d

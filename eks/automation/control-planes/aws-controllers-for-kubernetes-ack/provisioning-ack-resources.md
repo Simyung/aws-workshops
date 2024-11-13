@@ -2,7 +2,7 @@
 
 샘플 애플리케이션의 **Carts** 컴포넌트는 기본적으로 EKS 클러스터 내에서 `carts-dynamodb`라는 파드로 실행되는 DynamoDB 로컬 인스턴스를 사용합니다. 이번 실습에서는 Kubernetes 커스텀 리소스를 사용하여 애플리케이션을 위한 Amazon DynamoDB 클라우드 기반 테이블을 프로비저닝하고, **Carts** 배포가 로컬 복사본 대신 이 새로 프로비저닝된 DynamoDB 테이블을 사용하도록 구성할 것입니다.
 
-<figure><img src="../../../.gitbook/assets/image (4).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (4) (1).png" alt=""><figcaption></figcaption></figure>
 
 Kubernetes 매니페스트를 사용하여 DynamoDB 테이블을 생성하는 방법을 살펴보겠습니다:
 

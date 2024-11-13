@@ -74,7 +74,7 @@ spec:
 {% endtab %}
 
 {% tab title="Diff" %}
-```yaml
+```diff
  apiVersion: v1
  kind: Service
  metadata:
@@ -91,13 +91,13 @@ spec:
 
 Kustomize를 사용하여 매니페스트를 적용합니다:
 
-```
+```bash
 ~$ kubectl apply -k ~/environment/eks-workshop/modules/exposing/load-balancer/ip-mode
 ```
 
 로드 밸런서 구성이 업데이트되는 데 몇 분 정도 걸릴 것입니다. 다음 명령을 실행하여 주석이 업데이트되었는지 확인하세요:
 
-```
+```bash
 ~$ kubectl describe service/ui-nlb -n ui
 ...
 Annotations:              service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
@@ -106,7 +106,7 @@ Annotations:              service.beta.kubernetes.io/aws-load-balancer-nlb-targe
 
 이전과 동일한 URL을 사용하여 애플리케이션에 액세스할 수 있어야 합니다. 이제 NLB가 IP 모드를 사용하여 애플리케이션을 노출하고 있습니다.
 
-```
+```bash
 ~$ ALB_ARN=$(aws elbv2 describe-load-balancers --query 'LoadBalancers[?contains(LoadBalancerName, `k8s-ui-uinlb`) == `true`].LoadBalancerArn' | jq -r '.[0]')
 ~$ TARGET_GROUP_ARN=$(aws elbv2 describe-target-groups --load-balancer-arn $ALB_ARN | jq -r '.TargetGroups[0].TargetGroupArn')
 ~$ aws elbv2 describe-target-health --target-group-arn $TARGET_GROUP_ARN
@@ -133,14 +133,14 @@ Annotations:              service.beta.kubernetes.io/aws-load-balancer-nlb-targe
 
 ui 구성 요소의 복제본을 3개로 늘려 보겠습니다:
 
-```
+```bash
 ~$ kubectl scale -n ui deployment/ui --replicas=3
 ~$ kubectl wait --for=condition=Ready pod -n ui -l app.kubernetes.io/name=ui --timeout=60s
 ```
 
 이제 로드 밸런서 대상을 다시 확인해 보겠습니다:
 
-```
+```bash
 ~$ ALB_ARN=$(aws elbv2 describe-load-balancers --query 'LoadBalancers[?contains(LoadBalancerName, `k8s-ui-uinlb`) == `true`].LoadBalancerArn' | jq -r '.[0]')
 ~$ TARGET_GROUP_ARN=$(aws elbv2 describe-target-groups --load-balancer-arn $ALB_ARN | jq -r '.TargetGroups[0].TargetGroupArn')
 ~$ aws elbv2 describe-target-health --target-group-arn $TARGET_GROUP_ARN
@@ -191,6 +191,7 @@ ui 구성 요소의 복제본을 3개로 늘려 보겠습니다:
 
 애플리케이션이 여전히 제대로 작동하는지 확인하려면 다음 명령을 실행하세요. 그렇지 않으면 다음 모듈로 진행할 수 있습니다.
 
-```
+```bash
 ~$ wait-for-lb $(kubectl get service -n ui ui-nlb -o jsonpath="{.status.loadBalancer.ingress[*].hostname}{'\n'}")
 ```
+

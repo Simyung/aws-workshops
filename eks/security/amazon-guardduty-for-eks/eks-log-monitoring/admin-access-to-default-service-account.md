@@ -10,7 +10,7 @@
 
 몇 분 내에 [GuardDuty Findings 콘솔](https://console.aws.amazon.com/guardduty/home#/findings)에서 `Policy:Kubernetes/AdminAccessToDefaultServiceAccount` 발견 사항을 확인할 수 있습니다. 발견 사항의 세부 정보, 조치 및 탐지 조사를 분석하는 데 시간을 할애하십시오.
 
-<figure><img src="../../../.gitbook/assets/image (4) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (4) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 다음 명령을 실행하여 문제가 되는 Role Binding을 삭제하십시오.
 

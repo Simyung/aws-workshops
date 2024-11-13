@@ -16,7 +16,7 @@ external-secrets-sa   0         7m
 
 이 오퍼레이터는 external-secrets-sa라는 ServiceAccount를 사용하며, 이는 IRSA를 통해 IAM 역할과 연결되어 AWS Secrets Manager에서 시크릿을 검색할 수 있는 접근 권한을 제공합니다:
 
-```
+```bash
 ~$ kubectl -n external-secrets describe sa external-secrets-sa | grep Annotations
 Annotations:         eks.amazonaws.com/role-arn: arn:aws:iam::1234567890:role/eks-workshop-external-secrets-sa-irsa
 ```
@@ -193,12 +193,10 @@ spec:
                  name: catalog
            image: public.ecr.aws/aws-containers/retail-store-sample-catalog:0.4.0
 ```
-
-
 {% endtab %}
 {% endtabs %}
 
-```
+```bash
 ~$ kubectl kustomize ~/environment/eks-workshop/modules/security/secrets-manager/external-secrets/ \
   | envsubst | kubectl apply -f-
 ~$ kubectl rollout status -n catalog deployment/catalog --timeout=120s
@@ -206,7 +204,7 @@ spec:
 
 새로운 `ExternalSecret` 리소스를 살펴보겠습니다:
 
-```
+```bash
 ~$ kubectl -n catalog get externalsecrets.external-secrets.io
 NAME                      STORE                  REFRESH INTERVAL   STATUS         READY
 catalog-external-secret   cluster-secret-store   1h                 SecretSynced   True
@@ -214,7 +212,7 @@ catalog-external-secret   cluster-secret-store   1h                 SecretSynced
 
 `SecretSynced` 상태는 AWS Secrets Manager로부터의 성공적인 동기화를 나타냅니다. 리소스 사양을 살펴보겠습니다:
 
-```
+```bash
 ~$ kubectl -n catalog get externalsecrets.external-secrets.io catalog-external-secret -o yaml | yq '.spec'
 dataFrom:
   - extract:
@@ -234,7 +232,7 @@ target:
 
 ExternalSecret을 생성하면 자동으로 해당하는 Kubernetes 시크릿이 생성됩니다:
 
-```
+```bash
 ~$ kubectl -n catalog get secrets
 NAME                      TYPE     DATA   AGE
 catalog-db                Opaque   2      21h
@@ -244,7 +242,7 @@ catalog-secret            Opaque   2      5h40m
 
 이 시크릿은 External Secrets Operator가 소유합니다:
 
-```
+```bash
 ~$ kubectl -n catalog get secret catalog-external-secret -o yaml | yq '.metadata.ownerReferences'
 - apiVersion: external-secrets.io/v1beta1
   blockOwnerDeletion: true
@@ -256,7 +254,7 @@ catalog-secret            Opaque   2      5h40m
 
 `catalog` 파드가 새로운 시크릿 값을 사용하고 있는지 확인할 수 있습니다:
 
-```
+```bash
 ~$ kubectl -n catalog get pods
 NAME                       READY   STATUS    RESTARTS   AGE
 catalog-777c4d5dc8-lmf6v   1/1     Running   0          1m
@@ -279,3 +277,4 @@ catalog-mysql-0            1/1     Running   0          24h
 **AWS Secrets and Configuration Provider(ASCP)**와 **External Secrets Operator(ESO)** 사이에는 AWS Secrets Manager 시크릿 관리를 위한 단일 "최선의" 선택이 없습니다.
 
 각 도구는 고유한 장점이 있습니다. ASCP는 AWS Secrets Manager의 시크릿을 환경 변수로 노출하지 않고 볼륨으로 직접 마운트할 수 있지만, 볼륨 관리가 필요합니다. ESO는 Kubernetes Secrets 라이프사이클 관리를 단순화하고 클러스터 전체 SecretStore 기능을 제공하지만, 볼륨 마운팅을 지원하지 않습니다. 특정 사용 사례에 따라 결정해야 하며, 두 도구를 모두 사용하면 시크릿 관리에서 최대한의 유연성과 보안을 제공할 수 있습니다.
+

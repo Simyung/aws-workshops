@@ -2,7 +2,7 @@
 
 현재 우리 클러스터에는 수평 Pod 오토스케일링을 가능하게 하는 리소스가 없습니다. 다음 명령으로 이를 확인할 수 있습니다:
 
-```
+```bash
 ~$ kubectl get hpa -A
 No resources found
 ```
@@ -12,7 +12,7 @@ No resources found
 {% tabs %}
 {% tab title="Kustomize Patch" %}
 {% code title="~/environment/eks-workshop/modules/autoscaling/workloads/hpa/deployment.yaml" %}
-```
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -30,7 +30,7 @@ spec:
 {% endtab %}
 
 {% tab title="Deployment/ui" %}
-```
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -108,7 +108,7 @@ spec:
 {% endtab %}
 
 {% tab title="Diff" %}
-```
+```diff
                name: http
                protocol: TCP
            resources:
@@ -125,7 +125,7 @@ spec:
 다음으로, HPA가 우리의 워크로드를 어떻게 스케일링할지 결정하는 데 사용할 매개변수를 정의하는 HorizontalPodAutoscaler 리소스를 생성해야 합니다.
 
 {% code title="~/environment/eks-workshop/modules/autoscaling/workloads/hpa/hpa.yaml" lineNumbers="true" %}
-```
+```yaml
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
@@ -149,6 +149,7 @@ spec:
 
 이 구성을 적용해 봅시다:
 
-```
+```bash
 ~$ kubectl apply -k ~/environment/eks-workshop/modules/autoscaling/workloads/hpa
 ```
+

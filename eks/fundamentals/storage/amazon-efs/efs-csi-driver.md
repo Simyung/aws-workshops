@@ -8,7 +8,7 @@ EKS 클러스터에서 Amazon EFS를 동적 프로비저닝과 함께 활용하�
 
 보안 향상과 관리 간소화를 위해 Amazon EFS CSI 드라이버를 Amazon EKS 애드온으로 실행할 수 있습니다. 필요한 IAM 역할이 이미 생성되어 있으므로, 우리는 애드온 설치를 진행할 수 있습니다:
 
-```
+```bash
 ~$ aws eks create-addon --cluster-name $EKS_CLUSTER_NAME --addon-name aws-efs-csi-driver \
   --service-account-role-arn $EFS_CSI_ADDON_ROLE
 ~$ aws eks wait addon-active --cluster-name $EKS_CLUSTER_NAME --addon-name aws-efs-csi-driver
@@ -16,7 +16,7 @@ EKS 클러스터에서 Amazon EFS를 동적 프로비저닝과 함께 활용하�
 
 EKS 클러스터에 애드온이 생성한 것을 살펴보겠습니다. 예를 들어, 클러스터의 각 노드에서 pod를 실행하는 DaemonSet입니다:
 
-```
+```bash
 ~$ kubectl get daemonset efs-csi-node -n kube-system
 NAME           DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR                 AGE
 efs-csi-node   3         3         3       3            3           kubernetes.io/os=linux        47s
@@ -26,7 +26,7 @@ EFS CSI 드라이버는 동적 및 정적 프로비저닝을 모두 지원합니
 
 EFS 파일 시스템이 마운트 대상 및 필요한 보안 그룹과 함께 우리를 위해 프로비저닝되었습니다. 이 보안 그룹에는 EFS 마운트 포인트로의 NFS 트래픽을 허용하는 인바운드 규칙이 포함되어 있습니다. 나중에 필요한 파일 시스템 ID를 가져오겠습니다:
 
-```
+```bash
 ~$ export EFS_ID=$(aws efs describe-file-systems --query "FileSystems[?Name=='$EKS_CLUSTER_NAME-efs-assets'] | [0].FileSystemId" --output text)
 ~$ echo $EFS_ID
 fs-061cb5c5ed841a6b0
@@ -37,7 +37,7 @@ fs-061cb5c5ed841a6b0
 Kustomize를 사용하여 스토리지 클래스를 생성하고 `EFS_ID` 환경 변수를 `filesystemid` 매개변수에 주입하겠습니다:
 
 {% code title="~/environment/eks-workshop/modules/fundamentals/storage/efs/storageclass/efsstorageclass.yaml" %}
-```
+```yaml
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
@@ -52,7 +52,7 @@ parameters:
 
 kustomization을 적용합니다:
 
-```
+```bash
 ~$ kubectl kustomize ~/environment/eks-workshop/modules/fundamentals/storage/efs/storageclass \
   | envsubst | kubectl apply -f-
 storageclass.storage.k8s.io/efs-sc created
@@ -60,7 +60,7 @@ storageclass.storage.k8s.io/efs-sc created
 
 이제 StorageClass를 살펴보겠습니다. EFS CSI 드라이버를 프로비저너로 사용하고 있으며, 이전에 내보낸 파일 시스템 ID로 EFS 액세스 포인트 프로비저닝 모드로 구성되어 있음을 주목하세요:
 
-```
+```bash
 ~$ kubectl get storageclass
 NAME            PROVISIONER             RECLAIMPOLICY   VOLUMEBINDINGMODE      ALLOWVOLUMEEXPANSION   AGE
 efs-sc          efs.csi.aws.com         Delete          Immediate              false                  8m29s

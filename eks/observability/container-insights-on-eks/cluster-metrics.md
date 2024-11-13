@@ -4,14 +4,12 @@
 
 전체 수집기 매니페스트는 아래에서 볼 수 있으며, 이를 나눠서 설명하겠습니다.
 
-&#x20;
-
 <details>
 
 <summary>전체 수집기 매니페스트 펼치기</summary>
 
 {% code title="~/environment/eks-workshop/modules/observability/container-insights/adot/opentelemetrycollector.yaml" lineNumbers="true" %}
-```
+```yaml
 apiVersion: opentelemetry.io/v1beta1
 kind: OpenTelemetryCollector
 metadata:
@@ -229,7 +227,7 @@ OpenTelemetry 수집기는 수집하는 텔레메트리에 따라 여러 가지 
 
 먼저 [AWS Container Insights Receiver](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/9da7fea0097b991b771e0999bc4cd930edb221e2/receiver/awscontainerinsightreceiver/README.md)를 구성하여 노드에서 메트릭을 수집합니다.
 
-```
+```yaml
 processors:
   batch/metrics:
     timeout: 60s
@@ -294,7 +292,7 @@ metadata:
 
 DaemonSet에 의해 생성된 Pod를 검사하여 수집기가 실행 중인지 확인할 수 있습니다:
 
-```
+```bash
 ~$ kubectl get pod -n other -l app.kubernetes.io/name=adot-container-ci-collector
 NAME                               READY   STATUS    RESTARTS   AGE
 adot-container-ci-collector-5lp5g  1/1     Running   0          15s

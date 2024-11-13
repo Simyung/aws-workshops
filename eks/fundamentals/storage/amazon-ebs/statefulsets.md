@@ -13,7 +13,7 @@ StatefulSets는 다음 중 하나 이상을 필요로 하는 애플리케이션�
 
 우리의 전자상거래 애플리케이션에서는 이미 Catalog 마이크로서비스의 일부로 StatefulSet이 배포되어 있습니다. Catalog 마이크로서비스는 EKS에서 실행되는 MySQL 데이터베이스를 사용합니다. 데이터베이스는 영구 스토리지가 필요하기 때문에 StatefulSet 사용의 좋은 예시입니다. MySQL 데이터베이스 Pod를 분석하여 현재 볼륨 구성을 확인할 수 있습니다:
 
-```
+```bash
 ~$ kubectl describe statefulset -n catalog catalog-mysql
 Name:               catalog-mysql
 Namespace:          catalog
@@ -47,27 +47,27 @@ Volume Claims:  <none>
 
 이를 증명하기 위해 MySQL 컨테이너 내부에서 셸 세션을 시작하고 테스트 파일을 생성해 보겠습니다. 그 후 StatefulSet에서 실행 중인 Pod를 삭제할 것입니다. Pod가 영구 볼륨(PV)이 아닌 emptyDir을 사용하고 있기 때문에, Pod가 재시작되면 파일이 유지되지 않을 것입니다. 먼저 MySQL 컨테이너 내부에서 명령을 실행하여 emptyDir인 `/var/lib/mysql` 경로(MySQL이 데이터베이스 파일을 저장하는 곳)에 파일을 생성해 보겠습니다:
 
-```
+```bash
 ~$ kubectl exec catalog-mysql-0 -n catalog -- bash -c "echo 123 > /var/lib/mysql/test.txt"
 ```
 
 이제 `/var/lib/mysql` 디렉토리에 `test.txt` 파일이 생성되었는지 확인해 보겠습니다:
 
-```
+```bash
 ~$ kubectl exec catalog-mysql-0 -n catalog -- ls -larth /var/lib/mysql/ | grep -i test
 -rw-r--r-- 1 root  root     4 Oct 18 13:38 test.txt
 ```
 
 이제 현재의 `catalog-mysql` Pod를 제거해 보겠습니다. 이렇게 하면 StatefulSet 컨트롤러가 자동으로 새로운 catalog-mysql Pod를 재생성하게 됩니다:
 
-```
+```bash
 ~$ kubectl delete pods -n catalog -l app.kubernetes.io/component=mysql
 pod "catalog-mysql-0" deleted
 ```
 
 몇 초 기다린 후 아래 명령을 실행하여 `catalog-mysql` Pod가 재생성되었는지 확인해 보겠습니다:
 
-```
+```bash
 ~$ kubectl wait --for=condition=Ready pod -n catalog \
   -l app.kubernetes.io/component=mysql --timeout=30s
 pod/catalog-mysql-0 condition met
@@ -78,7 +78,7 @@ catalog-mysql-0   1/1     Running   0          29s
 
 마지막으로, MySQL 컨테이너 셸로 다시 들어가서 `/var/lib/mysql` 경로에서 `ls` 명령을 실행하여 이전에 생성한 `test.txt` 파일을 찾아보겠습니다:
 
-```
+```bash
 ~$ kubectl exec catalog-mysql-0 -n catalog -- cat /var/lib/mysql/test.txt
 cat: /var/lib/mysql/test.txt: No such file or directory
 command terminated with exit code 1

@@ -2,7 +2,7 @@
 
 클러스터에서 EKS Pod Identity를 사용하기 위해서는 EKS Pod Identity Agent 애드온이 EKS 클러스터에 설치되어 있어야 합니다. 아래 명령어를 사용하여 설치해 보겠습니다.
 
-```
+```bash
 ~$ aws eks create-addon --cluster-name $EKS_CLUSTER_NAME --addon-name eks-pod-identity-agent
 {
     "addon": {
@@ -25,7 +25,7 @@
 
 새로운 애드온이 EKS 클러스터에 생성한 것을 살펴보겠습니다. kube-system 네임스페이스에 DaemonSet이 배포된 것을 볼 수 있는데, 이는 클러스터의 각 노드에서 Pod를 실행할 것입니다.
 
-```
+```bash
 ~$ kubectl -n kube-system get daemonset eks-pod-identity-agent
 NAME                      DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE
 eks-pod-identity-agent    3         3         3       3            3           <none>          3d21h
@@ -38,7 +38,7 @@ eks-pod-identity-agent-thvf5   1/1     Running   0          3d21h
 
 이 모듈의 첫 단계에서 prepare-environment 스크립트를 실행했을 때, DynamoDB 테이블에 대한 읽기 및 쓰기 권한을 제공하는 carts 서비스용 IAM 역할이 생성되었습니다. 아래와 같이 정책을 확인할 수 있습니다.
 
-```
+```bash
 ~$ aws iam get-policy-version \
   --version-id v1 --policy-arn \
   --query 'PolicyVersion.Document' \
@@ -59,11 +59,9 @@ eks-pod-identity-agent-thvf5   1/1     Running   0          3d21h
 }
 ```
 
-
-
 이 역할은 또한 Pod Identity를 위해 EKS 서비스 주체가 이 역할을 수임할 수 있도록 적절한 신뢰 관계로 구성되었습니다. 아래 명령어로 확인할 수 있습니다.
 
-```
+```bash
 ~$ aws iam get-role \
   --query 'Role.AssumeRolePolicyDocument' \
   --role-name ${EKS_CLUSTER_NAME}-carts-dynamo | jq .
@@ -84,11 +82,9 @@ eks-pod-identity-agent-thvf5   1/1     Running   0          3d21h
 }
 ```
 
-
-
 다음으로, Amazon EKS Pod Identity 기능을 사용하여 배포에서 사용할 Kubernetes 서비스 계정에 AWS IAM 역할을 연결하겠습니다. 연결을 생성하려면 다음 명령어를 실행하세요.
 
-```
+```bash
 ~$ aws eks create-pod-identity-association --cluster-name ${EKS_CLUSTER_NAME} \
   --role-arn arn:aws:iam::${AWS_ACCOUNT_ID}:role/${EKS_CLUSTER_NAME}-carts-dynamo \
   --namespace carts --service-account carts
@@ -109,14 +105,14 @@ eks-pod-identity-agent-thvf5   1/1     Running   0          3d21h
 
 이제 carts 배포가 carts 서비스 계정을 사용하고 있는지 확인하기만 하면 됩니다.
 
-```
+```bash
 ~$ kubectl -n carts describe deployment carts | grep 'Service Account'
   Service Account:  carts
 ```
 
 서비스 계정이 확인되었으므로, carts Pod들을 재시작해보겠습니다.
 
-```
+```bash
 ~$ kubectl -n carts rollout restart deployment/carts
 deployment.apps/carts restarted
 ~$ kubectl -n carts rollout status deployment/carts

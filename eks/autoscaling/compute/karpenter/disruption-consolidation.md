@@ -9,7 +9,7 @@ Karpenter는 자동으로 중단 가능한 노드를 발견하고 필요할 때 
 중단은 NodePool의 disruption 블록을 통해 구성됩니다. 아래 강조 표시된 부분에서 우리의 NodePool에 이미 구성된 정책을 볼 수 있습니다.
 
 {% code title="~/environment/eks-workshop/modules/autoscaling/compute/karpenter/nodepool/nodepool.yaml" lineNumbers="true" %}
-```
+```yaml
 apiVersion: karpenter.sh/v1
 kind: NodePool
 metadata:
@@ -56,14 +56,14 @@ disruption이 consolidationPolicy: WhenUnderutilized로 설정되었을 때 자�
 
 inflate 워크로드를 다시 확장하여 더 많은 리소스를 소비하도록 합니다:
 
-```
+```bash
 ~$ kubectl scale -n other deployment/inflate --replicas 12
 ~$ kubectl rollout status -n other deployment/inflate --timeout=180s
 ```
 
 이는 이 deployment의 총 메모리 요청을 약 12Gi로 변경합니다. 각 노드에서 kubelet을 위해 예약된 약 600Mi를 고려하면 이는 m5.large 유형의 2개 인스턴스에 맞을 것입니다:
 
-```
+```bash
 ~$ kubectl get nodes -l type=karpenter --label-columns node.kubernetes.io/instance-type
 NAME                                         STATUS   ROLES    AGE     VERSION               INSTANCE-TYPE
 ip-10-42-44-164.us-west-2.compute.internal   Ready    <none>   3m30s   v1.30-eks-036c24b     m5.large
@@ -72,19 +72,19 @@ ip-10-42-9-102.us-west-2.compute.internal    Ready    <none>   14m     v1.30-eks
 
 다음으로, 복제본 수를 다시 5개로 축소합니다:
 
-```
+```bash
 ~$ kubectl scale -n other deployment/inflate --replicas 5
 ```
 
 Karpenter 로그를 확인하여 deployment의 스케일링에 대응하여 어떤 조치를 취했는지 알 수 있습니다. 다음 명령을 실행하기 전에 5-10초 정도 기다립니다:
 
-```
+```bash
 ~$ kubectl logs -l app.kubernetes.io/instance=karpenter -n karpenter | grep 'disrupting nodeclaim(s) via delete' | jq '.'
 ```
 
 출력은 Karpenter가 특정 노드를 cordon, drain, 그리고 종료하는 것을 식별하는 것을 보여줍니다:
 
-```
+```json
 {
   "level": "INFO",
   "time": "2023-11-16T22:47:05.659Z",
@@ -96,20 +96,20 @@ Karpenter 로그를 확인하여 deployment의 스케일링에 대응하여 어�
 
 이로 인해 Kubernetes 스케줄러가 해당 노드의 모든 Pod를 남은 용량에 배치하게 되고, 이제 Karpenter가 총 1개의 노드를 관리하고 있음을 볼 수 있습니다:
 
-```
+```bash
 ~$ kubectl get nodes -l type=karpenter
 ip-10-42-44-164.us-west-2.compute.internal   Ready    <none>   6m30s   v1.30-eks-036c24b   m5.large
 ```
 
 Karpenter는 워크로드 변화에 대응하여 노드를 더 저렴한 구성 조합으로 대체할 수 있을 때 더 통합할 수도 있습니다. 이는 inflate deployment 복제본을 1개로 축소하여 총 메모리 요청을 약 1Gi로 만들어 보여줄 수 있습니다:
 
-```
+```bash
 ~$ kubectl scale -n other deployment/inflate --replicas 1
 ```
 
 Karpenter 로그를 확인하여 컨트롤러가 어떤 조치를 취했는지 볼 수 있습니다:
 
-```
+```bash
 ~$ kubectl logs -l app.kubernetes.io/instance=karpenter -n karpenter -f | jq '.'
 ```
 
@@ -119,7 +119,7 @@ Karpenter 로그를 확인하여 컨트롤러가 어떤 조치를 취했는지 �
 
 출력은 Karpenter가 m5.large 노드를 Provisioner에 정의된 더 저렴한 c5.large 인스턴스 유형으로 교체하여 통합하는 것을 보여줍니다:
 
-```
+```json
 {
   "level": "INFO",
   "time": "2023-11-16T22:50:23.249Z",
@@ -131,7 +131,7 @@ Karpenter 로그를 확인하여 컨트롤러가 어떤 조치를 취했는지 �
 
 1개 복제본으로 총 메모리 요청이 약 1Gi로 훨씬 낮아졌기 때문에, 4GB 메모리를 가진 더 저렴한 c5.large 인스턴스 유형에서 실행하는 것이 더 효율적일 것입니다. 노드가 교체되면 새 노드의 메타데이터를 확인하고 인스턴스 유형이 c5.large인지 확인할 수 있습니다:
 
-```
+```bash
 ~$ kubectl get nodes -l type=karpenter -o jsonpath="{range .items[*]}{.metadata.labels.node\.kubernetes\.io/instance-type}{'\n'}{end}"
 c5.large
 ```

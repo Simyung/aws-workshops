@@ -10,18 +10,16 @@
 
 awscli를 사용하여 클러스터가 어떤 방식으로 구성되어 있는지 확인해보세요.
 
-```
+```bash
 ~$ aws eks describe-cluster --name $EKS_CLUSTER_NAME --query 'cluster.accessConfig'
 {
   "authenticationMode": "API_AND_CONFIG_MAP"
 }
 ```
 
-
-
 클러스터가 이미 인증 옵션 중 하나로 API를 사용하고 있기 때문에 EKS는 이미 클러스터에 몇 가지 기본 액세스 엔트리를 매핑했습니다. 확인해 보겠습니다:
 
-```
+```bash
 ~$ aws eks list-access-entries --cluster $EKS_CLUSTER_NAME
 {
     "accessEntries": [
@@ -31,15 +29,13 @@ awscli를 사용하여 클러스터가 어떤 방식으로 구성되어 있는�
 }
 ```
 
-
-
 이러한 액세스 엔트리는 인증 모드가 API\_AND\_CONFIG\_MAP 또는 API로 설정되는 시점에 자동으로 생성되어 클러스터 생성자 엔터티와 클러스터에 속한 관리형 노드 그룹에 대한 접근 권한을 부여합니다.
 
 클러스터 생성자는 AWS 콘솔, awscli, eksctl 또는 AWS CloudFormation이나 Terraform과 같은 Infrastructure-as-Code(IaC)를 통해 실제로 클러스터를 생성한 엔터티입니다. 이 자격 증명은 클러스터 생성 시 자동으로 매핑되며, 과거 인증 방법이 CONFIG\_MAP으로 제한되었을 때는 보이지 않았습니다. 이제 클러스터 액세스 관리 API를 통해 이 자격 증명 매핑 생성을 선택하지 않거나 클러스터가 배포된 후에 제거하는 것도 가능합니다.
 
 이러한 액세스 엔트리를 설명하면 더 많은 정보를 볼 수 있습니다:
 
-```
+```bash
 ~$ NODE_ROLE=$(aws eks list-access-entries --cluster $EKS_CLUSTER_NAME --output text | awk '/Node/ {print $2}')
 ~$ aws eks describe-access-entry --cluster $EKS_CLUSTER_NAME --principal-arn $NODE_ROLE
 {

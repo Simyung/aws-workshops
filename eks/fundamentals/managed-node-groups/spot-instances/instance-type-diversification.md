@@ -29,7 +29,7 @@ EC2에는 350개 이상의 다양한 인스턴스 유형이 있어 적절한 인
 
 CLI 도구는 IDE에 사전 설치되어 있습니다:
 
-```
+```bash
 ~$ ec2-instance-selector --version
 ```
 
@@ -37,7 +37,7 @@ CLI 도구는 IDE에 사전 설치되어 있습니다:
 
 다음 명령을 실행하여 인스턴스 목록을 얻으세요.
 
-```
+```bash
 ~$ ec2-instance-selector --vcpus 2 --memory 4 --gpus 0 --current-generation \
   -a x86_64 --deny-list 't.*' --output table-wide
 Instance Type  VCPUs   Mem (GiB)  Hypervisor  Current Gen  Hibernation Support  CPU Arch  Network Performance
@@ -67,6 +67,4 @@ c7i.large      2       4          nitro       true         false                
 {% hint style="info" %}
 워크로드에 따라 인스턴스 유형을 선택할 때 고려해야 할 다른 제약 사항이 있을 수 있습니다. 예를 들어, t2 및 t3 인스턴스 유형은 버스트 가능한 인스턴스이며 CPU 실행 결정성이 필요한 CPU 바인딩 워크로드에는 적합하지 않을 수 있습니다. m5a와 같은 인스턴스는 AMD 인스턴스입니다. 워크로드가 수치적 차이에 민감한 경우(예: 재무 위험 계산, 산업 시뮬레이션) 이러한 인스턴스 유형을 혼합하는 것은 적절하지 않을 수 있습니다.
 {% endhint %}
-
-
 

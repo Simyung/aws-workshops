@@ -2,7 +2,7 @@
 
 다음과 같은 구성으로 로드 밸런서를 프로비저닝하는 추가 서비스를 생성해 보겠습니다:
 
-<pre data-title="~/environment/eks-workshop/modules/exposing/load-balancer/nlb/nlb.yaml" data-line-numbers data-full-width="false"><code>apiVersion: v1
+<pre class="language-yaml" data-title="~/environment/eks-workshop/modules/exposing/load-balancer/nlb/nlb.yaml" data-line-numbers data-full-width="false"><code class="lang-yaml">apiVersion: v1
 kind: Service
 metadata:
   name: ui-nlb
@@ -33,8 +33,8 @@ Line 16 : 여기서 레이블을 사용하여 이 서비스의 대상으로 추�
 
 이 구성을 적용하겠습니다:
 
-```
-kubectl apply -k ~/environment/eks-workshop/modules/exposing/load-balancer/nlb
+```bash
+~$ kubectl apply -k ~/environment/eks-workshop/modules/exposing/load-balancer/nlb
 ```
 
 두 개의 별도 리소스가 있는 것을 볼 수 있습니다. 새로운 `ui-nlb` 항목은 `LoadBalancer` 유형입니다. 가장 중요한 것은 "external IP" 값이 있다는 것입니다. 이는 Kubernetes 클러스터 외부에서 애플리케이션에 접근할 수 있는 DNS 항목입니다.
@@ -43,7 +43,7 @@ NLB 프로비저닝과 대상 등록에는 몇 분 정도 시간이 걸릴 것�
 
 먼저 로드 밸런서 자체를 살펴보겠습니다:
 
-```
+```bash
 ~$ aws elbv2 describe-load-balancers --query 'LoadBalancers[?contains(LoadBalancerName, `k8s-ui-uinlb`) == `true`]'
 [
     {
@@ -87,7 +87,7 @@ NLB 프로비저닝과 대상 등록에는 몇 분 정도 시간이 걸릴 것�
 
 또한 컨트롤러가 생성한 대상 그룹의 대상을 확인할 수 있습니다:
 
-```
+```bash
 ~$ ALB_ARN=$(aws elbv2 describe-load-balancers --query 'LoadBalancers[?contains(LoadBalancerName, `k8s-ui-uinlb`) == `true`].LoadBalancerArn' | jq -r '.[0]')
 ~$ TARGET_GROUP_ARN=$(aws elbv2 describe-target-groups --load-balancer-arn $ALB_ARN | jq -r '.TargetGroups[0].TargetGroupArn')
 ~$ aws elbv2 describe-target-health --target-group-arn $TARGET_GROUP_ARN

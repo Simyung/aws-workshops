@@ -13,7 +13,7 @@
 이 실험은 반복 가능하여 일관된 동작을 보장하고 다양한 시나리오나 구성을 테스트하기 위해 여러 번 실행할 수 있습니다. 다음은 우리가 사용할 스크립트입니다:
 
 {% code title="~/environment/eks-workshop/modules/observability/resiliency/scripts/pod-failure.sh" %}
-```
+```basic
 #!/bin/bash
 # pod-failure.sh - Simulates pod failure using Chaos Mesh
 
@@ -51,13 +51,13 @@ EOF
 
 먼저 ui 네임스페이스의 Pod 초기 상태를 확인해 봅시다:
 
-```
+```bash
 ~$ kubectl get pods -n ui -o wide 
 ```
 
 다음과 유사한 출력이 보일 것입니다:
 
-```
+```bash
 NAME                  READY   STATUS    RESTARTS   AGE   IP              NODE                                          NOMINATED NODE   READINESS GATES
 ui-6dfb84cf67-44hc9   1/1     Running   0          46s   10.42.121.37    ip-10-42-119-94.us-west-2.compute.internal    <none>           <none>
 ui-6dfb84cf67-6d5lq   1/1     Running   0          46s   10.42.121.36    ip-10-42-119-94.us-west-2.compute.internal    <none>           <none>
@@ -84,13 +84,13 @@ ui-6dfb84cf67-rzbvl   1/1     Running   0          46s   10.42.188.96    ip-10-4
 
 Kubernetes가 실패를 감지하고 복구를 시작할 수 있도록 몇 초 기다린 후 Pod 상태를 다시 확인합니다:
 
-```
+```bash
 ~$ kubectl get pods -n ui -o wide 
 ```
 
 이제 다음과 유사한 출력이 보일 것입니다:
 
-```
+```bash
 NAME                  READY   STATUS    RESTARTS   AGE     IP              NODE                                          NOMINATED NODE   READINESS GATES
 ui-6dfb84cf67-44hc9   1/1     Running   0          2m57s   10.42.121.37    ip-10-42-119-94.us-west-2.compute.internal    <none>           <none>
 ui-6dfb84cf67-6d5lq   1/1     Running   0          2m57s   10.42.121.36    ip-10-42-119-94.us-west-2.compute.internal    <none>           <none>
@@ -99,8 +99,6 @@ ui-6dfb84cf67-hqccq   1/1     Running   0          2m57s   10.42.154.216   ip-10
 ui-6dfb84cf67-rzbvl   1/1     Running   0          2m57s   10.42.188.96    ip-10-42-176-213.us-west-2.compute.internal   <none>           <none>
 [ec2-user@bc44085aafa9 environment]$
 ```
-
-
 
 Pod 중 하나(이 예에서는 ui-6dfb84cf67-ghp5z)의 AGE 값이 훨씬 낮음을 주목하세요. 이는 시뮬레이션에 의해 종료된 Pod를 대체하기 위해 Kubernetes가 자동으로 생성한 Pod입니다.
 

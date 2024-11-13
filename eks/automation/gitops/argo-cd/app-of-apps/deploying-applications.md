@@ -129,7 +129,7 @@ ArgoCD UI에서 `Refresh` 및 `Sync`를 클릭하거나, `argocd` CLI를 사용�
 
 Argo CD가 동기화를 완료하면 모든 애플리케이션이 `Synced` 상태가 될 것입니다.
 
-<figure><img src="../../../../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../../.gitbook/assets/image (4).png" alt=""><figcaption></figcaption></figure>
 
 `ui` 애플리케이션과 관련된 모든 리소스가 배포되어 있어야 합니다. 확인하려면 다음 명령어를 실행하세요:
 
@@ -142,4 +142,4 @@ NAME                 READY   STATUS   RESTARTS   AGE
 ui-6d5bb7b95-rjfxd   1/1     Running  0          62s
 ```
 
-<figure><img src="../../../../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../../.gitbook/assets/image (1) (1).png" alt=""><figcaption></figcaption></figure>

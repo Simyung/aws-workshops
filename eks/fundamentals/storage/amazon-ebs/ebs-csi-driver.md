@@ -19,7 +19,7 @@ EKS 클러스터에서 동적 프로비저닝으로 Amazon EBS 볼륨을 사용�
 
 이제 애드온이 EKS 클러스터에 생성한 내용을 살펴보겠습니다. 예를 들어, DaemonSet이 클러스터의 각 노드에서 pod를 실행하고 있습니다:
 
-```
+```bash
 ~$ kubectl get daemonset ebs-csi-node -n kube-system
 NAME           DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR            AGE
 ebs-csi-node   3         3         3       3            3           kubernetes.io/os=linux   3d21h
@@ -27,7 +27,7 @@ ebs-csi-node   3         3         3       3            3           kubernetes.i
 
 EKS 1.30부터 EBS CSI 드라이버는 [Amazon EBS GP3 볼륨 타입](https://docs.aws.amazon.com/ebs/latest/userguide/general-purpose.html#gp3-ebs-volume-type)을 사용하여 구성된 기본 [StorageClass](https://kubernetes.io/docs/concepts/storage/storage-classes/) 객체를 사용합니다. 다음 명령을 실행하여 확인해 보겠습니다:
 
-```
+```bash
 ~$ kubectl get storageclass
 NAME                           PROVISIONER             RECLAIMPOLICY   VOLUMEBINDINGMODE      ALLOWVOLUMEEXPANSION   AGE
 ebs-csi-default-sc (default)   ebs.csi.aws.com         Delete          WaitForFirstConsumer   true                   96s
@@ -35,20 +35,6 @@ gp2                            kubernetes.io/aws-ebs   Delete          WaitForFi
 ```
 
 이제 EKS 스토리지와 Kubernetes 객체에 대해 더 잘 이해했습니다. 다음 페이지에서는 catalog 마이크로서비스의 MySQL DB StatefulSet을 수정하여 Kubernetes 동적 볼륨 프로비저닝을 사용해 EBS 블록 스토어 볼륨을 데이터베이스 파일의 영구 스토리지로 활용하는 데 초점을 맞추겠습니다.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

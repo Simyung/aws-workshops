@@ -4,7 +4,7 @@ Fargate 가격 책정의 주요 차원은 CPU와 메모리를 기반으로 하�
 
 이전 배포에서 우리 Pod에 대해 프로비저닝된 리소스를 확인하기 위해 주석을 검사할 수 있습니다:
 
-```
+```bash
 ~$ kubectl get pod -n checkout -l app.kubernetes.io/component=service -o json | jq -r '.items[0].metadata.annotations'
 {
   "CapacityProvisioned": "0.25vCPU 0.5GB",
@@ -23,7 +23,7 @@ Fargate 가격 책정의 주요 차원은 CPU와 메모리를 기반으로 하�
 {% tabs %}
 {% tab title="Kustomize Patch" %}
 {% code title="~/environment/eks-workshop/modules/fundamentals/fargate/sizing/deployment.yaml" %}
-```
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -44,7 +44,7 @@ spec:
 {% endtab %}
 
 {% tab title="Deployment/checkout" %}
-```
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -115,7 +115,7 @@ spec:
 {% endtab %}
 
 {% tab title="Diff" %}
-```
+```diff
                name: http
                protocol: TCP
            resources:
@@ -139,7 +139,7 @@ spec:
 
 kustomization을 적용하고 롤아웃이 완료될 때까지 기다립니다:
 
-```
+```bash
 ~$ kubectl apply -k ~/environment/eks-workshop/modules/fundamentals/fargate/sizing
 [...]
 ~$ kubectl rollout status -n checkout deployment/checkout --timeout=200s
@@ -147,7 +147,7 @@ kustomization을 적용하고 롤아웃이 완료될 때까지 기다립니다:
 
 이제 Fargate에 의해 할당된 리소스를 다시 확인해 봅시다. 위에 설명된 변경사항을 바탕으로, 어떤 결과를 예상하시나요?
 
-```
+```bash
 ~$ kubectl get pod -n checkout -l app.kubernetes.io/component=service -o json | jq -r '.items[0].metadata.annotations'
 {
   "CapacityProvisioned": "1vCPU 3GB",
@@ -160,3 +160,4 @@ kustomization을 적용하고 롤아웃이 완료될 때까지 기다립니다:
 ```
 
 Pod에 의해 요청된 리소스는 위에 설명된 유효한 조합 세트에 명시된 가장 근접한 Fargate 구성으로 반올림되었습니다.
+

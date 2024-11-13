@@ -23,7 +23,7 @@
 
 EKS 컨트롤 플레인 로그는 EKS API를 통해 클러스터별로 활성화됩니다. 이는 종종 Terraform이나 CloudFormation을 사용하여 구성되지만, 이 실습에서는 AWS CLI를 사용하여 기능을 활성화할 것입니다. 보시다시피 각 클러스터 로그 유형을 개별적으로 활성화할 수 있으며, 이 실습에서는 모든 것을 활성화하고 있습니다.
 
-```
+```bash
 ~$ aws eks update-cluster-config \
     --region $AWS_REGION \
     --name $EKS_CLUSTER_NAME \
@@ -73,14 +73,14 @@ AWS 콘솔을 사용하여 EKS 컨트롤 플레인 로깅 설정을 선택적으
 
 Lambda 함수 ARN과 IAM 역할 ARN은 이미 환경 변수로 사용 가능합니다:
 
-```
+```bash
 ~$ echo $LAMBDA_ARN
 ~$ echo $LAMBDA_ROLE_ARN
 ```
 
 Lambda 내보내기 함수에 `eks-control-plane-logs`라는 OpenSearch 인덱스를 생성하고 쓸 수 있는 권한을 부여합니다. 첫 번째 명령은 필요한 권한을 가진 OpenSearch 도메인 내에 새 역할을 생성합니다. 두 번째 명령은 Lambda 함수의 실행 역할 ARN을 지정하는 역할 매핑을 추가합니다.
 
-```
+```bash
 ~$ curl -s -XPUT "https://${OPENSEARCH_HOST}/_plugins/_security/api/roles/lambda_role" \
     -u $OPENSEARCH_USER:$OPENSEARCH_PASSWORD -H 'Content-Type: application/json' \
     --data-raw '{"cluster_permissions": ["*"], "index_permissions": [{"index_patterns": ["eks-control-plane-logs*"], "allowed_actions": ["*"]}]}' \
@@ -103,7 +103,7 @@ Lambda 내보내기 함수에 `eks-control-plane-logs`라는 OpenSearch 인덱�
 
 Lambda 함수를 대상으로 지정하는 CloudWatch 로그 그룹에 대한 구독 필터를 설정합니다. 명령이 `/aws/eks/eks-workshop/cluster` 로그 그룹 이름과 Lambda 함수 ARN을 지정하는 것을 주목하세요. 첫 번째 명령은 필터를 생성하고 두 번째 명령은 필터 세부 정보를 검색합니다.
 
-```
+```bash
 ~$ aws logs put-subscription-filter \
     --log-group-name /aws/eks/$EKS_CLUSTER_NAME/cluster \
     --filter-name "${EKS_CLUSTER_NAME}-Control-Plane-Logs-To-OpenSearch" \
@@ -132,7 +132,7 @@ Lambda 함수를 대상으로 지정하는 CloudWatch 로그 그룹에 대한 �
 
 이전에 본 대시보드 랜딩 페이지에서 컨트롤 플레인 로그 대시보드에 접근하거나 아래 명령을 사용하여 좌표를 얻으세요:
 
-```
+```bash
 ~$ printf "\nPod logs dashboard: https://%s/_dashboards/app/dashboards#/view/1a1c3a70-831a-11ee-8baf-a5d5c77ada98 \
         \nUserName: %q \nPassword: %q \n\n" \
         "$OPENSEARCH_HOST" "$OPENSEARCH_USER" "$OPENSEARCH_PASSWORD"
@@ -163,8 +163,6 @@ EKS 클러스터 활동 수준에 따라 선택한 시간 범위 내에 해당 �
 행을 확장하면 테이블 또는 JSON 형식으로 세부 정보를 자세히 볼 수 있습니다.
 
 <figure><img src="../../.gitbook/assets/image (21) (1).png" alt=""><figcaption></figcaption></figure>
-
-
 
 
 

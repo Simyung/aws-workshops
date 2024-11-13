@@ -14,7 +14,7 @@
 
 여러분을 위해 미리 프로비저닝된 기본 관리형 노드 그룹을 살펴보겠습니다:
 
-```
+```bash
 ~$ eksctl get nodegroup --cluster $EKS_CLUSTER_NAME --name $EKS_DEFAULT_MNG_NAME
 ```
 
@@ -26,7 +26,7 @@
 
 또한 노드와 가용 영역의 배치를 검사할 수 있습니다.
 
-```
+```bash
 ~$ kubectl get nodes -o wide --label-columns topology.kubernetes.io/zone
 ```
 

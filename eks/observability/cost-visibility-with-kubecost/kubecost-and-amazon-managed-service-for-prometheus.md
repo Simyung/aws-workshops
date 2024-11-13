@@ -10,4 +10,3 @@ AMP는 Prometheus와 호환되는 모니터링 및 경보 서비스로, 대규�
 
 Kubecost를 AMP와 통합하는 방법을 시작하려면 [다음 블로그 게시물](https://aws.amazon.com/blogs/mt/integrating-kubecost-with-amazon-managed-service-for-prometheus/)을 확인하세요.
 
-편집

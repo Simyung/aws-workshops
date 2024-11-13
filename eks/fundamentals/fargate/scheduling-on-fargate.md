@@ -2,7 +2,7 @@
 
 그럼 결제 서비스가 이미 Fargate에서 실행되고 있지 않은 이유는 무엇일까요? 레이블을 확인해 봅시다:
 
-```
+```bash
 ~$ kubectl get pod -n checkout -l app.kubernetes.io/component=service -o json | jq '.items[0].metadata.labels'
 ```
 
@@ -11,7 +11,7 @@
 {% tabs %}
 {% tab title="Kustomize Patch" %}
 {% code title="~/environment/eks-workshop/modules/fundamentals/fargate/enabling/deployment.yaml" %}
-```
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -26,7 +26,7 @@ spec:
 {% endtab %}
 
 {% tab title="Deployment/checkout" %}
-```
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -97,7 +97,7 @@ spec:
 {% endtab %}
 
 {% tab title="Diff" %}
-```
+```diff
          app.kubernetes.io/component: service
          app.kubernetes.io/created-by: eks-workshop
          app.kubernetes.io/instance: checkout
@@ -113,7 +113,7 @@ spec:
 
 kustomization을 클러스터에 적용합니다:
 
-```
+```bash
 ~$ kubectl apply -k ~/environment/eks-workshop/modules/fundamentals/fargate/enabling
 [...]
 ~$ kubectl rollout status -n checkout deployment/checkout --timeout=200s
@@ -123,7 +123,7 @@ kustomization을 클러스터에 적용합니다:
 
 이것이 잘 작동했는지 어떻게 확인할 수 있을까요? 새로 생성된 Pod를 설명하고 Events 섹션을 살펴봅시다:
 
-```
+```bash
 ~$ kubectl describe pod -n checkout -l fargate=yes
 [...]
 Events:
@@ -137,13 +137,11 @@ Events:
   Normal   Started          9m4s   kubelet            Started container checkout
 ```
 
-
-
 fargate-scheduler의 이벤트는 무슨 일이 일어났는지에 대한 통찰력을 제공합니다. 이 실습 단계에서 우리가 주로 관심을 가져야 할 항목은 이유가 Scheduled인 이벤트입니다. 이를 자세히 살펴보면 이 Pod를 위해 프로비저닝된 Fargate 인스턴스의 이름을 알 수 있습니다. 위의 예시에서는 fargate-ip-10-42-11-96.us-west-2.compute.internal입니다.
 
 kubectl을 사용하여 이 노드를 검사하면 이 Pod에 대해 프로비저닝된 컴퓨팅에 대한 추가 정보를 얻을 수 있습니다:
 
-```
+```bash
 ~$ NODE_NAME=$(kubectl get pod -n checkout -l app.kubernetes.io/component=service -o json | jq -r '.items[0].spec.nodeName')
 ~$ kubectl describe node $NODE_NAME
 Name:               fargate-ip-10-42-11-96.us-west-2.compute.internal
@@ -161,10 +159,9 @@ Labels:             beta.kubernetes.io/arch=amd64
 [...]
 ```
 
-
-
 이는 기본 컴퓨팅 인스턴스의 특성에 대한 여러 가지 통찰력을 제공합니다:
 
 * eks.amazonaws.com/compute-type 레이블은 Fargate 인스턴스가 프로비저닝되었음을 확인합니다.
 * topology.kubernetes.io/zone이라는 다른 레이블은 pod가 실행 중인 가용 영역을 지정합니다.
 * System Info 섹션(위에 표시되지 않음)에서 인스턴스가 Amazon Linux 2를 실행 중이며, 컨테이너, kubelet, kube-proxy와 같은 시스템 구성 요소의 버전 정보도 볼 수 있습니다.
+

@@ -4,7 +4,7 @@
 
 가용 영역(AZ) 장애의 전체 영향을 확인하기 위해 먼저 AZ당 두 개의 인스턴스로 확장하고 포드 수를 9개까지 늘려보겠습니다:
 
-```
+```bash
 ~$ export ASG_NAME=$(aws autoscaling describe-auto-scaling-groups --query "AutoScalingGroups[? Tags[? (Key=='eks:cluster-name') && Value=='eks-workshop']].AutoScalingGroupName" --output text)
 ~$ aws autoscaling update-auto-scaling-group \
     --auto-scaling-group-name $ASG_NAME \
@@ -45,7 +45,7 @@
 
 1. 먼저 카나리 아티팩트를 위한 S3 버킷을 생성합니다:
 
-```
+```bash
 ~$ export BUCKET_NAME="eks-workshop-canary-artifacts-$(date +%s)"
 ~$ aws s3 mb s3://$BUCKET_NAME --region $AWS_REGION
  
@@ -55,7 +55,7 @@ make_bucket: eks-workshop-canary-artifacts-1724131402
 2. 블루프린트를 생성합니다:
 
 {% code title="~/environment/eks-workshop/modules/observability/resiliency/scripts/create-blueprint.sh" %}
-```
+```bash
 #!/bin/bash
 
 # Get Ingress URL
@@ -176,7 +176,7 @@ echo "The script is configured to check the URL: http://${INGRESS_URL}"
 
 이 카나리 블루프린트를 버킷에 넣습니다:
 
-```
+```bash
 ~$ ~/$SCRIPT_DIR/create-blueprint.sh
  
 upload: ./canary.zip to s3://eks-workshop-canary-artifacts-1724131402/canary-scripts/canary.zip
@@ -184,11 +184,9 @@ Canary script has been zipped and uploaded to s3://eks-workshop-canary-artifacts
 The script is configured to check the URL: http://k8s-ui-ui-5ddc3ba496-721427594.us-west-2.elb.amazonaws.com
 ```
 
-
-
 3. Cloudwatch 경보와 함께 synthetic canary를 생성합니다:
 
-```
+```bash
 ~$ aws synthetics create-canary \
 --name eks-workshop-canary \
 --artifact-s3-location "s3://$BUCKET_NAME/canary-artifacts/" \

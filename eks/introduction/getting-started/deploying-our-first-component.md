@@ -6,7 +6,7 @@ IDE의 파일 브라우저를 사용하면 샘플 애플리케이션과 이 워�
 
 <figure><img src="../../.gitbook/assets/image (54).png" alt=""><figcaption></figcaption></figure>
 
-`eks-workshop`과 `base-application` 항목을 확장하면 샘플 애플리케이션의 초기 상태를 구성하는 매니페스트를 탐색할 수 있습니다.
+`eks-workshop`과 `base-application` 폴더를 확장하면 샘플 애플리케이션의 초기 상태를 구성하는 매니페스트를 탐색할 수 있습니다.
 
 <figure><img src="../../.gitbook/assets/image (55).png" alt=""><figcaption></figcaption></figure>
 
@@ -18,7 +18,7 @@ IDE의 파일 브라우저를 사용하면 샘플 애플리케이션과 이 워�
 
 먼저 EKS 클러스터의 현재 네임스페이스를 검사해 보겠습니다.
 
-```
+```bash
 ~$ kubectl get namespaces
 NAME                            STATUS   AGE
 default                         Active   1h
@@ -29,7 +29,7 @@ kube-system                     Active   1h
 
 나열된 모든 항목은 미리 설치된 시스템 구성 요소의 네임스페이스입니다. [Kubernetes 레이블](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/)을 사용하여 우리가 생성한 네임스페이스만 필터링하여 이러한 항목들을 무시할 것입니다.
 
-```
+```bash
 ~$ kubectl get namespaces -l app.kubernetes.io/created-by=eks-workshop
 No resources found
 
@@ -37,7 +37,7 @@ No resources found
 
 첫 번째로 카탈로그 구성 요소만 배포할 것입니다. 이 구성 요소의 매니페스트는 `~/environment/eks-workshop/base-application/catalog`에서 찾을 수 있습니다.
 
-```
+```bash
 ~$ ls ~/environment/eks-workshop/base-application/catalog
 configMap.yaml
 deployment.yaml
@@ -53,7 +53,7 @@ statefulset-mysql.yaml
 이러한 매니페스트에는 카탈로그 API를 위한 Deployment가 포함됩니다.
 
 {% code title="~/environment/eks-workshop/base-application/catalog/deployment.yaml" %}
-```
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -153,7 +153,7 @@ spec:
 매니페스트에는 다른 구성 요소가 카탈로그 API에 접근하는 데 사용하는 Service도 포함됩니다.
 
 {% code title="~/environment/eks-workshop/base-application/catalog/service.yaml" %}
-```
+```yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -175,8 +175,6 @@ spec:
 ```
 {% endcode %}
 
-
-
 이 Service는:
 
 * 위의 Deployment에서 표현한 것과 일치하는 레이블을 사용하여 카탈로그 Pod 선택
@@ -185,7 +183,7 @@ spec:
 
 카탈로그 구성 요소를 생성해 보겠습니다.
 
-```
+```bash
 ~$ kubectl apply -k ~/environment/eks-workshop/base-application/catalog
 namespace/catalog created
 serviceaccount/catalog created
@@ -199,7 +197,7 @@ statefulset.apps/catalog-mysql created
 
 이제 새로운 네임스페이스가 보일 것입니다.
 
-```
+```bash
 ~$ kubectl get namespaces -l app.kubernetes.io/created-by=eks-workshop
 NAME      STATUS   AGE
 catalog   Active   15s
@@ -207,14 +205,12 @@ catalog   Active   15s
 
 이 네임스페이스에서 실행 중인 Pod를 살펴보겠습니다.
 
-```
+```bash
 ~$ kubectl get pod -n catalog
 NAME                       READY   STATUS    RESTARTS      AGE
 catalog-846479dcdd-fznf5   1/1     Running   2 (43s ago)   46s
 catalog-mysql-0            1/1     Running   0             46s
 ```
-
-
 
 카탈로그 API용 Pod와 MySQL 데이터베이스용 Pod가 있는 것을 확인할 수 있습니다. `catalog` Pod가 `CrashLoopBackOff` 상태를 보이는 경우, 시작하기 전에 `catalog-mysql` Pod에 연결할 수 있어야 합니다. Kubernetes는 이것이 가능할 때까지 계속해서 재시작할 것입니다. 이 경우 [kubectl wait](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#wait)를 사용하여 특정 Pod가 Ready 상태가 될 때까지 모니터링할 수 있습니다.
 
@@ -257,3 +253,4 @@ catalog-mysql   ClusterIP   172.20.181.252   <none>        3306/TCP   2m48s
 ```
 
 JSON 페이로드와 함께 제품 정보를 받아야 합니다. 축하합니다. EKS를 사용하여 Kubernetes에 첫 번째 마이크로서비스를 배포했습니다!
+

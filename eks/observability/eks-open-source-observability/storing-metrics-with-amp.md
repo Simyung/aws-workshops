@@ -8,7 +8,7 @@ Amazon Managed Service for Prometheus 작업 공간이 이미 생성되어 있�
 
 메트릭이 성공적으로 수집되었는지 확인해 보겠습니다:
 
-```
+```bash
 ~$ awscurl -X POST --region $AWS_REGION --service aps "${AMP_ENDPOINT}api/v1/query?query=up" | jq '.data.result[1]'
 {
   "metric": {

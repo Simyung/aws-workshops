@@ -12,12 +12,14 @@
 
 
 {% hint style="info" %}
-AWS 관찰 가능성 기능에 대해 더 자세히 알아보려면 One Observability Workshop을 참조하세요.
+AWS 관찰 가능성 기능에 대해 더 자세히 알아보려면 [One Observability Workshop](https://catalog.workshops.aws/observability/en-US)을 참조하세요.
 {% endhint %}
 
 {% hint style="info" %}
-AWS 환경에 대한 관찰 가능성을 설정하는 데 도움이 되는 일련의 의견이 반영된 Infrastructure as Code(IaC) 모듈을 AWS Observability Accelerator for CDK 및 AWS Observability Accelerator for Terraform에서 탐색해 보세요. 이 모듈들은 Amazon CloudWatch와 같은 AWS 네이티브 서비스와 Amazon Managed Service for Prometheus, Amazon Managed Grafana 및 AWS Distro for OpenTelemetry(ADOT)와 같은 AWS 관리형 관찰 가능성 서비스와 함께 작동합니다.
+AWS 환경에 대한 관찰 가능성을 설정하는 데 도움이 되는 일련의 의견이 반영된 Infrastructure as Code(IaC) 모듈을 [AWS Observability Accelerator for CDK](https://aws-observability.github.io/cdk-aws-observability-accelerator/) 및 [AWS Observability Accelerator for Terraform](https://aws-observability.github.io/terraform-aws-observability-accelerator/)에서 탐색해 보세요. 이 모듈들은 Amazon CloudWatch와 같은 AWS 네이티브 서비스와 Amazon Managed Service for Prometheus, Amazon Managed Grafana 및 AWS Distro for OpenTelemetry(ADOT)와 같은 AWS 관리형 관찰 가능성 서비스와 함께 작동합니다.
 {% endhint %}
 
 <figure><img src="https://eksworkshop.com/assets/images/cloud-native-architecture-adb6fd725f1e601eac75bdad1eb92785.webp" alt=""><figcaption></figcaption></figure>
+
+<figure><img src="../.gitbook/assets/image (3).png" alt=""><figcaption></figcaption></figure>
 

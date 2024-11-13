@@ -2,7 +2,7 @@
 
 이 프로세스의 첫 번째 단계는 carts 서비스가 이미 생성된 DynamoDB 테이블을 사용하도록 재구성하는 것입니다. 애플리케이션은 대부분의 설정을 ConfigMap에서 로드하는데, 이를 살펴보겠습니다.
 
-```
+```bash
 ~$ kubectl -n carts get -o yaml cm carts
 apiVersion: v1
 data:
@@ -17,14 +17,12 @@ metadata:
   namespace: carts
 ```
 
-
-
 다음 kustomization은 ConfigMap을 덮어쓰며, DynamoDB 엔드포인트 구성을 제거합니다. 이는 SDK가 테스트 Pod 대신 실제 DynamoDB 서비스를 기본값으로 사용하도록 합니다. 또한 환경 변수 CARTS\_DYNAMODB\_TABLENAME에서 가져온, 이미 생성된 DynamoDB 테이블의 이름을 제공했습니다.
 
 {% tabs %}
 {% tab title="Kustomize Patch" %}
 {% code title="~/environment/eks-workshop/modules/security/irsa/dynamo/kustomization.yaml" %}
-```
+```yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
@@ -41,7 +39,7 @@ configMapGenerator:
 {% endtab %}
 
 {% tab title="ConfigMap/carts" %}
-```
+```yaml
 apiVersion: v1
 data:
   CARTS_DYNAMODB_TABLENAME: ${CARTS_DYNAMODB_TABLENAME}
@@ -53,7 +51,7 @@ metadata:
 {% endtab %}
 
 {% tab title="Diff" %}
-```
+```diff
  apiVersion: v1
  data:
 -  AWS_ACCESS_KEY_ID: key
@@ -72,7 +70,7 @@ metadata:
 
 CARTS\_DYNAMODB\_TABLENAME의 값을 확인한 다음 Kustomize를 실행하여 실제 DynamoDB 서비스를 사용해보겠습니다.
 
-```
+```bash
 ~$ echo $CARTS_DYNAMODB_TABLENAME
 eks-workshop-carts
 ~$ kubectl kustomize ~/environment/eks-workshop/modules/security/irsa/dynamo \
@@ -81,7 +79,7 @@ eks-workshop-carts
 
 이렇게 하면 ConfigMap이 새로운 값으로 덮어써집니다.
 
-```
+```bash
 ~$ kubectl get -n carts cm carts -o yaml
 apiVersion: v1
 data:
@@ -96,7 +94,7 @@ metadata:
 
 이제 새로운 ConfigMap 내용을 적용하기 위해 모든 carts Pod들을 재시작해야 합니다.
 
-```
+```bash
 ~$ kubectl rollout restart -n carts deployment/carts
 deployment.apps/carts restarted
 ~$ kubectl rollout status -n carts deployment/carts --timeout=20s
@@ -106,7 +104,7 @@ error: timed out waiting for the condition
 
 변경 사항이 제대로 배포되지 않은 것 같습니다. Pod들을 확인해보면 이를 확인할 수 있습니다.
 
-```
+```bash
 ~$ kubectl -n carts get pod
 NAME                              READY   STATUS             RESTARTS        AGE
 carts-5d486d7cf7-8qxf9            1/1     Running            0               5m49s

@@ -24,7 +24,7 @@ Kubernetes 자체는 로그를 수집하고 저장하는 네이티브 솔루션�
 
 Fluent Bit를 [Daemon Set](https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/)으로 배포하고 OpenSearch 도메인으로 포드 로그를 보내도록 구성합니다. 기본 구성은 [여기](https://github.com/aws-samples/eks-workshop-v2/tree/stable/manifests/modules/observability/opensearch/config/fluentbit-values.yaml)에서 사용할 수 있습니다. 이전에 검색한 OpenSearch 자격 증명을 사용하여 Fluent Bit를 구성합니다. 마지막 명령은 Fluent Bit가 세 개의 클러스터 노드 각각에 하나의 포드로 실행되고 있는지 확인합니다.
 
-```
+```bash
 ~$ helm repo add eks https://aws.github.io/eks-charts
 "eks" has been added to your repositories
 
@@ -46,7 +46,7 @@ fluentbit-aws-for-fluent-bit   3         3         3       3            3       
 
 먼저, Fluent Bit를 활성화한 이후 새로운 로그가 작성되도록 ui 컴포넌트의 포드를 재시작합니다:
 
-```
+```bash
 ~$ kubectl delete pod -n ui --all
 ~$ kubectl rollout status deployment/ui -n ui --timeout 30s
 deployment "ui" successfully rolled out
@@ -54,7 +54,7 @@ deployment "ui" successfully rolled out
 
 이제 `kubectl logs`를 직접 사용하여 `ui` 컴포넌트가 로그를 생성하고 있는지 확인할 수 있습니다. 로그의 타임스탬프는 현재 시간(UTC 형식으로 표시)과 일치해야 합니다.
 
-```
+```bash
 ~$ kubectl logs -n ui deployment/ui
 Picked up JAVA_TOOL_OPTIONS: -javaagent:/opt/aws-opentelemetry-agent.jar
 OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
@@ -81,7 +81,7 @@ OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader clas
 
 동일한 로그 항목이 OpenSearch에서도 볼 수 있음을 확인할 수 있습니다. 이전에 본 대시보드 랜딩 페이지에서 포드 로그 대시보드에 접근하거나 아래 명령을 사용하여 좌표를 얻으세요:
 
-```
+```bash
 ~$ printf "\nPod logs dashboard: https://%s/_dashboards/app/dashboards#/view/31a8bd40-790a-11ee-8b75-b9bb31eee1c2 \
         \nUserName: %q \nPassword: %q \n\n" \
         "$OPENSEARCH_HOST" "$OPENSEARCH_USER" "$OPENSEARCH_PASSWORD"
@@ -90,8 +90,6 @@ Pod logs dashboard: <OpenSearch Dashboard URL>
 Username: <user name>
 Password: <password>
 ```
-
-
 
 대시보드 섹션과 필드에 대한 설명은 다음과 같습니다.
 

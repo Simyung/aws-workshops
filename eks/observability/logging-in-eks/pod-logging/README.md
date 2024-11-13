@@ -1,6 +1,6 @@
 # Pod logging
 
-{% hint style="success" %}
+{% hint style="info" %}
 시작하기 전에
 
 이 섹션을 위해 환경을 준비하세요:
