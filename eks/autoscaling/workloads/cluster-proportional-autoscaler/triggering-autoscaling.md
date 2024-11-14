@@ -10,7 +10,7 @@ ip-10-42-142-113.us-east-2.compute.internal     Ready    <none>   76m   v1.30-ek
 ip-10-42-80-39.us-east-2.compute.internal       Ready    <none>   76m   v1.30-eks-036c24b
 ```
 
-ConfigMap에 정의된 오토스케일링 매개변수에 따라, 클러스터 비례 오토스케일러가 CoreDNS를 2개의 복제본으로 스케일링한 것을 볼 수 있습니다:
+`ConfigMap`에 정의된 오토스케일링 매개변수에 따라, 클러스터 비례 오토스케일러가 CoreDNS를 2개의 복제본으로 스케일링한 것을 볼 수 있습니다:
 
 ```bash
 ~$ kubectl get po -n kube-system -l k8s-app=kube-dns
@@ -29,7 +29,7 @@ EKS 클러스터의 크기를 5개 노드로 증가시키면, Cluster Proportion
 ~$ kubectl wait --for=condition=Ready nodes --all --timeout=120s
 ```
 
-이제 Kubernetes는 5개의 노드가 Ready 상태임을 보여줍니다:
+이제 Kubernetes는 5개의 노드가 `Ready` 상태임을 보여줍니다:
 
 ```bash
 ~$ kubectl get nodes

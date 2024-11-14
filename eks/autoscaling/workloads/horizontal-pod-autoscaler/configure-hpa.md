@@ -7,7 +7,7 @@
 No resources found
 ```
 
-이 경우 우리는 ui 서비스를 사용하여 CPU 사용량을 기반으로 스케일링할 것입니다. 먼저 ui Pod 사양을 업데이트하여 CPU 요청 및 제한 값을 지정하겠습니다.
+이 경우 우리는 `ui` 서비스를 사용하여 CPU 사용량을 기반으로 스케일링할 것입니다. 먼저 `ui` Pod 사양을 업데이트하여 CPU `request` 및 `limit` 값을 지정하겠습니다.
 
 {% tabs %}
 {% tab title="Kustomize Patch" %}
@@ -122,7 +122,7 @@ spec:
 {% endtab %}
 {% endtabs %}
 
-다음으로, HPA가 우리의 워크로드를 어떻게 스케일링할지 결정하는 데 사용할 매개변수를 정의하는 HorizontalPodAutoscaler 리소스를 생성해야 합니다.
+다음으로, HPA가 우리의 워크로드를 어떻게 스케일링할지 결정하는 데 사용할 매개변수를 정의하는 `HorizontalPodAutoscaler` 리소스를 생성해야 합니다.
 
 {% code title="~/environment/eks-workshop/modules/autoscaling/workloads/hpa/hpa.yaml" lineNumbers="true" %}
 ```yaml
@@ -152,4 +152,8 @@ spec:
 ```bash
 ~$ kubectl apply -k ~/environment/eks-workshop/modules/autoscaling/workloads/hpa
 ```
+
+{% hint style="info" %}
+Scaledown 등의 다양한 설정 정보를 확인하기 위해 [Kubernetes 문서 내 HPA 내용](https://kubernetes.io/ko/docs/tasks/run-application/horizontal-pod-autoscale/)을 참고합니다.
+{% endhint %}
 

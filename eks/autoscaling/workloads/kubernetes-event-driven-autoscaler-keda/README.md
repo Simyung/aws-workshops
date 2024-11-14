@@ -16,7 +16,7 @@
 * KEDA Operator에 필요한 IAM 역할을 생성합니다&#x20;
 * UI 워크로드를 위한 Ingress 리소스를 생성합니다
 
-여기에서 이러한 변경사항을 적용하는 Terraform을 볼 수 있습니다.
+[여기](https://github.com/aws-samples/eks-workshop-v2/tree/stable/manifests/modules/autoscaling/workloads/keda/.workshop/terraform)에서 이러한 변경사항을 적용하는 Terraform을 볼 수 있습니다.
 {% endhint %}
 
 

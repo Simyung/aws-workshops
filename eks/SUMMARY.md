@@ -1,6 +1,6 @@
 # Table of contents
 
-* [Introduction](README.md)
+* [Introduction](README.md)
   * [Setup](introduction/setup/README.md)
     * [AWS 이벤트 시](introduction/setup/aws.md)
   * [Navigating the labs](introduction/navigating-the-labs.md)
@@ -12,7 +12,7 @@
     * [Other components](introduction/getting-started/other-components.md)
   * [Kustomize](introduction/kustomize.md)
   * [Helm](introduction/helm.md)
-* [Fundamentals](fundamentals/README.md)
+* [Fundamentals](fundamentals/README.md)
   * [Exposing applications](fundamentals/exposing-applications/README.md)
     * [AWS Load Balancer Controller](fundamentals/exposing-applications/aws-load-balancer-controller.md)
     * [Load Balancers](fundamentals/exposing-applications/load-balancers/README.md)

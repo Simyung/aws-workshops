@@ -6,7 +6,7 @@ Karpenter는 자동으로 중단 가능한 노드를 발견하고 필요할 때 
 * **Drift**: Karpenter는 구성(예: NodePool 또는 EC2NodeClass)의 변경을 감지하여 필요한 변경사항을 적용합니다.&#x20;
 * **Consolidation**: 비용 효율적인 방식으로 컴퓨팅을 운영하기 위한 중요한 기능으로, Karpenter는 지속적으로 클러스터의 컴퓨팅을 최적화합니다. 예를 들어, 워크로드가 충분히 활용되지 않는 컴퓨팅 인스턴스에서 실행 중인 경우 더 적은 수의 인스턴스로 통합합니다.&#x20;
 
-중단은 NodePool의 disruption 블록을 통해 구성됩니다. 아래 강조 표시된 부분에서 우리의 NodePool에 이미 구성된 정책을 볼 수 있습니다.
+Disrupiton은 NodePool의 disruption 블록을 통해 구성됩니다. 아래 강조 표시된 부분에서 우리의 NodePool에 이미 구성된 정책을 볼 수 있습니다.
 
 {% code title="~/environment/eks-workshop/modules/autoscaling/compute/karpenter/nodepool/nodepool.yaml" lineNumbers="true" %}
 ```yaml
@@ -41,14 +41,14 @@ spec:
 ```
 {% endcode %}
 
-* Ln 22: expireAfter는 노드가 72시간 후에 자동으로 종료되도록 사용자 지정 값으로 설정되어 있습니다.
-* Ln 26: WhenEmptyOrUnderutilized 정책을 사용하면 Karpenter는 노드가 "충분히 활용되지 않는" 것으로 보이거나 워크로드 Pod가 실행 중이지 않을 때 노드를 교체합니다.
+* Ln 22: `expireAfter`는 노드가 72시간 후에 자동으로 종료되도록 사용자 지정 값으로 설정되어 있습니다.
+* Ln 26: `WhenEmptyOrUnderutilized` 정책을 사용하면 Karpenter는 노드가 "충분히 활용되지 않는" 것으로 보이거나 워크로드 Pod가 실행 중이지 않을 때 노드를 교체합니다.
 
-consolidationPolicy는 WhenEmpty로 설정할 수도 있으며, 이는 워크로드 Pod가 없는 노드에만 중단을 제한합니다. Karpenter 문서에서 중단에 대해 자세히 알아보세요.
+`consolidationPolicy`는 `WhenEmpty`로 설정할 수도 있으며, 이는 워크로드 Pod가 없는 노드에만 중단을 제한합니다. Karpenter 문서에서 중단에 대해 자세히 알아보세요.
 
 인프라를 확장하는 것은 비용 효율적인 방식으로 컴퓨팅 인프라를 운영하는 데 있어 한 측면일 뿐입니다. 우리는 또한 지속적으로 최적화할 수 있어야 합니다. 예를 들어, 충분히 활용되지 않는 컴퓨팅 인스턴스에서 실행 중인 워크로드를 더 적은 수의 인스턴스로 압축하는 것입니다. 이는 컴퓨팅에서 워크로드를 실행하는 전반적인 효율성을 향상시켜 오버헤드를 줄이고 비용을 낮춥니다.
 
-disruption이 consolidationPolicy: WhenUnderutilized로 설정되었을 때 자동 통합을 트리거하는 방법을 살펴보겠습니다:
+disruption이 `consolidationPolicy: WhenUnderutilized`로 설정되었을 때 자동 통합을 트리거하는 방법을 살펴보겠습니다:
 
 1. inflate 워크로드를 5개에서 12개의 복제본으로 확장하여 Karpenter가 추가 용량을 프로비저닝하도록 트리거합니다.&#x20;
 2. 워크로드를 다시 5개의 복제본으로 축소합니다.&#x20;
