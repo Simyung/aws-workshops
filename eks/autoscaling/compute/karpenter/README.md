@@ -16,12 +16,11 @@ Karpenter에 필요한 다양한 IAM 역할 및 기타 AWS 리소스를 설치�
 
 <figure><img src="https://eksworkshop.com/assets/images/karpenter-diagram-46653f1104e377fdefd5dacd522f1855.webp" alt=""><figcaption></figcaption></figure>
 
-
-
 Karpenter의 목표는 Kubernetes 클러스터에서 워크로드를 실행하는 효율성과 비용을 개선하는 것입니다. Karpenter는 다음과 같이 작동합니다:
 
 * Kubernetes 스케줄러가 스케줄링 불가능으로 표시한 Pod를 감시합니다.&#x20;
-* Pod가 요청한 스케줄링 제약 조건(리소스 요청, 노드 셀렉터, 어피니티, 톨러레이션, 토폴로지 스프레드 제약 조건)을 평가합니다.&#x20;
+* Pod가 요청한 스케줄링 제약 조건(리소스 requests, 노드 셀렉터, 어피니티, 톨러레이션, 토폴로지 스프레드 제약 조건)을 평가합니다.&#x20;
 * Pod의 요구 사항을 충족하는 노드를 프로비저닝합니다.&#x20;
 * 새 노드에서 Pod를 실행하도록 스케줄링합니다.&#x20;
 * 노드가 더 이상 필요하지 않을 때 노드를 제거합니다.
+
